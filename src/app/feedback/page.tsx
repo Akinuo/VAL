@@ -44,7 +44,6 @@ export default function Feedback() {
   return (
     <>
       <div className="mb-6">
-        <p className="eyebrow mb-1">Your input</p>
         <h1 className="page-title">Feedback</h1>
         <p className="mt-1 text-sm text-muted">Let us know how the lessons are working for you.</p>
       </div>

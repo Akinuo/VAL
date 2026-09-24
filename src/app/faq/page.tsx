@@ -6,7 +6,6 @@ export default async function Faq() {
   return (
     <>
       <div className="mb-6">
-        <p className="eyebrow mb-1">Reference</p>
         <h1 className="page-title">Frequently asked questions</h1>
         <p className="mt-1 text-sm text-muted">Select a question to read the answer.</p>
       </div>

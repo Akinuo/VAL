@@ -3,15 +3,7 @@ import Link from 'next/link'
 import { useProgress } from '@/lib/progress'
 import { earned } from '@/lib/badges'
 import type { Content } from '@/lib/content'
-import { IconRibbon, IconPartMarker, IconCheck, IconQuestion, IconQr, IconMessage, IconPlay } from './icons'
-
-const QUICK = [
-  { href: '/parts',      Icon: IconPartMarker, label: 'Machine parts' },
-  { href: '/checklists', Icon: IconCheck,       label: 'Checklists' },
-  { href: '/faq',        Icon: IconQuestion,    label: 'FAQ' },
-  { href: '/qr',         Icon: IconQr,          label: 'QR hub' },
-  { href: '/feedback',   Icon: IconMessage,     label: 'Feedback' },
-]
+import { IconRibbon } from './icons'
 
 export default function Dashboard({ c }: { c: Content }) {
   const { done, email } = useProgress()
@@ -40,7 +32,6 @@ export default function Dashboard({ c }: { c: Content }) {
       {/* ── Welcome ── */}
       <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="eyebrow mb-1">Dashboard</p>
           <h1 className="font-display text-2xl font-bold text-denim sm:text-3xl">
             {firstName ? `Welcome back, ${firstName}` : 'Your learning dashboard'}
           </h1>
@@ -59,72 +50,38 @@ export default function Dashboard({ c }: { c: Content }) {
         )}
       </div>
 
-      {/* ── Continue / Start banner ── */}
-      {promptLesson && (
-        <Link
-          href={`/lessons/${promptLesson.slug}`}
-          className="group flex items-center gap-4 rounded-lg border border-amber-border bg-amber-soft px-5 py-4 transition-colors hover:border-amber"
+      {/* ── Where you are ── */}
+      <section className="rounded-lg bg-denim p-5 text-white sm:p-6">
+        <p className="text-sm text-white/70">
+          {promptLesson ? (continueLesson ? 'Pick up where you left off' : 'Your first lesson') : 'Every lesson is done'}
+        </p>
+        <h2 className="mt-1 font-display text-2xl font-bold leading-tight sm:text-3xl">
+          {promptLesson ? promptLesson.title : 'You have finished the course.'}
+        </h2>
+
+        {/* Progress is stitched: the gold thread fills in as steps are passed */}
+        <div
+          role="progressbar"
+          aria-label="Overall progress"
+          aria-valuenow={pct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          className="relative mt-6 h-1.5"
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-denim text-white">
-            <IconPlay className="h-4 w-4" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-wide text-amber">
-              {continueLesson ? 'Continue where you left off' : 'Start here'}
-            </p>
-            <p className="mt-0.5 font-display text-base font-semibold text-ink group-hover:text-denim">
-              {promptLesson.title}
-            </p>
-          </div>
-          <span className="shrink-0 text-xl text-muted group-hover:text-denim" aria-hidden>›</span>
-        </Link>
-      )}
-
-      {/* ── Progress ── */}
-      <section aria-labelledby="prog-heading">
-        <h2 id="prog-heading" className="font-display text-lg font-semibold text-denim">Overall progress</h2>
-        <div className="mt-3 card p-4">
-          <div className="flex items-center gap-4">
-            <div
-              role="progressbar"
-              aria-label="Overall progress"
-              aria-valuenow={pct}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              className="h-2.5 flex-1 overflow-hidden rounded-full bg-amber-soft"
-            >
-              <div
-                className="h-full rounded-full bg-amber transition-[width] duration-500"
-                style={{ width: pct + '%' }}
-              />
-            </div>
-            <span className="shrink-0 font-display text-2xl font-bold tabular-nums text-denim">{pct}%</span>
-          </div>
-          <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted">
-            <span>{completedSteps} of {allStepIds.length} steps</span>
-            <span aria-hidden>·</span>
-            <span>{c.lessons.filter(l => l.steps.length > 0 && l.steps.every(s => done.has(s.id))).length} of {c.lessons.length} lessons</span>
-            <span aria-hidden>·</span>
-            <span>{earnedBadges.size} of {c.achievements.length} badges</span>
+          <div className="absolute inset-0 rounded-full opacity-30" style={{ background: 'repeating-linear-gradient(90deg,#fff 0 10px,transparent 10px 16px)' }} />
+          <div className="absolute inset-y-0 left-0 overflow-hidden transition-[width] duration-700" style={{ width: pct + '%' }}>
+            <div className="h-full w-[100vw]" style={{ background: 'repeating-linear-gradient(90deg,#E59B1C 0 10px,transparent 10px 16px)' }} />
           </div>
         </div>
-      </section>
+        <p className="mt-2 text-sm text-white/80">
+          {completedSteps} of {allStepIds.length} steps done, {earnedBadges.size} of {c.achievements.length} badges earned
+        </p>
 
-      {/* ── Quick access ── */}
-      <section aria-labelledby="quick-heading">
-        <h2 id="quick-heading" className="font-display text-lg font-semibold text-denim">Quick access</h2>
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
-          {QUICK.map(({ href, Icon, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="group flex flex-col items-center gap-2 rounded-lg border border-border bg-paper px-3 py-4 text-center transition-colors hover:border-denim/30 hover:bg-denim-light"
-            >
-              <Icon className="h-5 w-5 text-denim" />
-              <span className="text-xs font-medium text-muted group-hover:text-denim">{label}</span>
-            </Link>
-          ))}
-        </div>
+        {promptLesson && (
+          <Link href={`/lessons/${promptLesson.slug}`} className="btn mt-5 !bg-thread !text-ink hover:!bg-amber-border">
+            {continueLesson ? 'Continue lesson' : 'Start lesson'}
+          </Link>
+        )}
       </section>
 
       {/* ── Lessons ── */}
@@ -156,7 +113,7 @@ export default function Dashboard({ c }: { c: Content }) {
                       <span className="font-medium text-ink group-hover:text-denim">{l.title}</span>
                       {full && <span className="chip-green">Complete</span>}
                     </div>
-                    <p className="mt-0.5 text-xs text-muted">{l.summary}</p>
+                    <p className="mt-0.5 text-sm text-muted">{l.summary}</p>
                     {lPct > 0 && !full && (
                       <div className="mt-2 flex items-center gap-2">
                         <div className="h-1 flex-1 overflow-hidden rounded-full bg-amber-soft">
@@ -175,34 +132,26 @@ export default function Dashboard({ c }: { c: Content }) {
       </section>
 
       {/* ── Badges ── */}
-      <section aria-labelledby="badges-heading">
-        <h2 id="badges-heading" className="font-display text-lg font-semibold text-denim">Badges</h2>
-        {earnedBadges.size === 0 && (
-          <p className="mt-1 text-sm text-muted">Complete lessons to earn badges.</p>
-        )}
-        <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <details className="group rounded-lg border border-border bg-paper">
+        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 font-display text-lg font-semibold text-denim">
+          Badges
+          <span className="text-sm font-normal text-muted">{earnedBadges.size} of {c.achievements.length} earned</span>
+        </summary>
+        <ul className="grid gap-2 border-t border-border p-4 sm:grid-cols-2">
           {c.achievements.map(a => {
             const y = earnedBadges.has(a.slug)
             return (
-              <li
-                key={a.slug}
-                className={`flex items-start gap-3 rounded-lg border p-3 ${
-                  y
-                    ? 'border-green-border bg-green-soft'
-                    : 'border-dashed border-border bg-paper opacity-60'
-                }`}
-              >
-                <IconRibbon className={`mt-0.5 h-4 w-4 shrink-0 ${y ? 'text-green' : 'text-muted'}`} />
+              <li key={a.slug} className={`flex items-start gap-3 rounded p-3 ${y ? 'bg-green-soft' : 'bg-chalk'}`}>
+                <IconRibbon className={`mt-0.5 h-5 w-5 shrink-0 ${y ? 'text-green' : 'text-muted/50'}`} />
                 <div>
-                  <p className="text-sm font-semibold text-ink">{a.title}</p>
-                  <p className="text-xs text-muted">{a.description}</p>
-                  {y && <span className="mt-1.5 chip-green">Earned</span>}
+                  <p className={`font-semibold ${y ? 'text-ink' : 'text-muted'}`}>{a.title}</p>
+                  <p className="text-sm text-muted">{a.description}</p>
                 </div>
               </li>
             )
           })}
         </ul>
-      </section>
+      </details>
 
     </div>
   )
