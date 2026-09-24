@@ -11,7 +11,7 @@ export default async function Parts() {
         <p className="eyebrow mb-1">Reference</p>
         <h1 className="page-title">Machine parts</h1>
         <p className="mt-1 text-sm text-muted">
-          Select a dot on the diagram or a part name below to learn its function.
+          Turn the 3D machine, then select a dot or a part name to learn its function.
         </p>
       </div>
       <Suspense fallback={<p className="text-sm text-muted">Loading diagram…</p>}>
