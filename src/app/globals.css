@@ -1,0 +1,8 @@
+@tailwind base;@tailwind components;@tailwind utilities;
+:focus-visible{outline:3px solid #6E1A2C;outline-offset:3px}
+.weave{height:12px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 12 6 0l6 12 6-12 6 12' fill='none' stroke='%23D4A017' stroke-width='3'/%3E%3C/svg%3E") repeat-x #6E1A2C}
+@layer components{
+.btn{@apply inline-flex min-h-[44px] items-center justify-center rounded bg-maroon px-4 py-2 font-semibold text-cream hover:bg-terracotta disabled:opacity-50}
+.opt{@apply block min-h-[44px] w-full rounded border-2 border-maroon/30 bg-white px-3 py-2 text-left hover:border-maroon aria-pressed:border-maroon aria-pressed:bg-mustard/30}
+.field{@apply mt-1 block min-h-[44px] w-full rounded border-2 border-maroon/30 bg-white px-3 py-2}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

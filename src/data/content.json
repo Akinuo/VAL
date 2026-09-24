@@ -1,0 +1,1052 @@
+{
+ "lessons": [
+  {
+   "slug": "parts-and-functions",
+   "title": "Parts and functions of the sewing machine",
+   "summary": "Name each main part and know what it does.",
+   "video_url": null,
+   "minutes": 5,
+   "steps": [
+    {
+     "id": "parts-and-functions-1",
+     "title": "Feed dogs",
+     "body": "The feed dogs are the teeth under the presser foot. They move the fabric forward while the needle goes up and down.",
+     "quiz_questions": [
+      {
+       "id": "parts-and-functions-1-q",
+       "question": "While sewing, a student notices that the fabric is not moving forward properly even though the needle is moving up and down. Which sewing machine part should the student check first?",
+       "options": [
+        "Take-up lever",
+        "Feed dogs",
+        "Thread guide",
+        "Tension regulator"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "parts-and-functions-2",
+     "title": "Tension regulator",
+     "body": "The tension regulator sets how tight the upper thread is. Adjust it when the upper thread is too loose and the stitches are uneven.",
+     "quiz_questions": [
+      {
+       "id": "parts-and-functions-2-q",
+       "question": "A student is preparing to sew but notices that the upper thread is too loose, resulting in uneven stitches. Which part should be adjusted to help correct the problem?",
+       "options": [
+        "Tension regulator",
+        "Spool pin",
+        "Needle bar",
+        "Throat plate"
+       ],
+       "answer": 0,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "parts-and-functions-3",
+     "title": "Handwheel",
+     "body": "Turn the handwheel toward you to raise or lower the needle by hand, for example to bring the needle to its highest point.",
+     "quiz_questions": [
+      {
+       "id": "parts-and-functions-3-q",
+       "question": "Before removing the fabric, a student needs to position the needle at its highest point manually. Which part should be used, and in what direction should it be turned?",
+       "options": [
+        "Take-up lever; away from the student",
+        "Handwheel; toward the student",
+        "Presser-foot lever; toward the student",
+        "Feed dogs; away from the student"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "parts-and-functions-4",
+     "title": "Presser foot and presser-foot lever",
+     "body": "The presser foot holds the fabric firmly. The presser-foot lever raises and lowers the foot.",
+     "quiz_questions": [
+      {
+       "id": "parts-and-functions-4-q",
+       "question": "Which situation best explains the relationship between the presser foot and presser-foot lever during sewing?",
+       "options": [
+        "The lever controls the thread tension while the foot moves the fabric.",
+        "The foot carries the upper thread while the lever controls the needle.",
+        "The foot holds the fabric firmly, while the lever raises and lowers the foot.",
+        "The foot moves the fabric forward, while the lever controls the bobbin thread."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "parts-and-functions-5",
+     "title": "Spool pin and bobbin",
+     "body": "The spool pin holds the spool that supplies the upper thread. The bobbin and bobbin case supply the lower thread.",
+     "quiz_questions": [
+      {
+       "id": "parts-and-functions-5-q",
+       "question": "A sewing machine produces a stitch using both an upper and a lower thread. Which pair of parts is directly responsible for providing and carrying these threads?",
+       "options": [
+        "Spool pin and bobbin/bobbin case",
+        "Needle bar and throat plate",
+        "Feed dogs and presser foot",
+        "Take-up lever and handwheel"
+       ],
+       "answer": 0,
+       "explanation": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "preparing-machine",
+   "title": "Preparing the machine before use",
+   "summary": "Get the work area, needle and machine ready safely.",
+   "video_url": null,
+   "minutes": 5,
+   "steps": [
+    {
+     "id": "preparing-machine-1",
+     "title": "Disconnect power first",
+     "body": "If the machine is plugged in before you have checked the needle, bobbin and thread path, disconnect the power and finish the safety checks.",
+     "quiz_questions": [
+      {
+       "id": "preparing-machine-1-q",
+       "question": "A student is ready to sew but notices that the sewing machine is plugged in before checking the needle, bobbin, and thread path. What should the student do first?",
+       "options": [
+        "Start the machine slowly to test it.",
+        "Place fabric under the presser foot.",
+        "Disconnect the power and complete the necessary safety checks.",
+        "Press the foot control gently to see if the machine works."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "preparing-machine-2",
+     "title": "Check the needle",
+     "body": "Replace a bent needle with a suitable, undamaged one.",
+     "quiz_questions": [
+      {
+       "id": "preparing-machine-2-q",
+       "question": "While preparing the machine, a student discovers that the needle is slightly bent. What is the most appropriate action?",
+       "options": [
+        "Continue using it at a slower speed.",
+        "Adjust the presser foot to compensate for the bent needle.",
+        "Replace it with a suitable, undamaged needle.",
+        "Tighten the needle bar to keep it in place."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "preparing-machine-3",
+     "title": "Follow the preparation order",
+     "body": "Prepare the work area, inspect the machine, check the needle and bobbin, prepare the needle and presser foot, connect the power, then test slowly.",
+     "quiz_questions": [
+      {
+       "id": "preparing-machine-3-q",
+       "question": "Which sequence demonstrates the safest preparation of the sewing machine before actual sewing?",
+       "options": [
+        "Plug in → test machine → check needle → install bobbin",
+        "Prepare work area → inspect machine → check needle and bobbin → prepare needle and presser foot → connect power → test slowly",
+        "Install bobbin → plug in → prepare work area → test machine → check needle",
+        "Test machine → connect power → inspect cord → prepare work area → begin sewing"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "preparing-machine-4",
+     "title": "Unplug before changing the needle",
+     "body": "Turn off and unplug the machine before you change the needle.",
+     "quiz_questions": [
+      {
+       "id": "preparing-machine-4-q",
+       "question": "A student needs to change the needle because it is damaged. The machine is still connected to the power supply. What should the student do before changing the needle?",
+       "options": [
+        "Raise the presser foot and continue working.",
+        "Turn off and unplug the machine.",
+        "Press the foot control to lower the needle.",
+        "Remove the bobbin while the machine is running."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "preparing-machine-5",
+     "title": "Test slowly",
+     "body": "Before placing fabric under the needle, test the machine slowly and carefully.",
+     "quiz_questions": [
+      {
+       "id": "preparing-machine-5-q",
+       "question": "After completing the preparation steps, a student wants to make sure the machine is functioning properly before placing fabric under the needle. What should the student do?",
+       "options": [
+        "Immediately sew at high speed.",
+        "Test the machine slowly and carefully.",
+        "Increase the thread tension first.",
+        "Hold the needle with the fingers while testing."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "threading-upper-thread",
+   "title": "Threading the upper thread",
+   "summary": "Follow the thread path from spool to needle.",
+   "video_url": null,
+   "minutes": 5,
+   "steps": [
+    {
+     "id": "threading-upper-thread-1",
+     "title": "Seat the thread in the tension discs",
+     "body": "Seat the thread properly between the tension discs. If this is missed, the upper thread becomes loose and the stitches are uneven.",
+     "quiz_questions": [
+      {
+       "id": "threading-upper-thread-1-q",
+       "question": "A student has placed the thread on the spool pin but notices that the upper thread becomes loose and produces uneven stitches. Which step may have been missed or done incorrectly?",
+       "options": [
+        "Pulling several centimeters of thread through the needle eye",
+        "Seating the thread properly between the tension discs",
+        "Placing the thread behind the presser foot",
+        "Raising the presser foot after threading"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "threading-upper-thread-2",
+     "title": "Use the take-up lever",
+     "body": "Passing the thread through the take-up lever controls the movement of the upper thread during sewing.",
+     "quiz_questions": [
+      {
+       "id": "threading-upper-thread-2-q",
+       "question": "Why is it important to pass the upper thread through the take-up lever during threading?",
+       "options": [
+        "It holds the spool securely on the spool pin.",
+        "It guides the lower thread into the bobbin.",
+        "It controls the movement of the upper thread during sewing.",
+        "It prevents the needle from moving while sewing."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "threading-upper-thread-3",
+     "title": "Raise the presser foot and needle first",
+     "body": "Raise the presser foot and needle before threading. If you forget, the thread may not seat properly in the tension area.",
+     "quiz_questions": [
+      {
+       "id": "threading-upper-thread-3-q",
+       "question": "A student follows the threading path but forgets to raise the presser foot and needle before starting. What is the most likely problem?",
+       "options": [
+        "The bobbin will automatically become empty.",
+        "The thread may not be properly seated in the tension area.",
+        "The feed dogs will stop moving permanently.",
+        "The needle will automatically become damaged."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "threading-upper-thread-4",
+     "title": "Check the thread path",
+     "body": "If the thread feels tangled or does not move smoothly after threading, check the threading path and rethread the machine.",
+     "quiz_questions": [
+      {
+       "id": "threading-upper-thread-4-q",
+       "question": "After threading the machine, the student gently pulls the thread and feels that it is tangled and does not move smoothly. What should the student do?",
+       "options": [
+        "Start sewing slowly to untangle the thread.",
+        "Increase the sewing speed.",
+        "Leave the thread as it is and continue sewing.",
+        "Check the threading path and rethread the machine correctly."
+       ],
+       "answer": 3,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "threading-upper-thread-5",
+     "title": "Threading order",
+     "body": "Raise the presser foot and needle, place the spool, follow the thread guides, tension area, take-up lever and remaining guides, then thread the needle.",
+     "quiz_questions": [
+      {
+       "id": "threading-upper-thread-5-q",
+       "question": "Which sequence correctly represents the general order of threading the upper thread?",
+       "options": [
+        "Thread needle → place spool → tension area → take-up lever → thread guides",
+        "Raise presser foot and needle → place spool → thread guides → tension area → take-up lever → remaining guides → needle",
+        "Place spool → thread needle → raise needle → take-up lever → tension area",
+        "Raise needle → thread needle → place spool → tension area → thread guides → take-up lever"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "winding-bobbin",
+   "title": "Winding the bobbin",
+   "summary": "Fill a bobbin evenly and remove it correctly.",
+   "video_url": null,
+   "minutes": 5,
+   "steps": [
+    {
+     "id": "winding-bobbin-1",
+     "title": "Wind evenly",
+     "body": "Check that the wound thread has no large gaps or loose loops. If it does, rewind the bobbin before installing it.",
+     "quiz_questions": [
+      {
+       "id": "winding-bobbin-1-q",
+       "question": "A student winds a bobbin and notices that the thread has large gaps and loose loops. What should the student do before installing the bobbin?",
+       "options": [
+        "Install it immediately and sew slowly.",
+        "Add more thread until the bobbin is completely full.",
+        "Check and rewind the bobbin so the thread is evenly wound.",
+        "Remove the thread from the spool pin and start sewing."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "winding-bobbin-2",
+     "title": "Do not overfill",
+     "body": "An overfilled bobbin may not rotate smoothly.",
+     "quiz_questions": [
+      {
+       "id": "winding-bobbin-2-q",
+       "question": "Why should a bobbin not be overfilled during the winding process?",
+       "options": [
+        "It can prevent the bobbin from rotating smoothly.",
+        "It can make the needle move faster.",
+        "It can automatically loosen the presser foot.",
+        "It can cause the spool pin to stop rotating."
+       ],
+       "answer": 0,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "winding-bobbin-3",
+     "title": "Pass the thread through the bobbin",
+     "body": "After placing the empty bobbin on the spindle, pass the thread through the bobbin as directed by the machine.",
+     "quiz_questions": [
+      {
+       "id": "winding-bobbin-3-q",
+       "question": "A student has inserted an empty bobbin onto the spindle but has not yet passed the thread through the bobbin. What should the student do next?",
+       "options": [
+        "Remove the bobbin and install it in the bobbin case.",
+        "Pass the thread through the bobbin as directed by the machine.",
+        "Begin sewing without winding the bobbin.",
+        "Cut the thread and remove the bobbin."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "winding-bobbin-4",
+     "title": "A well-wound bobbin",
+     "body": "A bobbin that is ready to install is wound evenly, with no large gaps or loose loops.",
+     "quiz_questions": [
+      {
+       "id": "winding-bobbin-4-q",
+       "question": "Which situation shows that the bobbin is properly prepared for installation?",
+       "options": [
+        "The thread is tightly packed with excessive winding.",
+        "The thread has large gaps but does not fall off the bobbin.",
+        "The thread is wound evenly without large gaps or loose loops.",
+        "The thread is loosely wound so it can rotate faster."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "winding-bobbin-5",
+     "title": "Winding order",
+     "body": "Place and secure the spool, follow the thread path, insert the empty bobbin, pass the thread, engage the winder, start slowly, stop when sufficiently filled, then cut and remove.",
+     "quiz_questions": [
+      {
+       "id": "winding-bobbin-5-q",
+       "question": "Which sequence best represents the correct procedure for winding a bobbin?",
+       "options": [
+        "Insert bobbin → place spool → start machine → guide thread → remove bobbin",
+        "Place and secure spool → follow thread path → insert empty bobbin → pass thread → engage winder → start slowly → stop when sufficiently filled → cut and remove",
+        "Start machine → insert bobbin → engage winder → place spool → cut thread",
+        "Place spool → remove empty bobbin → install bobbin case → start sewing → cut thread"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "installing-bobbin",
+   "title": "Installing the bobbin",
+   "summary": "Seat the bobbin and bring the bobbin thread up.",
+   "video_url": null,
+   "minutes": 5,
+   "steps": [
+    {
+     "id": "installing-bobbin-1",
+     "title": "Turn the machine off",
+     "body": "Turn off the machine before working around the needle and bobbin area.",
+     "quiz_questions": [
+      {
+       "id": "installing-bobbin-1-q",
+       "question": "A student is about to install a bobbin and notices that the sewing machine is still turned on. What should the student do first?",
+       "options": [
+        "Raise the needle and continue installing the bobbin.",
+        "Turn off the machine before working around the needle and bobbin area.",
+        "Press the foot control to raise the needle.",
+        "Remove the bobbin cover while the machine is running."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "installing-bobbin-2",
+     "title": "Guide the thread",
+     "body": "After placing the bobbin in its holder, pull the thread through the designated slot and under the tension spring or guide.",
+     "quiz_questions": [
+      {
+       "id": "installing-bobbin-2-q",
+       "question": "After placing the wound bobbin into the bobbin holder, which action is most important for ensuring proper thread movement?",
+       "options": [
+        "Pull the thread through the designated slot and under the tension spring or guide.",
+        "Pull the thread directly toward the front of the machine.",
+        "Cut the bobbin thread as close to the bobbin as possible.",
+        "Hold the bobbin tightly while turning the handwheel."
+       ],
+       "answer": 0,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "installing-bobbin-3",
+     "title": "If the bobbin thread does not come up",
+     "body": "Stop and check that the bobbin is seated correctly and the thread follows the proper path.",
+     "quiz_questions": [
+      {
+       "id": "installing-bobbin-3-q",
+       "question": "A student has installed the bobbin and closed the bobbin cover, but the bobbin thread does not come up when the handwheel is turned. What should the student do?",
+       "options": [
+        "Start sewing at a higher speed.",
+        "Pull the upper thread harder.",
+        "Stop and check whether the bobbin is seated correctly and the thread follows the proper path.",
+        "Remove the presser foot and continue sewing."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "installing-bobbin-4",
+     "title": "Bring up the bobbin thread",
+     "body": "Hold the upper thread and turn the handwheel toward you to bring the bobbin thread up through the needle plate.",
+     "quiz_questions": [
+      {
+       "id": "installing-bobbin-4-q",
+       "question": "After installing the bobbin, what is the correct way to bring the bobbin thread up through the needle plate?",
+       "options": [
+        "Turn the handwheel away from you while holding the bobbin thread.",
+        "Hold the upper thread and turn the handwheel toward you.",
+        "Pull the bobbin thread upward without using the handwheel.",
+        "Press the foot control while holding both threads."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "installing-bobbin-5",
+     "title": "Installation order",
+     "body": "Turn off the machine, raise the needle and presser foot, access the bobbin area, install the bobbin, guide the thread, close the cover, then bring the bobbin thread up.",
+     "quiz_questions": [
+      {
+       "id": "installing-bobbin-5-q",
+       "question": "Which sequence correctly describes the procedure for installing the bobbin?",
+       "options": [
+        "Install bobbin → turn on machine → close cover → raise needle → pull threads",
+        "Turn off machine → raise needle and presser foot → access bobbin area → install bobbin correctly → guide thread through slot/tension guide → close cover → bring bobbin thread up",
+        "Raise presser foot → start machine → install bobbin → pull thread → close cover",
+        "Open bobbin area → install bobbin → turn on machine → raise needle → check thread path"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "stitch-length-operation",
+   "title": "Stitch length and basic operation",
+   "summary": "Set the stitch length and control the machine while sewing.",
+   "video_url": null,
+   "minutes": 5,
+   "steps": [
+    {
+     "id": "stitch-length-operation-1",
+     "title": "Stitch-length control",
+     "body": "If the stitches are too long, check the stitch-length control first.",
+     "quiz_questions": [
+      {
+       "id": "stitch-length-operation-1-q",
+       "question": "A student notices that the stitches on the practice fabric are too long. Which machine setting should the student check first?",
+       "options": [
+        "Stitch-length control",
+        "Presser-foot lever",
+        "Handwheel",
+        "Bobbin cover"
+       ],
+       "answer": 0,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "stitch-length-operation-2",
+     "title": "Let the feed dogs move the fabric",
+     "body": "The feed dogs are designed to move the fabric forward, so do not pull it.",
+     "quiz_questions": [
+      {
+       "id": "stitch-length-operation-2-q",
+       "question": "While sewing, a student pulls the fabric strongly toward the back because it is not moving fast enough. Why is this incorrect?",
+       "options": [
+        "The needle will automatically become shorter.",
+        "The feed dogs are designed to move the fabric forward.",
+        "The stitch pattern will automatically change.",
+        "The presser foot will become loose."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "stitch-length-operation-3",
+     "title": "Start slowly",
+     "body": "Start slowly, then keep a steady speed.",
+     "quiz_questions": [
+      {
+       "id": "stitch-length-operation-3-q",
+       "question": "A beginner is practicing on a sewing machine for the first time. Which approach demonstrates proper machine control?",
+       "options": [
+        "Start at high speed to finish quickly.",
+        "Push the fabric forcefully while sewing.",
+        "Start slowly and gradually maintain a steady speed.",
+        "Keep the presser foot raised while sewing."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "stitch-length-operation-4",
+     "title": "When stitches look loose and uneven",
+     "body": "Stop the machine and check the settings, the threading and the tension.",
+     "quiz_questions": [
+      {
+       "id": "stitch-length-operation-4-q",
+       "question": "A student has selected the correct stitch setting but notices that the stitches are loose and uneven. According to the video, what should the student do?",
+       "options": [
+        "Continue sewing until the stitches become even.",
+        "Increase the machine speed immediately.",
+        "Stop the machine and check the settings, threading, and tension.",
+        "Pull the fabric harder to improve the stitches."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "stitch-length-operation-5",
+     "title": "Basic sewing order",
+     "body": "Select the stitch, place the practice fabric, lower the presser foot, hold the thread tails, start slowly, and guide the fabric gently.",
+     "quiz_questions": [
+      {
+       "id": "stitch-length-operation-5-q",
+       "question": "Which sequence best demonstrates the proper procedure before and during basic sewing practice?",
+       "options": [
+        "Start the machine → lower presser foot → place fabric → select stitch → guide fabric",
+        "Select stitch setting → place practice fabric → lower presser foot → hold thread tails → start slowly → guide fabric gently",
+        "Place fabric → pull fabric forward → start at high speed → adjust stitch length",
+        "Lower presser foot → start machine → select stitch pattern → pull fabric forcefully"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "safety-practices",
+   "title": "Sewing machine safety",
+   "summary": "Work safely around the needle and moving parts.",
+   "video_url": null,
+   "minutes": 5,
+   "steps": [
+    {
+     "id": "safety-practices-1",
+     "title": "Keep fingers clear of the needle",
+     "body": "Guide the fabric from a safe position and keep your fingers away from the needle.",
+     "quiz_questions": [
+      {
+       "id": "safety-practices-1-q",
+       "question": "While the sewing machine is running, a student notices that the fabric is close to the needle and places their fingers directly in front of it to guide the fabric. What should the student do instead?",
+       "options": [
+        "Press the foot control harder to move the fabric faster.",
+        "Guide the fabric from a safe position while keeping the fingers away from the needle.",
+        "Hold the fabric tightly with both hands in front of the needle.",
+        "Continue sewing because the fabric needs to be controlled closely."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "safety-practices-2",
+     "title": "Unplug before changing the needle",
+     "body": "Turn off and unplug the machine before you change a needle.",
+     "quiz_questions": [
+      {
+       "id": "safety-practices-2-q",
+       "question": "A student needs to change the needle because it is damaged. The machine is still plugged in. Which action should be performed before changing the needle?",
+       "options": [
+        "Lower the presser foot and continue working.",
+        "Reduce the sewing speed.",
+        "Turn off and unplug the machine.",
+        "Hold the needle carefully while removing it."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "safety-practices-3",
+     "title": "Keep loose items away",
+     "body": "Keep loose clothing, jewelry, hair and other objects away from moving parts.",
+     "quiz_questions": [
+      {
+       "id": "safety-practices-3-q",
+       "question": "During sewing, a student's loose bracelet becomes close to the moving parts of the machine. What safety rule applies to this situation?",
+       "options": [
+        "Always increase the sewing speed when using small fabric.",
+        "Keep loose clothing, jewelry, hair, and other objects away from moving parts.",
+        "Hold the jewelry with one hand while sewing with the other.",
+        "Continue sewing as long as the machine is functioning properly."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "safety-practices-4",
+     "title": "Switch off after sewing",
+     "body": "When you finish sewing, switch off and unplug the machine.",
+     "quiz_questions": [
+      {
+       "id": "safety-practices-4-q",
+       "question": "A student finishes sewing and immediately leaves the classroom without turning off the machine. Which part of the safety procedure was neglected?",
+       "options": [
+        "Inspecting the needle before use",
+        "Maintaining a comfortable sitting position",
+        "Switching off and unplugging the machine after sewing",
+        "Selecting the appropriate stitch pattern"
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "safety-practices-5",
+     "title": "Overall safe practice",
+     "body": "Keep the area organized, inspect the machine, control your speed, keep fingers away from moving parts, and unplug before making adjustments.",
+     "quiz_questions": [
+      {
+       "id": "safety-practices-5-q",
+       "question": "Which situation demonstrates the best overall safety practice when operating a sewing machine?",
+       "options": [
+        "Working quickly while keeping the machine running between tasks",
+        "Keeping the area organized, inspecting the machine, controlling speed, keeping fingers away from moving parts, and unplugging before adjustments",
+        "Focusing mainly on sewing speed while checking the machine only after finishing",
+        "Leaving the machine running while briefly getting materials from another area"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "slug": "cleaning-care",
+   "title": "Cleaning and routine care",
+   "summary": "Keep the machine clean and ready for the next use.",
+   "video_url": null,
+   "minutes": 5,
+   "steps": [
+    {
+     "id": "cleaning-care-1",
+     "title": "Unplug before cleaning",
+     "body": "Turn off and unplug the machine before you clean it.",
+     "quiz_questions": [
+      {
+       "id": "cleaning-care-1-q",
+       "question": "A student is about to clean the sewing machine and notices that it is still connected to the power supply. What should the student do first?",
+       "options": [
+        "Begin cleaning the bobbin area carefully.",
+        "Turn off and unplug the sewing machine.",
+        "Remove the needle while the machine is connected.",
+        "Wipe the machine while it is running."
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "cleaning-care-2",
+     "title": "Brush away lint",
+     "body": "Use the appropriate cleaning brush to carefully remove lint and loose thread around the needle plate and bobbin area.",
+     "quiz_questions": [
+      {
+       "id": "cleaning-care-2-q",
+       "question": "After several sewing activities, a student notices a large amount of lint and loose thread around the needle plate and bobbin area. What is the most appropriate action?",
+       "options": [
+        "Use the appropriate cleaning brush to carefully remove the lint and loose thread.",
+        "Use the machine at high speed to remove the lint.",
+        "Apply oil immediately to the entire machine.",
+        "Disassemble the internal parts without checking the instructions."
+       ],
+       "answer": 0,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "cleaning-care-3",
+     "title": "Replace a bent needle",
+     "body": "Replace a bent needle with one suitable for the sewing activity.",
+     "quiz_questions": [
+      {
+       "id": "cleaning-care-3-q",
+       "question": "A student notices that the sewing machine's needle is bent after an activity. What should the student do before storing the machine?",
+       "options": [
+        "Continue using the needle until it breaks.",
+        "Straighten the needle and reuse it.",
+        "Replace the needle with one suitable for the sewing activity.",
+        "Apply oil to the needle."
+       ],
+       "answer": 2,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "cleaning-care-4",
+     "title": "Oiling and opening the machine",
+     "body": "Do not oil the machine or disassemble internal parts unless the manufacturer's instructions or your instructor require it.",
+     "quiz_questions": [
+      {
+       "id": "cleaning-care-4-q",
+       "question": "A student wants to maintain the sewing machine and plans to apply oil and open its internal parts without consulting the manual. According to the video, what should the student do?",
+       "options": [
+        "Proceed because regular oiling is always required.",
+        "Disassemble the machine to remove hidden dust.",
+        "Apply oil only after cleaning the external surfaces.",
+        "Avoid oiling or internal disassembly unless required by the manufacturer's instructions or instructor."
+       ],
+       "answer": 3,
+       "explanation": ""
+      }
+     ]
+    },
+    {
+     "id": "cleaning-care-5",
+     "title": "Care after use",
+     "body": "Unplug, clean lint and thread, check the needle and accessible components, return accessories, and cover the machine when appropriate.",
+     "quiz_questions": [
+      {
+       "id": "cleaning-care-5-q",
+       "question": "Which sequence best represents proper routine care after using a sewing machine?",
+       "options": [
+        "Cover the machine → clean lint → unplug → check needle → store accessories",
+        "Unplug → clean lint and thread → check the needle and accessible components → return accessories → cover the machine when appropriate",
+        "Apply oil → disassemble internal parts → clean → plug in → cover the machine",
+        "Remove all internal parts → wipe the machine → plug it in → store accessories"
+       ],
+       "answer": 1,
+       "explanation": ""
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "checklists": [
+  {
+   "slug": "before-sewing",
+   "title": "Before you sew",
+   "items": [
+    "Machine sits on a steady table",
+    "Needle is sharp and inserted correctly",
+    "Bobbin is wound evenly",
+    "Top thread and bobbin thread are in place",
+    "Scrap fabric is ready for a test seam",
+    "Presser foot is down before stitching"
+   ]
+  },
+  {
+   "slug": "tension-check",
+   "title": "Tension check",
+   "items": [
+    "Two contrasting threads loaded",
+    "Test seam sewn",
+    "Both sides of the seam checked",
+    "Dial changed by one number",
+    "Test seam sewn again"
+   ]
+  },
+  {
+   "slug": "after-sewing",
+   "title": "After you sew",
+   "items": [
+    "Machine is switched off and unplugged",
+    "Needle and presser foot are raised",
+    "Fabric removed and threads trimmed",
+    "Lint brushed from the bobbin area",
+    "Machine covered"
+   ]
+  }
+ ],
+ "parts": [
+  {
+   "slug": "spool-pin",
+   "name": "Spool pin",
+   "fn": "Holds the spool of thread on top of the machine.",
+   "x": 200,
+   "y": 34
+  },
+  {
+   "slug": "bobbin-winder",
+   "name": "Bobbin winder",
+   "fn": "Fills the bobbin with thread from the spool.",
+   "x": 245,
+   "y": 34
+  },
+  {
+   "slug": "take-up-lever",
+   "name": "Take-up lever",
+   "fn": "Moves up and down to pull thread from the spool and tighten each stitch. The thread passes through its eye.",
+   "x": 75,
+   "y": 50
+  },
+  {
+   "slug": "tension-dial",
+   "name": "Tension regulator",
+   "fn": "Sets how tightly the upper thread is held. A higher number pulls the upper thread tighter.",
+   "x": 125,
+   "y": 62
+  },
+  {
+   "slug": "stitch-selector",
+   "name": "Stitch selector and stitch-length control",
+   "fn": "Chooses the stitch pattern and the stitch length.",
+   "x": 170,
+   "y": 62
+  },
+  {
+   "slug": "needle",
+   "name": "Needle",
+   "fn": "Carries the top thread through the fabric to meet the bobbin thread.",
+   "x": 62,
+   "y": 118
+  },
+  {
+   "slug": "presser-foot",
+   "name": "Presser foot",
+   "fn": "Holds the fabric flat against the feed dogs while you sew. Lift it to thread the machine.",
+   "x": 63,
+   "y": 142
+  },
+  {
+   "slug": "feed-dogs",
+   "name": "Feed dogs and throat plate",
+   "fn": "The metal teeth under the presser foot move the fabric forward. The throat plate is the flat plate around them.",
+   "x": 100,
+   "y": 160
+  },
+  {
+   "slug": "handwheel",
+   "name": "Handwheel",
+   "fn": "Turn it toward you to raise or lower the needle by hand.",
+   "x": 296,
+   "y": 62
+  },
+  {
+   "slug": "foot-pedal",
+   "name": "Foot pedal",
+   "fn": "Controls sewing speed. Press gently to start slowly.",
+   "x": 270,
+   "y": 211
+  },
+  {
+   "slug": "thread-guide",
+   "name": "Thread guide",
+   "fn": "Guides the thread along its path from the spool to the needle.",
+   "x": 150,
+   "y": 30
+  },
+  {
+   "slug": "needle-bar",
+   "name": "Needle bar",
+   "fn": "Holds the needle and moves it up and down.",
+   "x": 62,
+   "y": 96
+  },
+  {
+   "slug": "presser-foot-lever",
+   "name": "Presser-foot lever",
+   "fn": "Raises and lowers the presser foot.",
+   "x": 36,
+   "y": 96
+  },
+  {
+   "slug": "bobbin-case",
+   "name": "Bobbin and bobbin case",
+   "fn": "The bobbin holds the lower thread and sits in the bobbin case under the needle plate.",
+   "x": 150,
+   "y": 175
+  }
+ ],
+ "faqs": [
+  {
+   "q": "Do I need to log in?",
+   "a": "No. Browse every lesson without an account. Log in only if you want your progress saved across devices."
+  },
+  {
+   "q": "How is my progress saved?",
+   "a": "Automatically on this device. After you log in, it syncs to your account so you can continue on another phone or computer."
+  },
+  {
+   "q": "Why does my top thread keep breaking?",
+   "a": "Rethread with the presser foot up, check that the needle is straight, and lower the top tension by one number."
+  },
+  {
+   "q": "Why is thread bunching under my fabric?",
+   "a": "The top thread is usually not seated in the tension discs. Raise the presser foot and thread the machine again."
+  }
+ ],
+ "achievements": [
+  {
+   "slug": "first-step",
+   "title": "First step",
+   "description": "Pass your first quiz.",
+   "criteria": "steps:1"
+  },
+  {
+   "slug": "parts-spotter",
+   "title": "Parts spotter",
+   "description": "Finish the parts and functions lesson.",
+   "criteria": "lesson:parts-and-functions"
+  },
+  {
+   "slug": "ready-to-sew",
+   "title": "Ready to sew",
+   "description": "Finish the machine preparation lesson.",
+   "criteria": "lesson:preparing-machine"
+  },
+  {
+   "slug": "thread-pro",
+   "title": "Thread pro",
+   "description": "Finish the upper threading lesson.",
+   "criteria": "lesson:threading-upper-thread"
+  },
+  {
+   "slug": "bobbin-winder",
+   "title": "Bobbin winder",
+   "description": "Finish the bobbin winding lesson.",
+   "criteria": "lesson:winding-bobbin"
+  },
+  {
+   "slug": "bobbin-installer",
+   "title": "Bobbin installer",
+   "description": "Finish the bobbin installation lesson.",
+   "criteria": "lesson:installing-bobbin"
+  },
+  {
+   "slug": "stitch-setter",
+   "title": "Stitch setter",
+   "description": "Finish the stitch length lesson.",
+   "criteria": "lesson:stitch-length-operation"
+  },
+  {
+   "slug": "safety-first",
+   "title": "Safety first",
+   "description": "Finish the safety lesson.",
+   "criteria": "lesson:safety-practices"
+  },
+  {
+   "slug": "machine-carer",
+   "title": "Machine carer",
+   "description": "Finish the cleaning and care lesson.",
+   "criteria": "lesson:cleaning-care"
+  },
+  {
+   "slug": "machine-ready",
+   "title": "Machine ready",
+   "description": "Finish every lesson.",
+   "criteria": "all"
+  }
+ ]
+}
