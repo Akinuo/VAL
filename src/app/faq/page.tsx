@@ -1,6 +1,34 @@
-import {getContent} from '@/lib/content'
-export const revalidate=3600
-export default async function Faq(){
- const{faqs}=await getContent()
- return(<><h1 className="mb-4 font-serif text-3xl font-bold text-maroon">Frequently asked questions</h1>
-  <div className="grid gap-2.5">{faqs.map(f=><details key={f.q} className="card border-l-4 border-l-sage p-3.5"><summary className="min-h-[44px] cursor-pointer font-semibold text-ink marker:text-sage">{f.q}</summary><p className="mt-2 text-ink/85">{f.a}</p></details>)}</div></>)}
+import { getContent } from '@/lib/content'
+export const revalidate = 3600
+
+export default async function Faq() {
+  const { faqs } = await getContent()
+  return (
+    <>
+      <div className="mb-6">
+        <p className="eyebrow mb-1">Reference</p>
+        <h1 className="page-title">Frequently asked questions</h1>
+        <p className="mt-1 text-sm text-muted">Select a question to read the answer.</p>
+      </div>
+
+      <div className="divide-y divide-border rounded-lg border border-border bg-paper">
+        {faqs.map((f, idx) => (
+          <details key={f.q} className="group">
+            <summary className="flex min-h-[52px] cursor-pointer list-none select-none items-center gap-3 px-5 py-3 transition-colors hover:bg-maroon-light">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-maroon-light font-serif text-xs font-bold text-maroon group-open:bg-maroon group-open:text-white transition-colors">
+                {idx + 1}
+              </span>
+              <span className="flex-1 text-sm font-semibold text-ink">{f.q}</span>
+              <span className="shrink-0 text-muted transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
+                ▾
+              </span>
+            </summary>
+            <p className="border-t border-border px-5 pb-5 pt-3 text-sm leading-relaxed text-ink">
+              {f.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </>
+  )
+}

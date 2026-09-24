@@ -1,15 +1,139 @@
-@tailwind base;@tailwind components;@tailwind utilities;
-:focus-visible{outline:3px solid #6E1A2C;outline-offset:3px}
-.weave{height:12px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 12 6 0l6 12 6-12 6 12' fill='none' stroke='%23D4A017' stroke-width='3'/%3E%3C/svg%3E") repeat-x #6E1A2C}
-@layer components{
-.btn{@apply inline-flex min-h-[44px] items-center justify-center rounded-swatch bg-maroon px-5 py-2 font-semibold text-cream shadow-card transition-colors hover:bg-maroon-deep disabled:opacity-50 disabled:shadow-none}
-.btn-quiet{@apply inline-flex min-h-[44px] items-center justify-center rounded-swatch border-2 border-maroon/30 bg-paper px-5 py-2 font-semibold text-maroon transition-colors hover:border-maroon}
-.opt{@apply block min-h-[44px] w-full rounded-swatch border-2 border-maroon/30 bg-paper px-3 py-2 text-left transition-colors hover:border-maroon aria-pressed:border-maroon aria-pressed:bg-mustard-soft}
-.field{@apply mt-1 block min-h-[44px] w-full rounded-swatch border-2 border-maroon/30 bg-paper px-3 py-2}
-.card{@apply rounded-swatch border border-maroon/15 bg-paper shadow-card}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply antialiased bg-cream text-ink;
+  }
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
 }
-@keyframes stitchdraw{from{stroke-dashoffset:360}to{stroke-dashoffset:0}}
-@keyframes needlein{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
-.hero-line{stroke-dasharray:7 6;stroke-dashoffset:0;animation:stitchdraw 1.6s cubic-bezier(.3,.7,.2,1)}
-.hero-needle{opacity:1;transform-origin:310px 60px;animation:needlein .5s ease-out 1.05s backwards}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Focus ring — visible, not distracting */
+:focus-visible {
+  outline: 2px solid #6E1A2C;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Decorative stitch divider used in nav and footer */
+.stitch-rule {
+  height: 3px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #D4A017 0px,
+    #D4A017 8px,
+    transparent 8px,
+    transparent 14px
+  );
+  opacity: 0.55;
+}
+
+@layer components {
+
+  /* ── Primary button ── */
+  .btn {
+    @apply inline-flex min-h-[40px] items-center justify-center gap-2
+           rounded bg-maroon px-5 py-2 text-sm font-semibold text-white
+           transition-colors duration-150
+           hover:bg-maroon-deep
+           disabled:cursor-not-allowed disabled:opacity-50
+           active:scale-[0.98];
+  }
+
+  /* ── Secondary / outline button ── */
+  .btn-outline {
+    @apply inline-flex min-h-[40px] items-center justify-center gap-2
+           rounded border border-maroon/30 bg-paper px-5 py-2 text-sm font-semibold text-maroon
+           transition-colors duration-150
+           hover:border-maroon hover:bg-maroon-light
+           disabled:cursor-not-allowed disabled:opacity-50
+           active:scale-[0.98];
+  }
+
+  /* ── Ghost / text button ── */
+  .btn-ghost {
+    @apply inline-flex min-h-[40px] items-center justify-center gap-1.5
+           rounded px-3 py-1.5 text-sm font-medium text-muted
+           transition-colors duration-150
+           hover:bg-maroon-light hover:text-maroon
+           active:scale-[0.98];
+  }
+
+  /* ── Form field ── */
+  .field {
+    @apply mt-1 block w-full rounded border border-border bg-paper
+           px-3 py-2 text-sm text-ink
+           transition-colors duration-150
+           focus:border-maroon focus:outline-none
+           placeholder:text-muted/60;
+    min-height: 40px;
+  }
+
+  /* ── Quiz / option button ── */
+  .opt {
+    @apply block w-full rounded border border-border bg-paper
+           px-4 py-2.5 text-left text-sm text-ink
+           transition-colors duration-150
+           hover:border-maroon/40 hover:bg-maroon-light
+           aria-pressed:border-maroon aria-pressed:bg-maroon-light aria-pressed:font-medium
+           disabled:cursor-default;
+    min-height: 44px;
+  }
+
+  /* ── Card ── */
+  .card {
+    @apply rounded-lg border border-border bg-paper shadow-sm;
+  }
+
+  /* ── Status chips ── */
+  .chip {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  .chip-green  { @apply chip bg-green-soft text-green border border-green-border; }
+  .chip-amber  { @apply chip bg-amber-soft text-amber border border-amber-border; }
+  .chip-maroon { @apply chip bg-maroon-light text-maroon border border-maroon/20; }
+
+  /* ── Alert banners ── */
+  .alert-ok   { @apply rounded border border-green-border bg-green-soft px-4 py-3 text-sm text-green; }
+  .alert-err  { @apply rounded border border-red-border bg-red-soft px-4 py-3 text-sm text-red; }
+  .alert-info { @apply rounded border border-amber-border bg-amber-soft px-4 py-3 text-sm text-ink; }
+
+  /* ── Section label (eyebrow text) ── */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-widest text-muted;
+  }
+
+  /* ── Page title ── */
+  .page-title {
+    @apply font-serif text-2xl font-bold text-maroon sm:text-3xl;
+  }
+}
+
+/* ── Stitch animation on landing hero only ── */
+@keyframes stitchdraw {
+  from { stroke-dashoffset: 300; }
+  to   { stroke-dashoffset: 0; }
+}
+.hero-stitch {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 0;
+  animation: stitchdraw 1.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ── Fade in — used sparingly ── */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadein 0.3s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition-duration: 0.01ms !important; }
+}
