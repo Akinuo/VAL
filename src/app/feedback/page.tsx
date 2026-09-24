@@ -10,7 +10,7 @@ export default function Feedback(){
   const{error}=await supabase.from('feedback').insert({name:String(f.get('name')||'')||null,rating:Number(f.get('rating')),message:String(f.get('message')),user_id:data.session?.user.id??null})
   setSt(error?'err':'ok');if(!error)form.reset()}
  return(<><h1 className="font-serif text-3xl font-bold text-maroon">Feedback</h1>
-  <form onSubmit={submit} className="mt-4 grid max-w-md gap-4">
+  <form onSubmit={submit} className="card mt-4 grid max-w-md gap-4 p-5">
    <label>Name (optional)<input name="name" maxLength={80} className="field"/></label>
    <label>Rating<select name="rating" defaultValue="5" className="field">{[5,4,3,2,1].map(n=><option key={n}>{n}</option>)}</select></label>
    <label>Your message<textarea name="message" required minLength={5} maxLength={1000} rows={5} className="field"/></label>

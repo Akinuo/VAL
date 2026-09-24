@@ -16,6 +16,6 @@ export default function QrHub({c}:{c:Content}){
  return(<div className="grid max-w-md gap-4">
   <label>Page type<select className="field" value={g} onChange={e=>{setG(e.target.value);setI(0)}}>{Object.keys(groups).map(k=><option key={k}>{k}</option>)}</select></label>
   <label>Page<select className="field" value={i} onChange={e=>setI(Number(e.target.value))}>{groups[g].map(([t],n)=><option key={t} value={n}>{t}</option>)}</select></label>
-  {img&&<figure><img src={img} width={320} height={320} alt={`QR code that opens ${item[0]}`} className="border-2 border-maroon/30"/><figcaption className="mt-1 break-all text-sm">{url}</figcaption></figure>}
+  {img&&<figure className="card p-4"><img src={img} width={320} height={320} alt={`QR code that opens ${item[0]}`} className="rounded"/><figcaption className="mt-2 break-all text-sm text-ink/70">{url}</figcaption></figure>}
   {img&&<a className="btn" href={img} download={`val-guide-${path.replace(/[^a-z0-9]+/gi,'-')}.png`}>Download PNG</a>}
  </div>)}
