@@ -29,7 +29,7 @@ export default function Checklists({ lists }: { lists: Content['checklists'] }) 
             {/* Header */}
             <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-3.5">
               <div>
-                <h2 className="font-serif text-base font-semibold text-maroon">{l.title}</h2>
+                <h2 className="font-display text-base font-semibold text-denim">{l.title}</h2>
                 <p className="text-xs text-muted">
                   {checked === 0
                     ? `${l.items.length} items`
@@ -63,7 +63,7 @@ export default function Checklists({ lists }: { lists: Content['checklists'] }) 
                     <label className="flex min-h-[48px] cursor-pointer items-center gap-3 py-1">
                       <input
                         type="checkbox"
-                        className="h-4 w-4 shrink-0 rounded border-border accent-[#6E1A2C]"
+                        className="h-4 w-4 shrink-0 rounded border-border accent-[#22336B]"
                         checked={isOn}
                         onChange={() => put(isOn ? on.filter(x => x !== k) : [...on, k])}
                       />
@@ -79,7 +79,7 @@ export default function Checklists({ lists }: { lists: Content['checklists'] }) 
             {/* Footer */}
             <div className="border-t border-border px-5 py-2.5">
               <button
-                className="text-xs text-muted underline underline-offset-2 transition-colors hover:text-maroon"
+                className="text-xs text-muted underline underline-offset-2 transition-colors hover:text-denim"
                 onClick={() => put(on.filter(x => !x.startsWith(l.slug + ':')))}
               >
                 Clear this checklist

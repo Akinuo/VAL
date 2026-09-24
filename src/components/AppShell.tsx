@@ -10,7 +10,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   if (path === '/') return <>{children}</>
 
   return (
-    <div className="flex min-h-screen flex-col bg-cream">
+    <div className="flex min-h-screen flex-col bg-chalk">
       <Nav />
       <main id="main" className="mx-auto w-full max-w-app flex-1 px-4 py-8 sm:px-6">
         {children}

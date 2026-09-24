@@ -41,14 +41,14 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
 
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-muted">
-        <Link href="/home" className="transition-colors hover:text-maroon">Home</Link>
+        <Link href="/home" className="transition-colors hover:text-denim">Home</Link>
         <span aria-hidden="true">›</span>
         <span className="truncate text-ink">{lesson.title}</span>
       </nav>
 
       {/* Lesson header */}
       <div>
-        <h1 className="font-serif text-2xl font-bold text-maroon sm:text-3xl">{lesson.title}</h1>
+        <h1 className="font-display text-2xl font-bold text-denim sm:text-3xl">{lesson.title}</h1>
         <p className="mt-1 text-sm text-muted">{lesson.summary}</p>
         <div className="mt-3 flex items-center gap-3">
           <div
@@ -112,12 +112,12 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 onClick={() => goToStep(n)}
                 aria-current={n === stepIndex ? 'step' : undefined}
                 aria-label={`Step ${n + 1}${done.has(s.id) ? ', completed' : ''}`}
-                className={`grid h-10 w-10 place-items-center rounded-full border font-serif text-sm font-semibold transition-all duration-150 ${
+                className={`grid h-10 w-10 place-items-center rounded-full border font-display text-sm font-semibold transition-all duration-150 ${
                   n === stepIndex
-                    ? 'border-maroon bg-maroon text-white scale-110'
+                    ? 'border-denim bg-denim text-white scale-110'
                     : done.has(s.id)
                     ? 'border-green bg-green-soft text-green'
-                    : 'border-border bg-paper text-muted hover:border-maroon/40 hover:text-maroon'
+                    : 'border-border bg-paper text-muted hover:border-denim/40 hover:text-denim'
                 }`}
               >
                 {done.has(s.id) && n !== stepIndex ? <IconCheck className="h-3.5 w-3.5" /> : n + 1}
@@ -131,7 +131,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
       <section aria-labelledby="step-title" className="rounded-lg border border-border bg-paper">
         <div className="border-b border-border px-5 py-4">
           <p className="eyebrow mb-1">Step {stepIndex + 1} of {lesson.steps.length}</p>
-          <h2 id="step-title" className="font-serif text-xl font-semibold text-maroon">{step.title}</h2>
+          <h2 id="step-title" className="font-display text-xl font-semibold text-denim">{step.title}</h2>
         </div>
 
         <div className="px-5 py-4">

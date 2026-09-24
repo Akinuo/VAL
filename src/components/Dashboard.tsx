@@ -41,7 +41,7 @@ export default function Dashboard({ c }: { c: Content }) {
       <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="eyebrow mb-1">Dashboard</p>
-          <h1 className="font-serif text-2xl font-bold text-maroon sm:text-3xl">
+          <h1 className="font-display text-2xl font-bold text-denim sm:text-3xl">
             {firstName ? `Welcome back, ${firstName}` : 'Your learning dashboard'}
           </h1>
           <p className="mt-1 text-sm text-muted">
@@ -65,24 +65,24 @@ export default function Dashboard({ c }: { c: Content }) {
           href={`/lessons/${promptLesson.slug}`}
           className="group flex items-center gap-4 rounded-lg border border-amber-border bg-amber-soft px-5 py-4 transition-colors hover:border-amber"
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-maroon text-white">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-denim text-white">
             <IconPlay className="h-4 w-4" />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-amber">
               {continueLesson ? 'Continue where you left off' : 'Start here'}
             </p>
-            <p className="mt-0.5 font-serif text-base font-semibold text-ink group-hover:text-maroon">
+            <p className="mt-0.5 font-display text-base font-semibold text-ink group-hover:text-denim">
               {promptLesson.title}
             </p>
           </div>
-          <span className="shrink-0 text-xl text-muted group-hover:text-maroon" aria-hidden>›</span>
+          <span className="shrink-0 text-xl text-muted group-hover:text-denim" aria-hidden>›</span>
         </Link>
       )}
 
       {/* ── Progress ── */}
       <section aria-labelledby="prog-heading">
-        <h2 id="prog-heading" className="font-serif text-lg font-semibold text-maroon">Overall progress</h2>
+        <h2 id="prog-heading" className="font-display text-lg font-semibold text-denim">Overall progress</h2>
         <div className="mt-3 card p-4">
           <div className="flex items-center gap-4">
             <div
@@ -98,7 +98,7 @@ export default function Dashboard({ c }: { c: Content }) {
                 style={{ width: pct + '%' }}
               />
             </div>
-            <span className="shrink-0 font-serif text-2xl font-bold tabular-nums text-maroon">{pct}%</span>
+            <span className="shrink-0 font-display text-2xl font-bold tabular-nums text-denim">{pct}%</span>
           </div>
           <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted">
             <span>{completedSteps} of {allStepIds.length} steps</span>
@@ -112,16 +112,16 @@ export default function Dashboard({ c }: { c: Content }) {
 
       {/* ── Quick access ── */}
       <section aria-labelledby="quick-heading">
-        <h2 id="quick-heading" className="font-serif text-lg font-semibold text-maroon">Quick access</h2>
+        <h2 id="quick-heading" className="font-display text-lg font-semibold text-denim">Quick access</h2>
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
           {QUICK.map(({ href, Icon, label }) => (
             <Link
               key={href}
               href={href}
-              className="group flex flex-col items-center gap-2 rounded-lg border border-border bg-paper px-3 py-4 text-center transition-colors hover:border-maroon/30 hover:bg-maroon-light"
+              className="group flex flex-col items-center gap-2 rounded-lg border border-border bg-paper px-3 py-4 text-center transition-colors hover:border-denim/30 hover:bg-denim-light"
             >
-              <Icon className="h-5 w-5 text-maroon" />
-              <span className="text-xs font-medium text-muted group-hover:text-maroon">{label}</span>
+              <Icon className="h-5 w-5 text-denim" />
+              <span className="text-xs font-medium text-muted group-hover:text-denim">{label}</span>
             </Link>
           ))}
         </div>
@@ -129,7 +129,7 @@ export default function Dashboard({ c }: { c: Content }) {
 
       {/* ── Lessons ── */}
       <section id="lessons" aria-labelledby="lessons-heading" className="scroll-mt-4">
-        <h2 id="lessons-heading" className="font-serif text-lg font-semibold text-maroon">Lessons</h2>
+        <h2 id="lessons-heading" className="font-display text-lg font-semibold text-denim">Lessons</h2>
         <ol className="mt-3 divide-y divide-border rounded-lg border border-border bg-paper">
           {c.lessons.map((l, i) => {
             const doneCount = l.steps.filter(s => done.has(s.id)).length
@@ -139,21 +139,21 @@ export default function Dashboard({ c }: { c: Content }) {
               <li key={l.slug}>
                 <Link
                   href={`/lessons/${l.slug}`}
-                  className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-maroon-light"
+                  className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-denim-light"
                 >
                   <span
                     aria-hidden="true"
-                    className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border font-serif text-sm font-semibold transition-colors ${
+                    className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold transition-colors ${
                       full
                         ? 'border-green bg-green text-white'
-                        : 'border-maroon/30 text-maroon group-hover:border-maroon'
+                        : 'border-denim/30 text-denim group-hover:border-denim'
                     }`}
                   >
                     {full ? '✓' : i + 1}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-medium text-ink group-hover:text-maroon">{l.title}</span>
+                      <span className="font-medium text-ink group-hover:text-denim">{l.title}</span>
                       {full && <span className="chip-green">Complete</span>}
                     </div>
                     <p className="mt-0.5 text-xs text-muted">{l.summary}</p>
@@ -166,7 +166,7 @@ export default function Dashboard({ c }: { c: Content }) {
                       </div>
                     )}
                   </div>
-                  <span className="shrink-0 text-lg text-muted group-hover:text-maroon" aria-hidden>›</span>
+                  <span className="shrink-0 text-lg text-muted group-hover:text-denim" aria-hidden>›</span>
                 </Link>
               </li>
             )
@@ -176,7 +176,7 @@ export default function Dashboard({ c }: { c: Content }) {
 
       {/* ── Badges ── */}
       <section aria-labelledby="badges-heading">
-        <h2 id="badges-heading" className="font-serif text-lg font-semibold text-maroon">Badges</h2>
+        <h2 id="badges-heading" className="font-display text-lg font-semibold text-denim">Badges</h2>
         {earnedBadges.size === 0 && (
           <p className="mt-1 text-sm text-muted">Complete lessons to earn badges.</p>
         )}

@@ -1,6 +1,6 @@
 import {cache} from 'react'
 import fallback from '@/data/content.json'
-import {supabase} from './supabase'
+import {supabasePublic as supabase} from './supabase'
 export type Quiz={id:string;question:string;options:string[];answer:number;explanation:string}
 export type Step={id:string;position?:number;title:string;body:string;quiz_questions:Quiz[]}
 export type Lesson={slug:string;title:string;summary:string;video_url:string|null;minutes:number;steps:Step[]}

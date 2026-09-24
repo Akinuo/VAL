@@ -104,12 +104,12 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-chalk">
 
       {/* Header */}
       <header className="border-b border-border bg-paper">
         <div className="mx-auto flex max-w-app items-center justify-between px-5 py-3">
-          <Link href="/" className="flex items-center gap-2 font-serif text-base font-bold text-maroon">
+          <Link href="/" className="flex items-center gap-2 font-display text-base font-bold text-denim">
             <IconSpool className="h-5 w-5" />
             VAL Guide
           </Link>
@@ -119,10 +119,10 @@ export default function LoginForm() {
       <div className="mx-auto grid max-w-app gap-0 lg:grid-cols-[1fr_1.1fr]" style={{ minHeight: 'calc(100vh - 49px)' }}>
 
         {/* Left — brand panel */}
-        <div className="hidden flex-col justify-between border-r border-border bg-maroon px-8 py-12 text-white lg:flex">
+        <div className="hidden flex-col justify-between border-r border-border bg-denim px-8 py-12 text-white lg:flex">
           <div>
             <p className="eyebrow mb-3 text-white/50">BTLED Home Economics</p>
-            <h1 className="font-serif text-2xl font-bold leading-snug">
+            <h1 className="font-display text-2xl font-bold leading-snug">
               {isSignup ? 'Start learning today.' : 'Welcome back.'}
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-white/65">
@@ -147,7 +147,7 @@ export default function LoginForm() {
         <div className="flex flex-col justify-center bg-paper px-6 py-12 sm:px-10">
           <div className="mx-auto w-full max-w-sm">
 
-            <h2 className="font-serif text-2xl font-bold text-maroon">
+            <h2 className="font-display text-2xl font-bold text-denim">
               {isSignup ? 'Create an account' : 'Log in'}
             </h2>
             <p className="mt-1 text-sm text-muted">
@@ -168,7 +168,7 @@ export default function LoginForm() {
               type="button"
               onClick={signInWithGoogle}
               disabled={googleLoading || !supabase}
-              className="mt-6 flex w-full items-center justify-center gap-3 rounded border border-border bg-paper py-2.5 text-sm font-medium text-ink shadow-sm transition-colors hover:bg-cream disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-6 flex w-full items-center justify-center gap-3 rounded border border-border bg-paper py-2.5 text-sm font-medium text-ink shadow-sm transition-colors hover:bg-chalk disabled:cursor-not-allowed disabled:opacity-50"
             >
               {googleLoading ? (
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-border border-t-ink" />
@@ -215,7 +215,7 @@ export default function LoginForm() {
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted underline underline-offset-2 hover:text-maroon"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted underline underline-offset-2 hover:text-denim"
                     onClick={() => setShowPw(v => !v)}
                     aria-label={showPw ? 'Hide password' : 'Show password'}
                   >
@@ -243,7 +243,7 @@ export default function LoginForm() {
             <div className="mt-6 border-t border-border pt-5 text-center">
               <button
                 type="button"
-                className="text-sm text-maroon underline underline-offset-2 hover:text-maroon-deep"
+                className="text-sm text-denim underline underline-offset-2 hover:text-denim-deep"
                 onClick={() => { setIsSignup(!isSignup); setMsg('') }}
               >
                 {isSignup ? 'Already have an account? Log in' : "Don't have an account? Sign up"}
@@ -252,7 +252,7 @@ export default function LoginForm() {
 
             <p className="mt-4 text-center text-xs text-muted">
               You can also{' '}
-              <Link href="/home" className="underline hover:text-maroon">
+              <Link href="/home" className="underline hover:text-denim">
                 browse without logging in
               </Link>
               . Progress stays on this device only.

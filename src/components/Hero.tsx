@@ -15,7 +15,7 @@ export default function Hero({ c }: { c: Content }) {
   <section className="grid gap-8">
    <div className="grid items-center gap-6 sm:grid-cols-[1.1fr_.9fr]">
     <div>
-     <h1 className="font-serif text-3xl font-bold leading-tight text-maroon sm:text-4xl">
+     <h1 className="font-display text-3xl font-bold leading-tight text-denim sm:text-4xl">
       Learn to run a sewing machine, one short step at a time
      </h1>
      <p className="mt-3 max-w-prose text-ink/80">
@@ -37,7 +37,7 @@ export default function Hero({ c }: { c: Content }) {
      viewBox="0 0 320 120"
      role="img"
      aria-label="An illustration of a needle stitching a running line, representing short, sequential lessons"
-     className="mx-auto w-full max-w-xs text-maroon sm:max-w-none"
+     className="mx-auto w-full max-w-xs text-denim sm:max-w-none"
     >
      <path
       className="hero-line"
@@ -59,7 +59,7 @@ export default function Hero({ c }: { c: Content }) {
      <div key={label} className="card flex flex-col items-start gap-1.5 px-4 py-3">
       <Icon className="h-5 w-5 text-terracotta" />
       <dt className="sr-only">{label}</dt>
-      <dd className="font-serif text-2xl font-semibold text-maroon">{n}</dd>
+      <dd className="font-display text-2xl font-semibold text-denim">{n}</dd>
       <span className="text-sm leading-snug text-ink/75">{label}</span>
      </div>
     ))}

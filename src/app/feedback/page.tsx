@@ -33,7 +33,7 @@ export default function Feedback() {
           <IconCheck className="h-6 w-6 text-green" />
         </div>
         <div>
-          <h2 className="font-serif text-xl font-bold text-maroon">Feedback sent</h2>
+          <h2 className="font-display text-xl font-bold text-denim">Feedback sent</h2>
           <p className="mt-1 text-sm text-muted">Thank you — your response has been recorded.</p>
         </div>
         <button className="btn-outline mt-2" onClick={() => setSt('idle')}>Send more feedback</button>
@@ -69,7 +69,7 @@ export default function Feedback() {
                 onClick={() => setRating(v)}
                 onMouseEnter={() => setHover(v)}
                 onMouseLeave={() => setHover(0)}
-                className="text-2xl leading-none transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-maroon focus-visible:ring-offset-1 rounded"
+                className="text-2xl leading-none transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-denim focus-visible:ring-offset-1 rounded"
               >
                 <span className={(hover || rating) >= v ? 'text-amber' : 'text-border'}>★</span>
               </button>

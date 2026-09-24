@@ -1,70 +1,33 @@
 import type { Config } from 'tailwindcss'
 
+// Denim + topstitch: indigo fabric, contrast-thread gold.
 export default {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        // Neutrals
-        cream:  '#FAF8F4',
+        chalk:  '#EEF1F7',
         paper:  '#FFFFFF',
-        ink:    '#1C1410',
-        muted:  '#6B6560',
-        border: '#E2DDD8',
-        // Brand
-        maroon: {
-          DEFAULT: '#6E1A2C',
-          deep:    '#4A0F1C',
-          light:   '#F5EEF0',
-        },
-        // Accent — used for progress, selected states
-        amber: {
-          DEFAULT: '#C8860A',
-          soft:    '#FDF3DC',
-          border:  '#E8C96A',
-        },
-        // Semantic
-        green: {
-          DEFAULT: '#2D6A4F',
-          soft:    '#EAF4EE',
-          border:  '#A3C4B0',
-        },
-        red: {
-          DEFAULT: '#B91C1C',
-          soft:    '#FEF2F2',
-          border:  '#FECACA',
-        },
+        ink:    '#1E2440',
+        muted:  '#5A6284',
+        border: '#D3D9E8',
+        denim: { DEFAULT: '#22336B', deep: '#141F47', light: '#E4E9F7' },
+        thread: '#E59B1C',
+        amber: { DEFAULT: '#8F5600', soft: '#FCF1DA', border: '#F0C56E' },
+        green: { DEFAULT: '#1E6B47', soft: '#E6F4EC', border: '#9CC7AE' },
+        red:   { DEFAULT: '#B4232F', soft: '#FDECEE', border: '#F3B4BA' },
       },
       fontFamily: {
-        serif: ['Fraunces', 'Georgia', 'Cambria', '"Times New Roman"', 'serif'],
-        sans:  ['system-ui', '"Segoe UI"', 'Roboto', 'sans-serif'],
-      },
-      fontSize: {
-        // Tighter scale — avoids oversized headings
-        'xs':   ['0.75rem',  { lineHeight: '1.4' }],
-        'sm':   ['0.875rem', { lineHeight: '1.5' }],
-        'base': ['1rem',     { lineHeight: '1.6' }],
-        'lg':   ['1.125rem', { lineHeight: '1.55' }],
-        'xl':   ['1.25rem',  { lineHeight: '1.45' }],
-        '2xl':  ['1.5rem',   { lineHeight: '1.35' }],
-        '3xl':  ['1.875rem', { lineHeight: '1.25' }],
-        '4xl':  ['2.25rem',  { lineHeight: '1.2' }],
+        display: ['"Bricolage Grotesque Variable"', 'system-ui', 'sans-serif'],
+        sans: ['"Atkinson Hyperlegible"', 'system-ui', '"Segoe UI"', 'Roboto', 'sans-serif'],
       },
       boxShadow: {
-        sm:   '0 1px 2px rgba(28,20,16,0.06)',
-        md:   '0 1px 3px rgba(28,20,16,0.08), 0 4px 12px -4px rgba(28,20,16,0.12)',
-        nav:  '0 1px 0 rgba(28,20,16,0.10)',
+        sm:  '0 1px 2px rgba(30,36,64,0.06)',
+        md:  '0 6px 18px -8px rgba(30,36,64,0.25)',
+        nav: '0 1px 0 rgba(30,36,64,0.10)',
       },
-      borderRadius: {
-        DEFAULT: '6px',
-        sm:      '4px',
-        lg:      '10px',
-        full:    '9999px',
-      },
-      maxWidth: {
-        prose: '66ch',
-        app:   '800px',
-      },
+      borderRadius: { DEFAULT: '8px', sm: '4px', lg: '14px', full: '9999px' },
+      maxWidth: { prose: '62ch', app: '800px' },
     },
   },
 } satisfies Config

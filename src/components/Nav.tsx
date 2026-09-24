@@ -41,14 +41,14 @@ export default function Nav() {
   const initial = email ? email[0].toUpperCase() : null
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-maroon text-white shadow-nav" ref={drawerRef}>
+    <header className="sticky top-0 z-40 border-b border-border bg-denim text-white shadow-nav" ref={drawerRef}>
       <div className="mx-auto max-w-app px-4">
 
         {/* Top row */}
         <div className="flex h-12 items-center justify-between gap-2">
           <Link
             href="/home"
-            className="flex items-center gap-2 font-serif text-base font-bold text-white transition-colors hover:text-amber"
+            className="flex items-center gap-2 font-display text-base font-bold text-white transition-colors hover:text-amber"
             onClick={() => setOpen(false)}
           >
             <IconSpool className="h-5 w-5 text-amber" />
@@ -124,7 +124,7 @@ export default function Nav() {
       {open && (
         <nav
           aria-label="Mobile navigation"
-          className="border-t border-white/10 bg-maroon-deep sm:hidden"
+          className="border-t border-white/10 bg-denim-deep sm:hidden"
         >
           {LINKS.map(([href, label, Icon]) => {
             const active = href === '/home' ? path === '/home' : path.startsWith(href)

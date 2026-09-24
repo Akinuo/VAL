@@ -1,6 +1,7 @@
 import './globals.css'
-import '@fontsource/fraunces/600.css'
-import '@fontsource/fraunces/700.css'
+import '@fontsource-variable/bricolage-grotesque'
+import '@fontsource/atkinson-hyperlegible/400.css'
+import '@fontsource/atkinson-hyperlegible/700.css'
 import type { Metadata, Viewport } from 'next'
 import { Providers } from '@/lib/progress'
 import AppShell from '@/components/AppShell'
@@ -13,16 +14,16 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#6E1A2C',
+  themeColor: '#22336B',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-cream font-sans text-ink">
+      <body className="bg-chalk font-sans text-ink">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:rounded focus:bg-maroon focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:rounded focus:bg-denim focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
         >
           Skip to content
         </a>

@@ -14,8 +14,8 @@ export default async function Faq() {
       <div className="divide-y divide-border rounded-lg border border-border bg-paper">
         {faqs.map((f, idx) => (
           <details key={f.q} className="group">
-            <summary className="flex min-h-[52px] cursor-pointer list-none select-none items-center gap-3 px-5 py-3 transition-colors hover:bg-maroon-light">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-maroon-light font-serif text-xs font-bold text-maroon group-open:bg-maroon group-open:text-white transition-colors">
+            <summary className="flex min-h-[52px] cursor-pointer list-none select-none items-center gap-3 px-5 py-3 transition-colors hover:bg-denim-light">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-denim-light font-display text-xs font-bold text-denim group-open:bg-denim group-open:text-white transition-colors">
                 {idx + 1}
               </span>
               <span className="flex-1 text-sm font-semibold text-ink">{f.q}</span>

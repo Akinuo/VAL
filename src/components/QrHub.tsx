@@ -26,7 +26,7 @@ export default function QrHub({ c }: { c: Content }) {
     QRCode.toDataURL(u, {
       width: 320,
       margin: 2,
-      color: { dark: '#6E1A2C', light: '#FFFFFF' },
+      color: { dark: '#22336B', light: '#FFFFFF' },
     }).then(setImg)
   }, [path])
 

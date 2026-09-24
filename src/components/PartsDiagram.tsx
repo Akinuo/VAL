@@ -29,14 +29,14 @@ export default function PartsDiagram({ parts }: { parts: Content['parts'] }) {
             <linearGradient id="dBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%"   stopColor="#9B2D42" />
               <stop offset="60%"  stopColor="#7A1E30" />
-              <stop offset="100%" stopColor="#4A0F1C" />
+              <stop offset="100%" stopColor="#141F47" />
             </linearGradient>
             <linearGradient id="dArmGrad" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%"   stopColor="#8B2236" />
-              <stop offset="100%" stopColor="#6E1A2C" />
+              <stop offset="100%" stopColor="#22336B" />
             </linearGradient>
             <radialGradient id="dWheelGrad" cx="38%" cy="32%">
-              <stop offset="0%"   stopColor="#6E1A2C" />
+              <stop offset="0%"   stopColor="#22336B" />
               <stop offset="100%" stopColor="#2A0810" />
             </radialGradient>
             <linearGradient id="dBedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -74,7 +74,7 @@ export default function PartsDiagram({ parts }: { parts: Content['parts'] }) {
           <rect x="34" y="44" width="210" height="56" rx="14" fill="url(#dArmGrad)" filter="url(#dShadow)" />
           <rect x="34" y="44" width="210" height="20" rx="14" fill="url(#dShine)" />
           {/* Arm-to-body join */}
-          <path d="M34 92 Q22 92 22 108" fill="none" stroke="#4A0F1C" strokeWidth="2.5" />
+          <path d="M34 92 Q22 92 22 108" fill="none" stroke="#141F47" strokeWidth="2.5" />
 
           {/* ── Spool pin ── */}
           {/* pin: x=200, y=34 in content.json */}
@@ -153,8 +153,8 @@ export default function PartsDiagram({ parts }: { parts: Content['parts'] }) {
               />
             )
           })}
-          <circle cx="296" cy="130" r="9"  fill="#4A0F1C" />
-          <circle cx="296" cy="130" r="4.5" fill="#6E1A2C" />
+          <circle cx="296" cy="130" r="9"  fill="#141F47" />
+          <circle cx="296" cy="130" r="4.5" fill="#22336B" />
           <ellipse cx="289" cy="121" rx="6" ry="4" fill="white" opacity="0.06" transform="rotate(-30 289 121)" />
 
           {/* ── Presser-foot lever ── */}
@@ -200,15 +200,15 @@ export default function PartsDiagram({ parts }: { parts: Content['parts'] }) {
               <g key={p.slug}>
                 {/* Pulse ring when active */}
                 {active && (
-                  <circle cx={p.x} cy={p.y} r={15} fill="#6E1A2C" opacity={0.1} />
+                  <circle cx={p.x} cy={p.y} r={15} fill="#22336B" opacity={0.1} />
                 )}
                 {/* Outer ring */}
                 <circle
                   cx={p.x}
                   cy={p.y}
                   r={active ? 8 : 5.5}
-                  fill={active ? '#6E1A2C' : '#FAF8F4'}
-                  stroke={active ? '#4A0F1C' : '#C8860A'}
+                  fill={active ? '#22336B' : '#FAF8F4'}
+                  stroke={active ? '#141F47' : '#C8860A'}
                   strokeWidth={active ? 2 : 1.5}
                   className="cursor-pointer transition-all duration-150"
                   tabIndex={0}
@@ -238,9 +238,9 @@ export default function PartsDiagram({ parts }: { parts: Content['parts'] }) {
       {/* ── Info panel ── */}
       <div className="flex flex-col gap-4">
         {cur && (
-          <div aria-live="polite" className="rounded-lg border border-border border-l-4 border-l-maroon bg-paper p-4">
+          <div aria-live="polite" className="rounded-lg border border-border border-l-4 border-l-denim bg-paper p-4">
             <p className="eyebrow mb-1">Selected part</p>
-            <h2 className="font-serif text-lg font-bold text-maroon">{cur.name}</h2>
+            <h2 className="font-display text-lg font-bold text-denim">{cur.name}</h2>
             <p className="mt-2 text-sm leading-relaxed text-ink">{cur.fn}</p>
           </div>
         )}
@@ -253,8 +253,8 @@ export default function PartsDiagram({ parts }: { parts: Content['parts'] }) {
                 <button
                   className={`rounded border px-3 py-1.5 text-xs font-medium transition-colors ${
                     p.slug === sel
-                      ? 'border-maroon bg-maroon text-white'
-                      : 'border-border bg-paper text-ink hover:border-maroon/40 hover:bg-maroon-light hover:text-maroon'
+                      ? 'border-denim bg-denim text-white'
+                      : 'border-border bg-paper text-ink hover:border-denim/40 hover:bg-denim-light hover:text-denim'
                   }`}
                   aria-pressed={p.slug === sel}
                   onClick={() => setSel(p.slug)}
