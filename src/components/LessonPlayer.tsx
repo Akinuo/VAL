@@ -69,7 +69,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
       </div>
 
       {/* Video */}
-      <div className="overflow-hidden rounded-lg border border-border bg-ink" style={{ aspectRatio: '16/9' }}>
+      <div className={`overflow-hidden rounded-lg border border-border ${lesson.video_url ? 'bg-ink' : 'bg-denim-light'}`} style={lesson.video_url ? { aspectRatio: '16/9' } : undefined}>
         {lesson.video_url ? (
           vid ? (
             <iframe
@@ -96,15 +96,15 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
             </div>
           )
         ) : (
-          <div className="flex h-full items-center justify-center px-6 text-center">
-            <p className="text-sm text-white/50">No video added yet. Follow the steps below.</p>
+          <div className="px-4 py-3">
+            <p className="text-sm text-muted">This lesson has no video yet. Follow the steps below.</p>
           </div>
         )}
       </div>
 
       {/* Step navigator */}
       <div>
-        <p className="eyebrow mb-2">Steps</p>
+        <p className="mb-2 text-sm font-medium text-muted">Steps</p>
         <ol aria-label="Lesson steps" className="flex flex-wrap gap-2">
           {lesson.steps.map((s, n) => (
             <li key={s.id}>
@@ -215,7 +215,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
               onClick={() => goToStep(stepIndex + 1)}
               title={!canAdvance ? 'Answer the quiz question to continue' : undefined}
             >
-              Next step →
+              Next step
             </button>
           )}
         </div>

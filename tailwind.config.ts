@@ -27,7 +27,7 @@ export default {
         nav: '0 1px 0 rgba(30,36,64,0.10)',
       },
       borderRadius: { DEFAULT: '8px', sm: '4px', lg: '14px', full: '9999px' },
-      maxWidth: { prose: '62ch', app: '800px' },
+      maxWidth: { prose: '62ch', app: '820px' },
     },
   },
 } satisfies Config

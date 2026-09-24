@@ -8,7 +8,6 @@ export default async function Parts() {
   return (
     <>
       <div className="mb-6">
-        <p className="eyebrow mb-1">Reference</p>
         <h1 className="page-title">Machine parts</h1>
         <p className="mt-1 text-sm text-muted">
           Turn the 3D machine, then select a dot or a part name to learn its function.

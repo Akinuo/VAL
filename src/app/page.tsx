@@ -45,6 +45,28 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-5xl px-5 pb-16">
+        <Link href="/parts" className="group grid overflow-hidden rounded-lg bg-denim-light md:grid-cols-[1.5fr_1fr]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/machine-preview.jpg"
+            width={896}
+            height={630}
+            loading="lazy"
+            alt="A white industrial sewing machine seen from the front, with the spool pin, thread guides and handwheel visible"
+            className="h-full w-full object-cover"
+          />
+          <div className="flex flex-col justify-center gap-3 p-6 md:p-8">
+            <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-denim">Turn the machine around</h2>
+            <p className="text-muted">
+              A 3D model of a real machine. Tap any of its 14 parts to see what it does, or switch on
+              see-through mode to look inside.
+            </p>
+            <span className="btn self-start group-hover:bg-denim-deep">Explore the machine</span>
+          </div>
+        </Link>
+      </section>
+
       <section className="bg-paper">
         <div className="mx-auto grid max-w-5xl gap-10 px-5 py-16 md:grid-cols-[1fr_1.6fr]">
           <div>
