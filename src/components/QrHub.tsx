@@ -9,7 +9,7 @@ export default function QrHub({ c }: { c: Content }) {
     'Module (all lessons)': [['Basic Sewing Machine Operation', '/home#lessons']],
     'Checklist': c.checklists.map(l => [l.title, `/checklists#${l.slug}`]),
     'Machine part': c.parts.map(p => [p.name, `/parts?part=${p.slug}`]),
-    'FAQ': [['Frequently asked questions', '/faq']],
+    'FAQ': [['Frequently asked questions', '/settings']],
     'Feedback': [['Feedback form', '/feedback']],
   }
   const [g, setG] = useState('Lesson')

@@ -2,13 +2,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useProgress } from '@/lib/progress'
-import { IconSpool, IconPartMarker, IconCheck, IconQuestion, IconMessage, IconWrench } from './icons'
+import { IconSpool, IconPartMarker, IconCheck, IconQr, IconMessage, IconWrench } from './icons'
 
 const TABS = [
   ['/home',       'Lessons',    IconSpool],
   ['/parts',      'Parts',      IconPartMarker],
   ['/checklists', 'Checklists', IconCheck],
-  ['/faq',        'FAQ',        IconQuestion],
+  ['/qr',         'QR',         IconQr],
   ['/feedback',   'Feedback',   IconMessage],
 ] as const
 

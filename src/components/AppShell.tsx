@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Nav, { TabBar } from './Nav'
 
@@ -18,9 +17,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <footer className="hidden border-t border-border bg-paper sm:block">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-4 text-sm text-muted">
-          <span>VAL Guide for BTLED Home Economics</span>
-          <Link href="/qr" className="underline underline-offset-2 hover:text-denim">QR codes for teachers</Link>
+        <div className="mx-auto max-w-5xl px-6 py-4 text-sm text-muted">
+          VAL Guide for BTLED Home Economics
         </div>
       </footer>
       <TabBar />
