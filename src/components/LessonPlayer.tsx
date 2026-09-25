@@ -73,10 +73,13 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
       </div>
 
       {/* Video */}
-      <div className={`overflow-hidden rounded-lg border border-border ${lesson.video_url ? 'bg-ink' : 'bg-denim-light'}`} style={lesson.video_url ? { aspectRatio: '16/9' } : undefined}>
+      <div
+        className={`w-full max-w-full overflow-hidden rounded-lg border border-border ${lesson.video_url ? 'bg-ink' : 'bg-denim-light'}`}
+        style={lesson.video_url ? { aspectRatio: '16/9', maxWidth: '100%' } : { maxWidth: '100%' }}
+      >
         {lesson.video_url ? (
           vid ? (
-            <div className="relative h-full w-full">
+            <div className="relative h-full w-full max-w-full">
               {!vidLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center bg-ink">
                   <span
@@ -87,7 +90,8 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 </div>
               )}
               <iframe
-                className="h-full w-full"
+                className="block h-full w-full max-w-full"
+                style={{ border: 0 }}
                 src={embed(lesson.video_url)}
                 title={`${lesson.title} — video`}
                 loading="eager"
