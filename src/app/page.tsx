@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { getContent } from '@/lib/content'
+import MachinePreview from '@/components/MachinePreview'
 
 export const revalidate = 3600
 
@@ -46,25 +47,17 @@ export default async function LandingPage() {
       </section>
 
       <section className="mx-auto max-w-5xl px-5 pb-16">
-        <Link href="/parts" className="group grid overflow-hidden rounded-lg bg-denim-light md:grid-cols-[1.5fr_1fr]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/machine-preview.jpg"
-            width={896}
-            height={630}
-            loading="lazy"
-            alt="A white industrial sewing machine seen from the front, with the spool pin, thread guides and handwheel visible"
-            className="h-full w-full object-cover"
-          />
+        <div className="grid overflow-hidden rounded-lg bg-denim-light md:grid-cols-[1.5fr_1fr]">
+          <MachinePreview />
           <div className="flex flex-col justify-center gap-3 p-6 md:p-8">
             <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-denim">Turn the machine around</h2>
             <p className="text-muted">
-              A 3D model of a real machine. Tap any of its 14 parts to see what it does, or switch on
-              see-through mode to look inside.
+              Drag to spin the 3D model and get a feel for the real machine. Sign in to tap any of
+              its 14 parts and see what each one does.
             </p>
-            <span className="btn self-start group-hover:bg-denim-deep">Explore the machine</span>
+            <Link href="/parts" className="btn self-start">Explore the machine</Link>
           </div>
-        </Link>
+        </div>
       </section>
 
       <section className="bg-paper">

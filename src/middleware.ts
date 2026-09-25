@@ -8,10 +8,9 @@ export async function middleware(req: NextRequest) {
   // No Supabase configured (e.g. local dev on content.json) — nothing to gate.
   if (!url || !key) return NextResponse.next()
 
-  // /parts itself stays open (view/rotate without an account) — only a deep
-  // link to a specific part (?part=slug), which implies tapping in, is gated.
-  const { pathname, searchParams } = req.nextUrl
-  const needsAuth = pathname.startsWith('/lessons') || (pathname === '/parts' && searchParams.has('part'))
+  // /parts requires an account (only the homepage preview is open to everyone)
+  const { pathname } = req.nextUrl
+  const needsAuth = pathname.startsWith('/lessons') || pathname === '/parts'
   if (!needsAuth) return NextResponse.next()
 
   const res = NextResponse.next()
