@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useProgress } from '@/lib/progress'
 import { earned } from '@/lib/badges'
 import type { Content } from '@/lib/content'
+import { isLessonFull, unlockedFlags } from '@/lib/lessons'
 import { IconRibbon, IconLock } from './icons'
 
 export default function Dashboard({ c }: { c: Content }) {
@@ -91,15 +92,12 @@ export default function Dashboard({ c }: { c: Content }) {
         <h2 id="lessons-heading" className="font-display text-lg font-semibold text-denim">Lessons</h2>
         <ol className="mt-3 divide-y divide-border rounded-lg border border-border bg-paper">
           {(() => {
-            // A lesson unlocks once every lesson before it is fully complete.
-            let priorComplete = true
+            const unlocks = unlockedFlags(c.lessons, done)
             return c.lessons.map((l, i) => {
               const doneCount = l.steps.filter(s => done.has(s.id)).length
-              const full = doneCount === l.steps.length && l.steps.length > 0
+              const full = isLessonFull(l, done)
               const lPct = l.steps.length ? Math.round((doneCount / l.steps.length) * 100) : 0
-              const unlocked = priorComplete
-              const locked = !full && !unlocked
-              priorComplete = priorComplete && full
+              const locked = !full && !unlocks[i]
 
               const badge = (
                 <span

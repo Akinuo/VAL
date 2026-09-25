@@ -3,7 +3,8 @@ import { useEffect, useId, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useProgress } from '@/lib/progress'
 import type { Lesson } from '@/lib/content'
-import { IconCheck } from './icons'
+import { isLessonFull, unlockedFlags } from '@/lib/lessons'
+import { IconCheck, IconLock } from './icons'
 
 declare global {
   interface Window {
@@ -39,8 +40,8 @@ const getEmbedInfo = (u: string): EmbedInfo => {
   return { type: 'other', src: u }
 }
 
-export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
-  const { done, mark } = useProgress()
+export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; lessons: Lesson[] }) {
+  const { done, mark, loading } = useProgress()
   const [stepIndex, setStepIndex] = useState(0)
   const [pick, setPick] = useState<number | null>(null)
   const [vid, setVid] = useState(false)
@@ -85,6 +86,25 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vid, lesson.video_url])
+
+  // Same rule as the dashboard: a lesson is reachable once every lesson
+  // before it is fully complete. Completed lessons stay reachable too, so
+  // their video and steps can always be revisited.
+  const full = isLessonFull(lesson, done)
+  const lessonIndex = lessons.findIndex(x => x.slug === lesson.slug)
+  const unlocked = lessonIndex === -1 ? true : unlockedFlags(lessons, done)[lessonIndex]
+  const locked = !loading && !full && !unlocked
+
+  // Progress (and therefore lock status) resolves client-side, so hold off
+  // on rendering the video/steps until we actually know whether this lesson
+  // is reachable — otherwise a locked lesson would flash its content first.
+  if (loading) {
+    return <LessonSkeleton />
+  }
+
+  if (locked) {
+    return <LockedLesson lesson={lesson} />
+  }
 
   const step = lesson.steps[stepIndex]
   const quiz = step.quiz_questions?.[0]
@@ -377,5 +397,45 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
       </section>
 
     </article>
+  )
+}
+
+// Shown when a lesson hasn't been unlocked yet — no video or step content is
+// rendered, so nothing leaks ahead of where the learner actually is.
+function LockedLesson({ lesson }: { lesson: Lesson }) {
+  return (
+    <article className="grid gap-6 fade-in">
+      <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-muted">
+        <Link href="/home" className="transition-colors hover:text-denim">Home</Link>
+        <span aria-hidden="true">›</span>
+        <span className="truncate text-ink">{lesson.title}</span>
+      </nav>
+
+      <div className="grid place-items-center gap-3 rounded-lg border border-border bg-paper px-6 py-14 text-center">
+        <span className="grid h-14 w-14 place-items-center rounded-full border border-denim/15 bg-chalk text-muted/60">
+          <IconLock className="h-6 w-6" />
+        </span>
+        <h1 className="font-display text-xl font-semibold text-denim">This lesson is locked</h1>
+        <p className="max-w-sm text-sm text-muted">
+          Complete the lessons before “{lesson.title}” to unlock it.
+        </p>
+        <Link href="/home#lessons" className="btn mt-2">Back to lessons</Link>
+      </div>
+    </article>
+  )
+}
+
+// Shown briefly while saved progress (and therefore lock status) resolves.
+function LessonSkeleton() {
+  return (
+    <div className="grid gap-6 fade-in" aria-hidden="true">
+      <div className="h-4 w-40 animate-pulse rounded bg-denim-light" />
+      <div className="grid gap-2">
+        <div className="h-7 w-64 animate-pulse rounded bg-denim-light" />
+        <div className="h-4 w-48 animate-pulse rounded bg-denim-light" />
+      </div>
+      <div className="aspect-video w-full animate-pulse rounded-lg bg-denim-light" />
+      <div className="h-40 animate-pulse rounded-lg bg-denim-light" />
+    </div>
   )
 }
