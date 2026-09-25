@@ -75,7 +75,11 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
       {/* Video */}
       <div
         className={`w-full max-w-full overflow-hidden rounded-lg border border-border ${lesson.video_url ? 'bg-ink' : 'bg-denim-light'}`}
-        style={lesson.video_url ? { aspectRatio: '16/9', maxWidth: '100%' } : { maxWidth: '100%' }}
+        style={
+          lesson.video_url
+            ? { aspectRatio: '16/9', maxWidth: '100%', minHeight: '200px', maxHeight: '75vh' }
+            : { maxWidth: '100%' }
+        }
       >
         {lesson.video_url ? (
           vid ? (
