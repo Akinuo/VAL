@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useProgress } from '@/lib/progress'
-import { IconSpool, IconPartMarker, IconCheck, IconQuestion, IconMessage } from './icons'
+import { IconSpool, IconPartMarker, IconCheck, IconQuestion, IconMessage, IconWrench } from './icons'
 
 const TABS = [
   ['/home',       'Lessons',    IconSpool],
@@ -36,11 +36,21 @@ export default function Nav() {
           ))}
         </nav>
 
-        {email ? (
-          <button onClick={signOut} className="btn-ghost" title={email}>Log out</button>
-        ) : (
-          <Link href="/login" className="btn-outline !min-h-[36px] !px-4">Log in</Link>
-        )}
+        <div className="flex items-center gap-1">
+          <Link
+            href="/settings"
+            aria-label="Settings"
+            aria-current={path === '/settings' ? 'page' : undefined}
+            className={`btn-ghost !px-2 ${path === '/settings' ? 'bg-denim-light text-denim' : ''}`}
+          >
+            <IconWrench className="h-5 w-5" />
+          </Link>
+          {email ? (
+            <button onClick={signOut} className="btn-ghost" title={email}>Log out</button>
+          ) : (
+            <Link href="/login" className="btn-outline !min-h-[36px] !px-4">Log in</Link>
+          )}
+        </div>
       </div>
       <div className="stitch-rule" aria-hidden="true" />
     </header>

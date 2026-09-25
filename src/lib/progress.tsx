@@ -19,30 +19,39 @@ type Ctx = {
   done: Set<string>
   mark: (id: string) => void
   email: string | null
+  uid: string | null
+  displayName: string | null
+  loading: boolean
   signOut: () => void
 }
 
-const C = createContext<Ctx>({ done: new Set(), mark() {}, email: null, signOut() {} })
+const C = createContext<Ctx>({
+  done: new Set(), mark() {}, email: null, uid: null, displayName: null, loading: true, signOut() {},
+})
 export const useProgress = () => useContext(C)
 
 export function Providers({ children }: { children: ReactNode }) {
   const [done, setDone] = useState<Set<string>>(new Set())
   const [uid, setUid] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
+  const [displayName, setDisplayName] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // Seed from localStorage immediately (works without Supabase)
     setDone(new Set(readLocal()))
 
-    if (!supabase) return
+    if (!supabase) { setLoading(false); return }
 
     const sync = async (session: Session | null) => {
       setUid(session?.user.id ?? null)
       setEmail(session?.user.email ?? null)
+      setDisplayName((session?.user.user_metadata as { display_name?: string } | undefined)?.display_name ?? null)
 
       if (!session || !supabase) {
         // Signed out — clear in-memory state so the next user starts fresh
         setDone(new Set())
+        setLoading(false)
         return
       }
 
@@ -67,10 +76,17 @@ export function Providers({ children }: { children: ReactNode }) {
 
       setDone(merged)
       saveLocal(merged)
+      setLoading(false)
     }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') return
+      if (event === 'TOKEN_REFRESHED') return
+      if (event === 'USER_UPDATED') {
+        // Lightweight refresh — e.g. after updating the display name — skip the progress merge
+        setEmail(session?.user.email ?? null)
+        setDisplayName((session?.user.user_metadata as { display_name?: string } | undefined)?.display_name ?? null)
+        return
+      }
       setTimeout(() => sync(session), 0)
     })
 
@@ -95,10 +111,11 @@ export function Providers({ children }: { children: ReactNode }) {
     setDone(new Set())
     setUid(null)
     setEmail(null)
+    setDisplayName(null)
   }
 
   return (
-    <C.Provider value={{ done, mark, email, signOut }}>
+    <C.Provider value={{ done, mark, email, uid, displayName, loading, signOut }}>
       {children}
     </C.Provider>
   )

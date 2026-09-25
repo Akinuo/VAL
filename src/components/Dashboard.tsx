@@ -6,13 +6,15 @@ import type { Content } from '@/lib/content'
 import { IconRibbon } from './icons'
 
 export default function Dashboard({ c }: { c: Content }) {
-  const { done, email } = useProgress()
+  const { done, email, displayName, loading } = useProgress()
 
   const allStepIds = c.lessons.flatMap(l => l.steps.map(s => s.id))
   const completedSteps = allStepIds.filter(id => done.has(id)).length
   const pct = allStepIds.length ? Math.round((completedSteps / allStepIds.length) * 100) : 0
   const earnedBadges = earned(c, done)
-  const firstName = email ? email.split('@')[0] : null
+  const firstName = displayName || (email ? email.split('@')[0] : null)
+
+  if (loading) return <DashboardSkeleton />
 
   // Most recently started but not finished lesson
   const continueLesson = c.lessons.find(l =>
@@ -153,6 +155,28 @@ export default function Dashboard({ c }: { c: Content }) {
         </ul>
       </details>
 
+    </div>
+  )
+}
+
+// Shown briefly while the session (and any saved progress) resolves, so
+// signed-in users never see a flash of the guest-state dashboard.
+function DashboardSkeleton() {
+  return (
+    <div className="grid gap-8 fade-in" aria-hidden="true">
+      <div className="grid gap-2">
+        <div className="h-7 w-56 animate-pulse rounded bg-denim-light" />
+        <div className="h-4 w-40 animate-pulse rounded bg-denim-light" />
+      </div>
+      <div className="h-40 animate-pulse rounded-lg bg-denim-light sm:h-44" />
+      <div className="grid gap-3">
+        <div className="h-5 w-24 animate-pulse rounded bg-denim-light" />
+        <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="h-[72px] animate-pulse bg-paper" style={{ animationDelay: `${i * 75}ms` }} />
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

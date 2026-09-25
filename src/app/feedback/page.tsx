@@ -1,9 +1,11 @@
 'use client'
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { useProgress } from '@/lib/progress'
 import { IconCheck } from '@/components/icons'
 
 export default function Feedback() {
+  const { email } = useProgress()
   const [st, setSt] = useState<'idle' | 'sending' | 'ok' | 'err'>('idle')
   const [rating, setRating] = useState(5)
   const [hover, setHover] = useState(0)
@@ -13,17 +15,40 @@ export default function Feedback() {
     e.preventDefault()
     const form = e.currentTarget
     const f = new FormData(form)
+    const name = String(f.get('name') || '')
+    const message = String(f.get('message'))
     setSt('sending')
-    if (!supabase) { setSt('err'); return }
-    const { data } = await supabase.auth.getSession()
-    const { error } = await supabase.from('feedback').insert({
-      name: String(f.get('name') || '') || null,
-      rating,
-      message: String(f.get('message')),
-      user_id: data.session?.user.id ?? null,
-    })
-    setSt(error ? 'err' : 'ok')
-    if (!error) { form.reset(); setChars(0); setRating(5) }
+
+    // Existing behaviour: record it in Supabase when configured.
+    let dbSaved = false
+    if (supabase) {
+      const { data } = await supabase.auth.getSession()
+      const { error } = await supabase.from('feedback').insert({
+        name: name || null,
+        rating,
+        message,
+        user_id: data.session?.user.id ?? null,
+      })
+      dbSaved = !error
+    }
+
+    // New: also email a PDF copy of the submission.
+    let emailSent = false
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, rating, message, email }),
+      })
+      const data = await res.json().catch(() => null)
+      emailSent = res.ok && !!data?.ok
+    } catch {
+      emailSent = false
+    }
+
+    const success = dbSaved || emailSent
+    setSt(success ? 'ok' : 'err')
+    if (success) { form.reset(); setChars(0); setRating(5) }
   }
 
   if (st === 'ok') {

@@ -39,7 +39,7 @@ function friendlyError(msg: string): string {
 export default function LoginForm() {
   const router = useRouter()
   const params = useSearchParams()
-  const { email: authedEmail } = useProgress()
+  const { email: authedEmail, loading: authLoading } = useProgress()
 
   const [isSignup, setIsSignup] = useState(params.get('mode') === 'signup')
   const [msg, setMsg] = useState(
@@ -49,9 +49,13 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [showPw, setShowPw] = useState(false)
+  const [redirecting, setRedirecting] = useState(false)
 
   useEffect(() => {
-    if (authedEmail) router.replace(params.get('next') ?? '/home')
+    if (authedEmail) {
+      setRedirecting(true)
+      router.replace(params.get('next') ?? '/home')
+    }
   }, [authedEmail, router, params])
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -73,6 +77,7 @@ export default function LoginForm() {
       setMsg(friendlyError(error.message))
       setMsgType('err')
     } else if (data.session) {
+      setRedirecting(true)
       router.replace(params.get('next') ?? '/home')
     } else {
       setMsg('Check your email to confirm your account, then log in.')
@@ -101,6 +106,17 @@ export default function LoginForm() {
       setGoogleLoading(false)
     }
     // On success the browser navigates away — no need to reset loading
+  }
+
+  // While the session check resolves, or right after a successful login/signup,
+  // show a lightweight skeleton instead of flashing the form or a blank page.
+  if (authLoading || redirecting) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-chalk">
+        <span className="h-8 w-8 animate-spin rounded-full border-2 border-denim-light border-t-denim" aria-hidden="true" />
+        <p className="text-sm text-muted">{redirecting ? 'Taking you to your lessons…' : 'Loading…'}</p>
+      </div>
+    )
   }
 
   return (
