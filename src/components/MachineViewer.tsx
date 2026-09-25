@@ -230,7 +230,7 @@ export default function MachineViewer({ parts, selected, onSelect, xray, resetKe
 
   return (
     <div ref={box} className="relative h-[340px] touch-none overflow-hidden rounded-lg border border-border bg-denim-light sm:h-[460px]">
-      <div className="absolute inset-0" role="img" aria-label="Interactive 3D model of a sewing machine. Use the part buttons below the model to choose a part." />
+      <div className="pointer-events-none absolute inset-0" role="img" aria-label="Interactive 3D model of a sewing machine. Use the part buttons below the model to choose a part." />
       {status === 'ready' && parts.map(p => {
         const active = p.slug === selected
         return (
