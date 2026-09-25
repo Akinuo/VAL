@@ -1,16 +1,23 @@
 'use client'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { useProgress } from '@/lib/progress'
 import type { Lesson } from '@/lib/content'
 import { IconCheck } from './icons'
 
-const embed = (u: string) => {
+const getEmbed = (u: string) => {
   const yt = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)
-  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}?cc_load_policy=1&rel=0&playsinline=1&autoplay=1`
+  if (yt) {
+    return {
+      isYouTube: true,
+      // controls=0 + modestbranding=1 hide the native title bar / YouTube chrome;
+      // enablejsapi=1 lets us drive play/pause ourselves via postMessage below.
+      src: `https://www.youtube-nocookie.com/embed/${yt[1]}?cc_load_policy=1&rel=0&playsinline=1&autoplay=1&controls=0&modestbranding=1&iv_load_policy=3&enablejsapi=1`,
+    }
+  }
   const drive = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/)
-  if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview?autoplay=1`
-  return u
+  if (drive) return { isYouTube: false, src: `https://drive.google.com/file/d/${drive[1]}/preview?autoplay=1` }
+  return { isYouTube: false, src: u }
 }
 
 export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
@@ -19,6 +26,15 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const [pick, setPick] = useState<number | null>(null)
   const [vid, setVid] = useState(false)
   const [vidLoaded, setVidLoaded] = useState(false)
+  const [playing, setPlaying] = useState(true)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+
+  function togglePlay() {
+    const win = iframeRef.current?.contentWindow
+    if (!win) return
+    win.postMessage(JSON.stringify({ event: 'command', func: playing ? 'pauseVideo' : 'playVideo', args: [] }), '*')
+    setPlaying(!playing)
+  }
 
   const step = lesson.steps[stepIndex]
   const quiz = step.quiz_questions?.[0]
@@ -39,6 +55,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
   }
 
   const canAdvance = isCorrect || alreadyPassed
+  const embedInfo = lesson.video_url ? getEmbed(lesson.video_url) : null
 
   return (
     <article className="grid gap-6 fade-in">
@@ -94,20 +111,38 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 </div>
               )}
               <iframe
+                ref={iframeRef}
                 className="block h-full w-full max-w-full"
                 style={{ border: 0 }}
-                src={embed(lesson.video_url)}
+                src={embedInfo!.src}
                 title={`${lesson.title} — video`}
                 loading="eager"
                 allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
                 allowFullScreen
-                onLoad={() => setVidLoaded(true)}
+                onLoad={() => { setVidLoaded(true); setPlaying(true) }}
               />
+              {embedInfo!.isYouTube && vidLoaded && (
+                <button
+                  onClick={togglePlay}
+                  aria-label={playing ? 'Pause video' : 'Play video'}
+                  className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition-colors hover:bg-black/80 active:bg-black/90"
+                >
+                  {playing ? (
+                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
+                      <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  )}
+                </button>
+              )}
             </div>
           ) : (
             <button
               className="flex h-full w-full flex-col items-center justify-center gap-3 text-center px-6 active:bg-white/5"
-              onClick={() => { setVidLoaded(false); setVid(true) }}
+              onClick={() => { setVidLoaded(false); setVid(true); setPlaying(true) }}
               aria-label="Play video"
             >
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20">
