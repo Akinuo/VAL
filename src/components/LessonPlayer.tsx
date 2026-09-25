@@ -108,7 +108,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 </svg>
               </span>
               <span className="text-sm font-medium text-white">Play video</span>
-              <span className="text-xs text-white/40">Plays automatically when tapped</span>
+              <span className="text-xs text-white/40">Tap once here, then press play in the video</span>
             </button>
           )
         ) : (
