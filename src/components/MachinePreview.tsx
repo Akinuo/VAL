@@ -10,5 +10,12 @@ const MachineViewer = dynamic(() => import('./MachineViewer'), {
 // Free rotate/zoom preview for anyone — no parts to tap, no account needed.
 // Full part-by-part exploration lives behind login on /parts.
 export default function MachinePreview() {
-  return <MachineViewer parts={[]} selected="" onSelect={() => {}} xray={false} resetKey={0} />
+  return (
+    <div className="relative">
+      <MachineViewer parts={[]} selected="" onSelect={() => {}} xray={false} resetKey={0} />
+      <span className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-ink/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+        Drag to rotate · pinch or scroll to zoom
+      </span>
+    </div>
+  )
 }
