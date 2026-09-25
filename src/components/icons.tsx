@@ -159,6 +159,21 @@ export function IconShield({ className }: P) {
   )
 }
 
+// Padlock — shackle + body with keyhole, used for lessons not yet unlocked
+export function IconLock({ className }: P) {
+  return (
+    <svg {...S} className={className} aria-hidden="true">
+      {/* Shackle */}
+      <path d="M7.5 10V7a4.5 4.5 0 0 1 9 0v3" />
+      {/* Body */}
+      <rect x="5" y="10" width="14" height="10" rx="2.5" />
+      {/* Keyhole */}
+      <circle cx="12" cy="14.2" r="1.3" fill="currentColor" stroke="none" />
+      <line x1="12" y1="15.5" x2="12" y2="17.3" />
+    </svg>
+  )
+}
+
 // Sparkle / clean — used for cleaning lesson
 export function IconSparkle({ className }: P) {
   return (

@@ -104,6 +104,7 @@
   .chip-green  { @apply chip bg-green-soft text-green border border-green-border; }
   .chip-amber  { @apply chip bg-amber-soft text-amber border border-amber-border; }
   .chip-denim { @apply chip bg-denim-light text-denim border border-denim/20; }
+  .chip-muted { @apply chip bg-chalk text-muted border border-border; }
 
   /* ── Alert banners ── */
   .alert-ok   { @apply rounded border border-green-border bg-green-soft px-4 py-3 text-sm text-green; }

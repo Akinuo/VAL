@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useProgress } from '@/lib/progress'
 import { earned } from '@/lib/badges'
 import type { Content } from '@/lib/content'
-import { IconRibbon } from './icons'
+import { IconRibbon, IconLock } from './icons'
 
 export default function Dashboard({ c }: { c: Content }) {
   const { done, email, displayName, loading } = useProgress()
@@ -90,46 +90,78 @@ export default function Dashboard({ c }: { c: Content }) {
       <section id="lessons" aria-labelledby="lessons-heading" className="scroll-mt-4">
         <h2 id="lessons-heading" className="font-display text-lg font-semibold text-denim">Lessons</h2>
         <ol className="mt-3 divide-y divide-border rounded-lg border border-border bg-paper">
-          {c.lessons.map((l, i) => {
-            const doneCount = l.steps.filter(s => done.has(s.id)).length
-            const full = doneCount === l.steps.length && l.steps.length > 0
-            const lPct = l.steps.length ? Math.round((doneCount / l.steps.length) * 100) : 0
-            return (
-              <li key={l.slug}>
-                <Link
-                  href={`/lessons/${l.slug}`}
-                  className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-denim-light"
+          {(() => {
+            // A lesson unlocks once every lesson before it is fully complete.
+            let priorComplete = true
+            return c.lessons.map((l, i) => {
+              const doneCount = l.steps.filter(s => done.has(s.id)).length
+              const full = doneCount === l.steps.length && l.steps.length > 0
+              const lPct = l.steps.length ? Math.round((doneCount / l.steps.length) * 100) : 0
+              const unlocked = priorComplete
+              const locked = !full && !unlocked
+              priorComplete = priorComplete && full
+
+              const badge = (
+                <span
+                  aria-hidden="true"
+                  className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold transition-colors ${
+                    full
+                      ? 'border-green bg-green text-white'
+                      : locked
+                      ? 'border-denim/15 bg-chalk text-muted/60'
+                      : 'border-denim/30 text-denim group-hover:border-denim'
+                  }`}
                 >
-                  <span
-                    aria-hidden="true"
-                    className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold transition-colors ${
-                      full
-                        ? 'border-green bg-green text-white'
-                        : 'border-denim/30 text-denim group-hover:border-denim'
-                    }`}
-                  >
-                    {full ? '✓' : i + 1}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-medium text-ink group-hover:text-denim">{l.title}</span>
-                      {full && <span className="chip-green">Complete</span>}
-                    </div>
-                    <p className="mt-0.5 text-sm text-muted">{l.summary}</p>
-                    {lPct > 0 && !full && (
-                      <div className="mt-2 flex items-center gap-2">
-                        <div className="h-1 flex-1 overflow-hidden rounded-full bg-amber-soft">
-                          <div className="h-full rounded-full bg-amber" style={{ width: lPct + '%' }} />
-                        </div>
-                        <span className="shrink-0 text-xs text-muted">{doneCount}/{l.steps.length}</span>
-                      </div>
-                    )}
+                  {full ? '✓' : locked ? <IconLock className="h-4 w-4" /> : i + 1}
+                </span>
+              )
+
+              const body = (
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`font-medium ${locked ? 'text-muted' : 'text-ink group-hover:text-denim'}`}>
+                      {l.title}
+                    </span>
+                    {full && <span className="chip-green">Complete</span>}
+                    {locked && <span className="chip-muted">Locked</span>}
                   </div>
-                  <span className="shrink-0 text-lg text-muted group-hover:text-denim" aria-hidden>›</span>
-                </Link>
-              </li>
-            )
-          })}
+                  <p className="mt-0.5 text-sm text-muted">{l.summary}</p>
+                  {lPct > 0 && !full && !locked && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <div className="h-1 flex-1 overflow-hidden rounded-full bg-amber-soft">
+                        <div className="h-full rounded-full bg-amber" style={{ width: lPct + '%' }} />
+                      </div>
+                      <span className="shrink-0 text-xs text-muted">{doneCount}/{l.steps.length}</span>
+                    </div>
+                  )}
+                </div>
+              )
+
+              return (
+                <li key={l.slug}>
+                  {locked ? (
+                    <div
+                      className="flex cursor-not-allowed items-center gap-4 px-5 py-4 opacity-70"
+                      aria-disabled="true"
+                    >
+                      {badge}
+                      {body}
+                      <IconLock className="h-4 w-4 shrink-0 text-muted/50" aria-hidden />
+                    </div>
+                  ) : (
+                    <Link
+                      href={`/lessons/${l.slug}`}
+                      className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-denim-light"
+                    >
+                      {badge}
+                      {body}
+                      <span className="shrink-0 text-lg text-muted group-hover:text-denim" aria-hidden>›</span>
+                    </Link>
+                  )}
+                </li>
+              )
+            })
+          })()}
         </ol>
       </section>
 
