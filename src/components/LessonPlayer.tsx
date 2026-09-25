@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useId, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useProgress } from '@/lib/progress'
@@ -147,13 +148,20 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   const canAdvance = !quiz || isCorrect || alreadyPassed
   const nextLesson = lessonIndex === -1 ? null : lessons[lessonIndex + 1] ?? null
 
-  // A step is reachable via the navigator once it's been answered correctly
-  // (or was already passed on a previous visit), or if it's a step the
-  // learner is on or has already stepped back past — future steps stay
-  // locked until the current one is cleared.
+  // A step is reachable via the navigator once every step before it has
+  // been cleared (answered correctly, already passed, or has no quiz) — or
+  // if it's a step the learner is on right now or has already stepped back
+  // past. This intentionally does NOT require the target step itself to be
+  // done, otherwise the very next step could never be reached in the first
+  // place.
   function isStepReachable(n: number) {
     if (n <= stepIndex) return true
-    return done.has(lesson.steps[n].id)
+    for (let i = 0; i < n; i++) {
+      const s = lesson.steps[i]
+      const hasQuiz = s.quiz_questions?.[0]
+      if (hasQuiz && !done.has(s.id)) return false
+    }
+    return true
   }
 
   function goToStep(n: number) {
@@ -189,14 +197,15 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   return (
     <article className="grid gap-6 fade-in">
 
-      {/* Floating "out of attempts" notice — appears once the learner has
-          used up every try on the current question, then sends them back
-          to the lesson list a couple seconds later. */}
-      {outOfAttempts && (
+      {/* Floating "out of attempts" notice. Portaled straight to <body> so it
+          truly floats above everything — rendering it inside this article
+          would trap it behind the article's own fade-in transform, which
+          breaks `position: fixed` for anything nested inside it. */}
+      {outOfAttempts && typeof document !== 'undefined' && createPortal(
         <div
           role="alert"
           aria-live="assertive"
-          className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-sm items-start gap-3 rounded-lg border border-red-border bg-white px-4 py-3 shadow-lg sm:right-4 sm:left-auto"
+          className="fixed inset-x-4 bottom-4 z-[100] mx-auto flex max-w-sm items-start gap-3 rounded-lg border border-red-border bg-white px-4 py-3 shadow-xl sm:right-4 sm:left-auto sm:mx-0"
         >
           <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-red-soft text-red">
             <IconLock className="h-4 w-4" />
@@ -210,7 +219,8 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
               Go now
             </Link>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Breadcrumb */}
