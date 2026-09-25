@@ -7,9 +7,9 @@ import { IconCheck } from './icons'
 
 const embed = (u: string) => {
   const yt = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)
-  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}?cc_load_policy=1&rel=0`
+  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}?cc_load_policy=1&rel=0&playsinline=1&autoplay=1`
   const drive = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/)
-  if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview`
+  if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview?autoplay=1`
   return u
 }
 
@@ -18,6 +18,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const [stepIndex, setStepIndex] = useState(0)
   const [pick, setPick] = useState<number | null>(null)
   const [vid, setVid] = useState(false)
+  const [vidLoaded, setVidLoaded] = useState(false)
 
   const step = lesson.steps[stepIndex]
   const quiz = step.quiz_questions?.[0]
@@ -75,28 +76,40 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
       <div className={`overflow-hidden rounded-lg border border-border ${lesson.video_url ? 'bg-ink' : 'bg-denim-light'}`} style={lesson.video_url ? { aspectRatio: '16/9' } : undefined}>
         {lesson.video_url ? (
           vid ? (
-            <iframe
-              className="h-full w-full"
-              src={embed(lesson.video_url)}
-              title={`${lesson.title} — video`}
-              loading="lazy"
-              allow="encrypted-media; picture-in-picture"
-              allowFullScreen
-            />
+            <div className="relative h-full w-full">
+              {!vidLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-ink">
+                  <span
+                    className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-amber"
+                    role="status"
+                    aria-label="Loading video"
+                  />
+                </div>
+              )}
+              <iframe
+                className="h-full w-full"
+                src={embed(lesson.video_url)}
+                title={`${lesson.title} — video`}
+                loading="eager"
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                allowFullScreen
+                onLoad={() => setVidLoaded(true)}
+              />
+            </div>
           ) : (
-            <div className="flex h-full flex-col items-center justify-center gap-3 text-center px-6">
-              <button
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
-                onClick={() => setVid(true)}
-                aria-label="Play video"
-              >
+            <button
+              className="flex h-full w-full flex-col items-center justify-center gap-3 text-center px-6 active:bg-white/5"
+              onClick={() => { setVidLoaded(false); setVid(true) }}
+              aria-label="Play video"
+            >
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20">
                 <svg viewBox="0 0 24 24" className="h-7 w-7 text-amber" fill="currentColor" aria-hidden="true">
                   <path d="M8 5v14l11-7z" />
                 </svg>
-              </button>
-              <p className="text-sm font-medium text-white">Play video</p>
-              <p className="text-xs text-white/40">Loads only when pressed</p>
-            </div>
+              </span>
+              <span className="text-sm font-medium text-white">Play video</span>
+              <span className="text-xs text-white/40">Plays automatically when tapped</span>
+            </button>
           )
         ) : (
           <div className="px-4 py-3">
