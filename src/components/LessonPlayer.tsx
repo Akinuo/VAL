@@ -6,8 +6,11 @@ import type { Lesson } from '@/lib/content'
 import { IconCheck } from './icons'
 
 const embed = (u: string) => {
-  const m = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)
-  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}?cc_load_policy=1&rel=0` : u
+  const yt = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)
+  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}?cc_load_policy=1&rel=0`
+  const drive = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/)
+  if (drive) return `https://drive.google.com/file/d/${drive[1]}/preview`
+  return u
 }
 
 export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
