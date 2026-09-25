@@ -121,6 +121,12 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   const missedSteps = quizSteps.filter(s => !done.has(s.id))
   const lessonPerfect = missedSteps.length === 0
 
+  // A step "unlocks" the next one once it's been answered correctly (or was
+  // already passed on a previous visit). Steps with no quiz never block —
+  // there's nothing to get wrong.
+  const canAdvance = !quiz || isCorrect || alreadyPassed
+  const nextLesson = lessonIndex === -1 ? null : lessons[lessonIndex + 1] ?? null
+
   function goToStep(n: number) {
     setStepIndex(n)
     setPick(null)
@@ -377,7 +383,16 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
           )}
           {isLast ? (
             lessonPerfect ? (
-              <Link href="/home" className="btn">Back to home</Link>
+              <div className="flex flex-wrap items-center gap-2">
+                {nextLesson ? (
+                  <Link href={`/lessons/${nextLesson.slug}`} className="btn">
+                    Next lesson →
+                  </Link>
+                ) : null}
+                <Link href="/home" className={nextLesson ? 'btn-outline' : 'btn'}>
+                  Back to home
+                </Link>
+              </div>
             ) : (
               <div className="w-full rounded border border-amber-border bg-amber-soft px-4 py-3 text-sm text-ink sm:w-auto">
                 <p className="font-medium">
@@ -388,8 +403,18 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
                 </button>
               </div>
             )
-          ) : (
+          ) : canAdvance ? (
             <button className="btn" onClick={() => goToStep(stepIndex + 1)}>
+              Next step
+            </button>
+          ) : (
+            <button
+              className="btn cursor-not-allowed opacity-50"
+              disabled
+              aria-disabled="true"
+              title="Answer this question correctly to continue"
+            >
+              <IconLock className="mr-1.5 -mt-0.5 inline h-3.5 w-3.5" />
               Next step
             </button>
           )}
