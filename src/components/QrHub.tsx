@@ -21,7 +21,8 @@ export default function QrHub({ c }: { c: Content }) {
   const path = item[1]
 
   useEffect(() => {
-    const u = location.origin + path
+    const base = process.env.NEXT_PUBLIC_SITE_URL || location.origin
+    const u = base.replace(/\/$/, '') + path
     setUrl(u)
     QRCode.toDataURL(u, {
       width: 320,
