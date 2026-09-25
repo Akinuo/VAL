@@ -94,6 +94,13 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const passedCount = lesson.steps.filter(s => done.has(s.id)).length
   const lessonPct = lesson.steps.length ? Math.round((passedCount / lesson.steps.length) * 100) : 0
 
+  // A step only needs to be "correct" if it actually has a quiz — steps
+  // with no quiz_questions can't be gotten wrong, so they don't count
+  // toward whether the lesson was answered perfectly.
+  const quizSteps = lesson.steps.filter(s => s.quiz_questions?.[0])
+  const missedSteps = quizSteps.filter(s => !done.has(s.id))
+  const lessonPerfect = missedSteps.length === 0
+
   function goToStep(n: number) {
     setStepIndex(n)
     setPick(null)
@@ -104,7 +111,12 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
     if (quiz && n === quiz.answer) mark(step.id)
   }
 
-  const canAdvance = isCorrect || alreadyPassed
+  function reviewMissed() {
+    const target = missedSteps[0]
+    if (!target) return
+    goToStep(lesson.steps.findIndex(s => s.id === target.id))
+  }
+
   const embedInfo = lesson.video_url ? getEmbedInfo(lesson.video_url) : null
 
   return (
@@ -329,7 +341,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
                   Not quite — re-read the step, then{' '}
                   <button className="underline underline-offset-2" onClick={() => setPick(null)}>
                     try again
-                  </button>.
+                  </button>, or move on and come back to it later.
                 </p>
               )
             )}
@@ -337,21 +349,27 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
         </div>
 
         {/* Navigation */}
-        <div className="flex flex-wrap gap-2 border-t border-border px-5 py-4">
+        <div className="flex flex-wrap items-start gap-2 border-t border-border px-5 py-4">
           {stepIndex > 0 && (
             <button className="btn-outline" onClick={() => goToStep(stepIndex - 1)}>
               ← Previous
             </button>
           )}
           {isLast ? (
-            <Link href="/home" className="btn">Back to home</Link>
+            lessonPerfect ? (
+              <Link href="/home" className="btn">Back to home</Link>
+            ) : (
+              <div className="w-full rounded border border-amber-border bg-amber-soft px-4 py-3 text-sm text-ink sm:w-auto">
+                <p className="font-medium">
+                  {quizSteps.length - missedSteps.length}/{quizSteps.length} correct — get every question right to unlock the next lesson.
+                </p>
+                <button className="btn-outline mt-2" onClick={reviewMissed}>
+                  Review missed question{missedSteps.length > 1 ? 's' : ''}
+                </button>
+              </div>
+            )
           ) : (
-            <button
-              className="btn"
-              disabled={!canAdvance}
-              onClick={() => goToStep(stepIndex + 1)}
-              title={!canAdvance ? 'Answer the quiz question to continue' : undefined}
-            >
+            <button className="btn" onClick={() => goToStep(stepIndex + 1)}>
               Next step
             </button>
           )}
