@@ -124,7 +124,8 @@ insert into public.faqs (q, a, position) values
   ('Do I need to log in?', 'No. Browse every lesson without an account. Log in only if you want your progress saved across devices. Note: VAL Guide needs an internet connection to load lessons and videos — it doesn''t work offline.', 1),
   ('How is my progress saved?', 'Automatically on this device. After you log in, it syncs to your account so you can continue on another phone or computer.', 2),
   ('Why does my top thread keep breaking?', 'Rethread with the presser foot up, check that the needle is straight, and lower the top tension by one number.', 3),
-  ('Why is thread bunching under my fabric?', 'The top thread is usually not seated in the tension discs. Raise the presser foot and thread the machine again.', 4)
+  ('Why is thread bunching under my fabric?', 'The top thread is usually not seated in the tension discs. Raise the presser foot and thread the machine again.', 4),
+  ('How do I use the QR codes?', 'Open the QR tab, pick a page type and page, then download the QR code. Scanning it with any phone camera jumps straight to that page — handy for printing on handouts or labeling parts of the machine.', 5)
 on conflict do nothing;
 
 insert into public.achievements (slug, title, description, criteria, position) values

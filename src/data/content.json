@@ -985,6 +985,10 @@
     {
       "q": "Why is thread bunching under my fabric?",
       "a": "The top thread is usually not seated in the tension discs. Raise the presser foot and thread the machine again."
+    },
+    {
+      "q": "How do I use the QR codes?",
+      "a": "Open the QR tab, pick a page type and page, then download the QR code. Scanning it with any phone camera jumps straight to that page — handy for printing on handouts or labeling parts of the machine."
     }
   ],
   "achievements": [
