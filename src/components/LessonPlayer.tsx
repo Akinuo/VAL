@@ -1,23 +1,42 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useProgress } from '@/lib/progress'
 import type { Lesson } from '@/lib/content'
 import { IconCheck } from './icons'
 
-const getEmbed = (u: string) => {
-  const yt = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)
-  if (yt) {
-    return {
-      isYouTube: true,
-      // controls=0 + modestbranding=1 hide the native title bar / YouTube chrome;
-      // enablejsapi=1 lets us drive play/pause ourselves via postMessage below.
-      src: `https://www.youtube-nocookie.com/embed/${yt[1]}?cc_load_policy=1&rel=0&playsinline=1&autoplay=1&controls=0&modestbranding=1&iv_load_policy=3&enablejsapi=1`,
-    }
+declare global {
+  interface Window {
+    YT: any
+    onYouTubeIframeAPIReady?: () => void
   }
+}
+
+let ytApiPromise: Promise<void> | null = null
+function loadYouTubeApi(): Promise<void> {
+  if (typeof window === 'undefined') return Promise.resolve()
+  if (window.YT?.Player) return Promise.resolve()
+  if (ytApiPromise) return ytApiPromise
+  ytApiPromise = new Promise((resolve) => {
+    const prev = window.onYouTubeIframeAPIReady
+    window.onYouTubeIframeAPIReady = () => { prev?.(); resolve() }
+    if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+      const tag = document.createElement('script')
+      tag.src = 'https://www.youtube.com/iframe_api'
+      document.head.appendChild(tag)
+    }
+  })
+  return ytApiPromise
+}
+
+type EmbedInfo = { type: 'youtube'; videoId: string } | { type: 'other'; src: string }
+
+const getEmbedInfo = (u: string): EmbedInfo => {
+  const yt = u.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)
+  if (yt) return { type: 'youtube', videoId: yt[1] }
   const drive = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/)
-  if (drive) return { isYouTube: false, src: `https://drive.google.com/file/d/${drive[1]}/preview?autoplay=1` }
-  return { isYouTube: false, src: u }
+  if (drive) return { type: 'other', src: `https://drive.google.com/file/d/${drive[1]}/preview?autoplay=1` }
+  return { type: 'other', src: u }
 }
 
 export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
@@ -26,15 +45,46 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
   const [pick, setPick] = useState<number | null>(null)
   const [vid, setVid] = useState(false)
   const [vidLoaded, setVidLoaded] = useState(false)
-  const [playing, setPlaying] = useState(true)
-  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const [playing, setPlaying] = useState(false)
+  const playerElId = `yt-player-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
+  const playerRef = useRef<any>(null)
 
   function togglePlay() {
-    const win = iframeRef.current?.contentWindow
-    if (!win) return
-    win.postMessage(JSON.stringify({ event: 'command', func: playing ? 'pauseVideo' : 'playVideo', args: [] }), '*')
-    setPlaying(!playing)
+    const p = playerRef.current
+    if (!p) return
+    playing ? p.pauseVideo() : p.playVideo()
   }
+
+  useEffect(() => {
+    if (!vid || !lesson.video_url) return
+    const info = getEmbedInfo(lesson.video_url)
+    if (info.type !== 'youtube') return
+    let cancelled = false
+
+    loadYouTubeApi().then(() => {
+      if (cancelled) return
+      playerRef.current = new window.YT.Player(playerElId, {
+        videoId: info.videoId,
+        playerVars: { rel: 0, playsinline: 1, iv_load_policy: 3, cc_load_policy: 1, autoplay: 1 },
+        events: {
+          onReady: (e: any) => {
+            setVidLoaded(true)
+            e.target.playVideo()
+          },
+          onStateChange: (e: any) => {
+            setPlaying(e.data === window.YT.PlayerState.PLAYING || e.data === window.YT.PlayerState.BUFFERING)
+          },
+        },
+      })
+    })
+
+    return () => {
+      cancelled = true
+      playerRef.current?.destroy?.()
+      playerRef.current = null
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vid, lesson.video_url])
 
   const step = lesson.steps[stepIndex]
   const quiz = step.quiz_questions?.[0]
@@ -55,7 +105,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
   }
 
   const canAdvance = isCorrect || alreadyPassed
-  const embedInfo = lesson.video_url ? getEmbed(lesson.video_url) : null
+  const embedInfo = lesson.video_url ? getEmbedInfo(lesson.video_url) : null
 
   return (
     <article className="grid gap-6 fade-in">
@@ -101,48 +151,76 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
         {lesson.video_url ? (
           vid ? (
             <div className="relative h-full w-full max-w-full">
-              {!vidLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center bg-ink">
-                  <span
-                    className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-amber"
-                    role="status"
-                    aria-label="Loading video"
-                  />
-                </div>
-              )}
-              <iframe
-                ref={iframeRef}
-                className="block h-full w-full max-w-full"
-                style={{ border: 0 }}
-                src={embedInfo!.src}
-                title={`${lesson.title} — video`}
-                loading="eager"
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                allowFullScreen
-                onLoad={() => { setVidLoaded(true); setPlaying(true) }}
-              />
-              {embedInfo!.isYouTube && vidLoaded && (
-                <button
-                  onClick={togglePlay}
-                  aria-label={playing ? 'Pause video' : 'Play video'}
-                  className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition-colors hover:bg-black/80 active:bg-black/90"
-                >
-                  {playing ? (
-                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
-                      <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
+              {embedInfo!.type === 'youtube' ? (
+                <>
+                  {/* Real YouTube player, controlled via the IFrame API */}
+                  <div id={playerElId} className="h-full w-full" />
+
+                  {/* Cover the player whenever it isn't actively playing — this is the
+                      only reliable way to hide YouTube's own title/branding overlay,
+                      which reappears on pause regardless of embed URL parameters. */}
+                  {!playing && (
+                    <button
+                      onClick={togglePlay}
+                      aria-label={vidLoaded ? 'Play video' : 'Loading video'}
+                      className="absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 bg-ink text-center px-6 active:bg-white/5"
+                    >
+                      {vidLoaded ? (
+                        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20">
+                          <svg viewBox="0 0 24 24" className="h-7 w-7 text-amber" fill="currentColor" aria-hidden="true">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </span>
+                      ) : (
+                        <span
+                          className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-amber"
+                          role="status"
+                          aria-label="Loading video"
+                        />
+                      )}
+                    </button>
                   )}
-                </button>
+
+                  {playing && (
+                    <button
+                      onClick={togglePlay}
+                      aria-label="Pause video"
+                      className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition-colors hover:bg-black/80 active:bg-black/90"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
+                        <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
+                      </svg>
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  {!vidLoaded && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-ink">
+                      <span
+                        className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-amber"
+                        role="status"
+                        aria-label="Loading video"
+                      />
+                    </div>
+                  )}
+                  <iframe
+                    className="block h-full w-full max-w-full"
+                    style={{ border: 0 }}
+                    src={embedInfo!.src}
+                    title={`${lesson.title} — video`}
+                    loading="eager"
+                    allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                    allowFullScreen
+                    onLoad={() => setVidLoaded(true)}
+                  />
+                </>
               )}
             </div>
           ) : (
             <button
               className="flex h-full w-full flex-col items-center justify-center gap-3 text-center px-6 active:bg-white/5"
-              onClick={() => { setVidLoaded(false); setVid(true); setPlaying(true) }}
+              onClick={() => { setVidLoaded(false); setVid(true) }}
               aria-label="Play video"
             >
               <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20">
@@ -151,7 +229,7 @@ export default function LessonPlayer({ lesson }: { lesson: Lesson }) {
                 </svg>
               </span>
               <span className="text-sm font-medium text-white">Play video</span>
-              <span className="text-xs text-white/40">Tap once here, then press play in the video</span>
+              <span className="text-xs text-white/40">Tap once to load, then tap play</span>
             </button>
           )
         ) : (
