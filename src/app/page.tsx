@@ -40,7 +40,7 @@ export default async function LandingPage() {
               <Link href={`/lessons/${first.slug}`} className="btn">Start lesson 1</Link>
               <Link href="/login?mode=signup" className="btn-outline">Sign in to save progress</Link>
             </div>
-            <p className="mt-3 text-sm text-muted">You don&apos;t need an account to learn.</p>
+            <p className="mt-3 text-sm text-muted">Free to sign up — takes less than a minute.</p>
           </div>
         </div>
       </section>

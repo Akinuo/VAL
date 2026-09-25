@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useProgress } from '@/lib/progress'
 import { IconSpool, IconPartMarker, IconCheck, IconQr, IconMessage, IconWrench } from './icons'
 
@@ -17,6 +17,12 @@ const isActive = (path: string, href: string) => (href === '/home' ? path === '/
 export default function Nav() {
   const { email, signOut } = useProgress()
   const path = usePathname()
+  const router = useRouter()
+
+  const logout = () => {
+    signOut()
+    router.replace('/')
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-paper" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
@@ -46,7 +52,7 @@ export default function Nav() {
             <IconWrench className="h-5 w-5" />
           </Link>
           {email ? (
-            <button onClick={signOut} className="btn-ghost" title={email}>Log out</button>
+            <button onClick={logout} className="btn-ghost" title={email}>Log out</button>
           ) : (
             <Link href="/login" className="btn-outline !min-h-[36px] !px-4">Log in</Link>
           )}
