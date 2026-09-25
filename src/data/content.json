@@ -972,7 +972,7 @@
   "faqs": [
     {
       "q": "Do I need to log in?",
-      "a": "No. Browse every lesson without an account. Log in only if you want your progress saved across devices."
+      "a": "No. Browse every lesson without an account. Log in only if you want your progress saved across devices. Note: VAL Guide needs an internet connection to load lessons and videos — it doesn't work offline."
     },
     {
       "q": "How is my progress saved?",
