@@ -1,10 +1,19 @@
 'use client'
 import { useEffect, useId, useRef, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useProgress } from '@/lib/progress'
 import type { Lesson } from '@/lib/content'
 import { isLessonFull, unlockedFlags } from '@/lib/lessons'
 import { IconCheck, IconLock } from './icons'
+
+// A learner gets this many tries at a given question before we bounce them
+// back to the lesson list — after that, re-reading the material (rather than
+// guessing) is the more useful next move.
+const MAX_ATTEMPTS = 3
+// How long the "out of tries" toast stays up before it redirects, so the
+// learner has a moment to read it rather than being yanked away instantly.
+const LOCKOUT_REDIRECT_MS = 2500
 
 declare global {
   interface Window {
@@ -42,13 +51,24 @@ const getEmbedInfo = (u: string): EmbedInfo => {
 
 export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; lessons: Lesson[] }) {
   const { done, mark, loading } = useProgress()
+  const router = useRouter()
   const [stepIndex, setStepIndex] = useState(0)
   const [pick, setPick] = useState<number | null>(null)
+  const [wrongAttempts, setWrongAttempts] = useState(0)
+  const [outOfAttempts, setOutOfAttempts] = useState(false)
   const [vid, setVid] = useState(false)
   const [vidLoaded, setVidLoaded] = useState(false)
   const [playing, setPlaying] = useState(false)
   const playerElId = `yt-player-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
   const playerRef = useRef<any>(null)
+
+  // Once a learner burns through all their tries on a question, park them on
+  // a floating notice for a beat, then send them back to the lesson list.
+  useEffect(() => {
+    if (!outOfAttempts) return
+    const t = setTimeout(() => router.push('/home'), LOCKOUT_REDIRECT_MS)
+    return () => clearTimeout(t)
+  }, [outOfAttempts, router])
 
   function togglePlay() {
     const p = playerRef.current
@@ -127,14 +147,35 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   const canAdvance = !quiz || isCorrect || alreadyPassed
   const nextLesson = lessonIndex === -1 ? null : lessons[lessonIndex + 1] ?? null
 
+  // A step is reachable via the navigator once it's been answered correctly
+  // (or was already passed on a previous visit), or if it's a step the
+  // learner is on or has already stepped back past — future steps stay
+  // locked until the current one is cleared.
+  function isStepReachable(n: number) {
+    if (n <= stepIndex) return true
+    return done.has(lesson.steps[n].id)
+  }
+
   function goToStep(n: number) {
+    if (!isStepReachable(n)) return
     setStepIndex(n)
     setPick(null)
+    setWrongAttempts(0)
+    setOutOfAttempts(false)
   }
 
   function choose(n: number) {
+    if (outOfAttempts) return
     setPick(n)
-    if (quiz && n === quiz.answer) mark(step.id)
+    if (quiz && n === quiz.answer) {
+      mark(step.id)
+    } else {
+      setWrongAttempts(prevAttempts => {
+        const next = prevAttempts + 1
+        if (next >= MAX_ATTEMPTS) setOutOfAttempts(true)
+        return next
+      })
+    }
   }
 
   function reviewMissed() {
@@ -147,6 +188,30 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
 
   return (
     <article className="grid gap-6 fade-in">
+
+      {/* Floating "out of attempts" notice — appears once the learner has
+          used up every try on the current question, then sends them back
+          to the lesson list a couple seconds later. */}
+      {outOfAttempts && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-sm items-start gap-3 rounded-lg border border-red-border bg-white px-4 py-3 shadow-lg sm:right-4 sm:left-auto"
+        >
+          <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-red-soft text-red">
+            <IconLock className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-ink">Try again</p>
+            <p className="mt-0.5 text-sm text-muted">
+              Out of attempts for this question — taking you back to the lesson list.
+            </p>
+            <Link href="/home" className="mt-2 inline-block text-sm font-medium text-denim underline underline-offset-2">
+              Go now
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-muted">
@@ -281,24 +346,37 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
       <div>
         <p className="mb-2 text-sm font-medium text-muted">Steps</p>
         <ol aria-label="Lesson steps" className="flex flex-wrap gap-2">
-          {lesson.steps.map((s, n) => (
-            <li key={s.id}>
-              <button
-                onClick={() => goToStep(n)}
-                aria-current={n === stepIndex ? 'step' : undefined}
-                aria-label={`Step ${n + 1}${done.has(s.id) ? ', completed' : ''}`}
-                className={`grid h-10 w-10 place-items-center rounded-full border font-display text-sm font-semibold transition-all duration-150 ${
-                  n === stepIndex
-                    ? 'border-denim bg-denim text-white scale-110'
-                    : done.has(s.id)
-                    ? 'border-green bg-green-soft text-green'
-                    : 'border-border bg-paper text-muted hover:border-denim/40 hover:text-denim'
-                }`}
-              >
-                {done.has(s.id) && n !== stepIndex ? <IconCheck className="h-3.5 w-3.5" /> : n + 1}
-              </button>
-            </li>
-          ))}
+          {lesson.steps.map((s, n) => {
+            const reachable = isStepReachable(n)
+            return (
+              <li key={s.id}>
+                <button
+                  onClick={() => goToStep(n)}
+                  disabled={!reachable}
+                  aria-current={n === stepIndex ? 'step' : undefined}
+                  aria-label={`Step ${n + 1}${done.has(s.id) ? ', completed' : !reachable ? ', locked' : ''}`}
+                  title={!reachable ? 'Answer the current step correctly to unlock this one' : undefined}
+                  className={`grid h-10 w-10 place-items-center rounded-full border font-display text-sm font-semibold transition-all duration-150 ${
+                    n === stepIndex
+                      ? 'border-denim bg-denim text-white scale-110'
+                      : done.has(s.id)
+                      ? 'border-green bg-green-soft text-green'
+                      : reachable
+                      ? 'border-border bg-paper text-muted hover:border-denim/40 hover:text-denim'
+                      : 'cursor-not-allowed border-border bg-paper text-muted/40'
+                  }`}
+                >
+                  {done.has(s.id) && n !== stepIndex ? (
+                    <IconCheck className="h-3.5 w-3.5" />
+                  ) : !reachable ? (
+                    <IconLock className="h-3.5 w-3.5" />
+                  ) : (
+                    n + 1
+                  )}
+                </button>
+              </li>
+            )
+          })}
         </ol>
       </div>
 
@@ -343,7 +421,7 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
                       className={cls}
                       style={{ minHeight: '44px' }}
                       aria-pressed={chosen}
-                      disabled={pick !== null}
+                      disabled={pick !== null || outOfAttempts}
                       onClick={() => choose(n)}
                     >
                       {option}
@@ -356,7 +434,7 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
 
           {/* Feedback */}
           <div aria-live="polite" className="mt-3 min-h-[2.5rem]">
-            {pick !== null && quiz && (
+            {pick !== null && quiz && !outOfAttempts && (
               isCorrect ? (
                 <p className="alert-ok flex items-center gap-2">
                   <IconCheck className="h-4 w-4 shrink-0" />
@@ -368,6 +446,10 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
                   <button className="underline underline-offset-2" onClick={() => setPick(null)}>
                     try again
                   </button>, or move on and come back to it later.
+                  {' '}
+                  <span className="block text-xs text-muted mt-1">
+                    {MAX_ATTEMPTS - wrongAttempts} attempt{MAX_ATTEMPTS - wrongAttempts === 1 ? '' : 's'} left.
+                  </span>
                 </p>
               )
             )}
