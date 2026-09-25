@@ -1,10 +1,11 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { useProgress } from '@/lib/progress'
-import { IconSpool, IconCheck, IconRibbon, IconPlay } from '@/components/icons'
+import { IconCheck, IconRibbon, IconPlay } from '@/components/icons'
 
 // Google "G" logo — inline so there's no extra dependency
 function GoogleLogo() {
@@ -126,7 +127,7 @@ export default function LoginForm() {
       <header className="border-b border-border bg-paper">
         <div className="mx-auto flex max-w-app items-center justify-between px-5 py-3">
           <Link href="/" className="flex items-center gap-2 font-display text-base font-bold text-denim">
-            <IconSpool className="h-5 w-5" />
+            <Image src="/logo-mark.png" alt="" width={22} height={22} className="h-[22px] w-[22px]" />
             VAL Guide
           </Link>
         </div>

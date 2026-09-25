@@ -7,8 +7,14 @@ import { Providers } from '@/lib/progress'
 import AppShell from '@/components/AppShell'
 
 export const metadata: Metadata = {
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   title: 'VAL Guide — Basic Sewing Machine Operation',
   description: 'Guided lessons, quizzes, and checklists for BTLED Home Economics students learning basic sewing machine operation.',
+  openGraph: {
+    title: 'VAL Guide — Basic Sewing Machine Operation',
+    description: 'Guided lessons, quizzes, and checklists for BTLED Home Economics students learning basic sewing machine operation.',
+    images: ['/logo-full.png'],
+  },
 }
 
 export const viewport: Viewport = {
