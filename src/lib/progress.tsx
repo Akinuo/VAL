@@ -37,6 +37,19 @@ export function Providers({ children }: { children: ReactNode }) {
   const [displayName, setDisplayName] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // Idempotent: safe to call with the full known-done set any time, since the
+  // (user_id, step_id) primary key + ignoreDuplicates means anything already
+  // saved is just skipped, not duplicated or errored on.
+  const pushProgress = useCallback(async (uidVal: string, ids: Iterable<string>) => {
+    if (!supabase) return
+    const rows = [...ids].map(step_id => ({ user_id: uidVal, step_id }))
+    if (!rows.length) return
+    const { error } = await supabase
+      .from('progress')
+      .upsert(rows, { onConflict: 'user_id,step_id', ignoreDuplicates: true })
+    if (error) console.error('[progress] failed to sync to Supabase', error)
+  }, [])
+
   useEffect(() => {
     // Seed from localStorage immediately (works without Supabase)
     setDone(new Set(readLocal()))
@@ -56,27 +69,24 @@ export function Providers({ children }: { children: ReactNode }) {
       }
 
       // One read per login; merge remote + local
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('progress')
         .select('step_id')
         .eq('user_id', session.user.id)
+      if (error) console.error('[progress] failed to load saved progress', error)
 
       const remote = (data ?? []).map(r => r.step_id as string)
       const local = readLocal()
       const merged = new Set([...local, ...remote])
 
-      // Push any local-only steps up to Supabase
-      const missing = local.filter(x => !remote.includes(x))
-      if (missing.length) {
-        await supabase.from('progress').upsert(
-          missing.map(step_id => ({ user_id: session.user.id, step_id })),
-          { onConflict: 'user_id,step_id', ignoreDuplicates: true },
-        )
-      }
-
       setDone(merged)
       saveLocal(merged)
       setLoading(false)
+
+      // Push anything this device has that the database doesn't yet — covers
+      // guest progress made before logging in, and any earlier write that
+      // failed to save (see the retry-on-reconnect effect below).
+      pushProgress(session.user.id, merged)
     }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -91,7 +101,22 @@ export function Providers({ children }: { children: ReactNode }) {
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [pushProgress])
+
+  // Retry any progress that didn't make it to Supabase — e.g. the tab was
+  // offline, or a single upsert in `mark` failed. Local storage already has
+  // it, so this just re-attempts the save when the connection/tab is back.
+  useEffect(() => {
+    if (!supabase || !uid) return
+    const retry = () => pushProgress(uid, readLocal())
+    const onVisible = () => { if (document.visibilityState === 'visible') retry() }
+    window.addEventListener('online', retry)
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      window.removeEventListener('online', retry)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [uid, pushProgress])
 
   const mark = useCallback((id: string) => {
     if (done.has(id)) return
@@ -101,7 +126,11 @@ export function Providers({ children }: { children: ReactNode }) {
     if (supabase && uid) {
       supabase.from('progress')
         .upsert({ user_id: uid, step_id: id }, { onConflict: 'user_id,step_id', ignoreDuplicates: true })
-        .then(() => {})
+        .then(({ error }) => {
+          // Not fatal: it stays in localStorage and the retry effect above
+          // (or the next login sync) will push it once connectivity/auth recovers.
+          if (error) console.error('[progress] failed to save step', id, error)
+        })
     }
   }, [done, uid])
 
