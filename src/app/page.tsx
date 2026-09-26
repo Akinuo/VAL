@@ -17,21 +17,31 @@ export default async function LandingPage() {
 
   return (
     <>
-      {/* ── Mobile splash — phone widths only. Logo, title, one line from the
-          hero, and a single way in. No app bar, no tiles, nothing to scroll. ── */}
+      {/* ── Mobile splash — phone widths only. A slim brand bar up top, then a
+          centered hero: logo, title, one line, and a single way in. ── */}
       <div
-        className="flex min-h-screen flex-col items-center justify-center bg-chalk px-8 text-center sm:hidden"
+        className="grain relative isolate flex min-h-screen flex-col bg-chalk sm:hidden"
         style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
-        <Image src="/logo-mark.png" alt="" width={76} height={76} priority className="h-[76px] w-[76px]" />
-        <h1 className="mt-5 font-display text-[1.7rem] font-extrabold tracking-tight text-denim">VAL Guide</h1>
-        <p className="mt-2 max-w-[24ch] text-base leading-snug text-muted">
-          Get to know your sewing machine.
-        </p>
-        <Link href={signupHref} className="btn mt-8 w-full max-w-xs">
-          Sign in to start lesson 1
-        </Link>
-        <p className="mt-3 text-xs text-muted">Free to sign up — takes less than a minute.</p>
+        <header className="flex h-14 shrink-0 items-center justify-between px-5">
+          <Link href="/" aria-label="VAL Guide home" className="flex items-center">
+            <Image src="/logo-mark.png" alt="" width={26} height={26} priority className="h-[26px] w-[26px]" />
+          </Link>
+          <Link href="/login" className="btn-ghost !min-h-[32px] !px-3 !text-xs">Log in</Link>
+        </header>
+        <div className="stitch-rule shrink-0" aria-hidden="true" />
+
+        <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
+          <Image src="/logo-mark.png" alt="" width={76} height={76} className="h-[76px] w-[76px]" />
+          <h1 className="mt-5 font-display text-[1.7rem] font-extrabold tracking-tight text-denim">VAL Guide</h1>
+          <p className="mt-2 max-w-[24ch] text-base leading-snug text-muted">
+            Get to know your sewing machine.
+          </p>
+          <Link href={signupHref} className="btn mt-8 w-full max-w-xs">
+            Sign in to start lesson 1
+          </Link>
+          <p className="mt-3 text-xs text-muted">Free to sign up — takes less than a minute.</p>
+        </div>
       </div>
 
       {/* ── Full layout — tablet and up ── */}
