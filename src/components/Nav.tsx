@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -19,13 +20,16 @@ export default function Nav() {
   const { email, signOut } = useProgress()
   const path = usePathname()
   const router = useRouter()
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
-  const logout = () => {
+  const confirmLogout = () => {
+    setConfirmOpen(false)
     signOut()
     router.replace('/')
   }
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-border bg-paper" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/home" className="flex items-center gap-2 font-display text-xl font-extrabold tracking-tight text-denim">
@@ -56,7 +60,7 @@ export default function Nav() {
             <IconWrench className="h-5 w-5" />
           </Link>
           {email ? (
-            <button onClick={logout} className="btn-ghost" title={email}>Log out</button>
+            <button onClick={() => setConfirmOpen(true)} className="btn-ghost" title={email}>Log out</button>
           ) : (
             <Link href="/login" className="btn-outline !min-h-[36px] !px-4">Log in</Link>
           )}
@@ -64,6 +68,25 @@ export default function Nav() {
       </div>
       <div className="stitch-rule" aria-hidden="true" />
     </header>
+
+    {confirmOpen && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 fade-in"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="nav-logout-confirm-title"
+      >
+        <div className="card w-full max-w-sm p-6">
+          <h3 id="nav-logout-confirm-title" className="font-display text-lg font-bold text-denim">Log out?</h3>
+          <p className="mt-2 text-sm text-muted">You can log back in anytime with your email and password.</p>
+          <div className="mt-5 flex justify-end gap-3">
+            <button onClick={() => setConfirmOpen(false)} className="btn-ghost">Cancel</button>
+            <button onClick={confirmLogout} className="btn !bg-red hover:!opacity-90">Log out</button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   )
 }
 

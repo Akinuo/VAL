@@ -33,7 +33,7 @@ export default function QrHub({ c }: { c: Content }) {
 
   return (
     <div className="grid max-w-md gap-4">
-      <div className="card p-4 shadow-card">
+      <div className="card p-4">
         <label className="text-sm font-medium text-ink">
           Page type
           <select
@@ -59,13 +59,13 @@ export default function QrHub({ c }: { c: Content }) {
       </div>
 
       {img && (
-        <figure className="card p-4 shadow-card">
+        <figure className="card p-4">
           <img
             src={img}
             width={320}
             height={320}
             alt={`QR code that opens ${item[0]}`}
-            className="w-full rounded-swatch"
+            className="w-full rounded-lg"
           />
           <figcaption className="mt-2 break-all text-xs text-ink/55">{url}</figcaption>
         </figure>

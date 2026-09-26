@@ -2,7 +2,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { IconLock } from './icons'
+import { IconLock, IconAlert } from './icons'
 
 export type ToastVariant = 'warn' | 'lock'
 
@@ -83,7 +83,7 @@ export default function FloatingToast({
             isLock ? 'bg-red-soft text-red' : 'bg-amber-soft text-amber'
           }`}
         >
-          <IconLock className="h-4 w-4" />
+          {isLock ? <IconLock className="h-4 w-4" /> : <IconAlert className="h-4 w-4" />}
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-ink">{title}</p>

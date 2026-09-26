@@ -174,6 +174,17 @@ export function IconLock({ className }: P) {
   )
 }
 
+// Warning triangle — used for the wrong-answer toast (distinct from the lock icon)
+export function IconAlert({ className }: P) {
+  return (
+    <svg {...S} className={className} aria-hidden="true">
+      <path d="M12 3.5 L21 19.5 H3 Z" strokeLinejoin="round" />
+      <line x1="12" y1="9.5" x2="12" y2="14" />
+      <circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
 // Sparkle / clean — used for cleaning lesson
 export function IconSparkle({ className }: P) {
   return (
