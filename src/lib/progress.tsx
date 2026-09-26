@@ -6,13 +6,23 @@ import {
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from './supabase'
 
-const STORAGE_KEY = 'val-progress'
+const LEGACY_STORAGE_KEY = 'val-progress'
+// Progress used to be cached under one global, unscoped key so it could
+// survive from a guest session into a freshly created account. Now that
+// /lessons requires auth, that key is stale — and left as-is, it's a data
+// leak on a shared device: Account B logging in after Account A logs out
+// would inherit (and push to Supabase) Account A's completed lessons.
+// Progress is cached per-account instead. DEV_ONLY_KEY is a single
+// exception: local dev without Supabase configured has no accounts at all,
+// so there's nothing to scope to.
+const DEV_ONLY_KEY = 'val-progress:dev'
+const accountKey = (uid: string) => `val-progress:${uid}`
 
-function readLocal(): string[] {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') } catch { return [] }
+function readLocal(key: string): string[] {
+  try { return JSON.parse(localStorage.getItem(key) || '[]') } catch { return [] }
 }
-function saveLocal(s: Set<string>) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...s])) } catch {}
+function saveLocal(key: string, s: Set<string>) {
+  try { localStorage.setItem(key, JSON.stringify([...s])) } catch {}
 }
 
 type Ctx = {
@@ -51,10 +61,17 @@ export function Providers({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    // Seed from localStorage immediately (works without Supabase)
-    setDone(new Set(readLocal()))
+    // One-time cleanup: purge the old unscoped key so it can't leak into
+    // whichever account (or dev session) reads local storage next.
+    try { localStorage.removeItem(LEGACY_STORAGE_KEY) } catch {}
 
-    if (!supabase) { setLoading(false); return }
+    if (!supabase) {
+      // Local dev without Supabase configured — there are no accounts at
+      // all in this mode, so a single shared key is fine.
+      setDone(new Set(readLocal(DEV_ONLY_KEY)))
+      setLoading(false)
+      return
+    }
 
     const sync = async (session: Session | null) => {
       setUid(session?.user.id ?? null)
@@ -68,7 +85,11 @@ export function Providers({ children }: { children: ReactNode }) {
         return
       }
 
-      // One read per login; merge remote + local
+      // Instant paint from this device's cache for this account, then
+      // reconcile with the database.
+      const local = readLocal(accountKey(session.user.id))
+      setDone(new Set(local))
+
       const { data, error } = await supabase
         .from('progress')
         .select('step_id')
@@ -76,16 +97,15 @@ export function Providers({ children }: { children: ReactNode }) {
       if (error) console.error('[progress] failed to load saved progress', error)
 
       const remote = (data ?? []).map(r => r.step_id as string)
-      const local = readLocal()
       const merged = new Set([...local, ...remote])
 
       setDone(merged)
-      saveLocal(merged)
+      saveLocal(accountKey(session.user.id), merged)
       setLoading(false)
 
-      // Push anything this device has that the database doesn't yet — covers
-      // guest progress made before logging in, and any earlier write that
-      // failed to save (see the retry-on-reconnect effect below).
+      // Push anything this device has that the database doesn't yet —
+      // covers a write that failed to save earlier on this device (see the
+      // retry-on-reconnect effect below).
       pushProgress(session.user.id, merged)
     }
 
@@ -108,7 +128,7 @@ export function Providers({ children }: { children: ReactNode }) {
   // it, so this just re-attempts the save when the connection/tab is back.
   useEffect(() => {
     if (!supabase || !uid) return
-    const retry = () => pushProgress(uid, readLocal())
+    const retry = () => pushProgress(uid, readLocal(accountKey(uid)))
     const onVisible = () => { if (document.visibilityState === 'visible') retry() }
     window.addEventListener('online', retry)
     document.addEventListener('visibilitychange', onVisible)
@@ -122,8 +142,10 @@ export function Providers({ children }: { children: ReactNode }) {
     if (done.has(id)) return
     const next = new Set(done).add(id)
     setDone(next)
-    saveLocal(next)
-    if (supabase && uid) {
+    if (!supabase) {
+      saveLocal(DEV_ONLY_KEY, next)
+    } else if (uid) {
+      saveLocal(accountKey(uid), next)
       supabase.from('progress')
         .upsert({ user_id: uid, step_id: id }, { onConflict: 'user_id,step_id', ignoreDuplicates: true })
         .then(({ error }) => {
@@ -132,11 +154,16 @@ export function Providers({ children }: { children: ReactNode }) {
           if (error) console.error('[progress] failed to save step', id, error)
         })
     }
+    // If Supabase is configured but there's no uid, there's nothing to do:
+    // /lessons requires auth, so this shouldn't be reachable signed out.
   }, [done, uid])
 
   const signOut = useCallback(() => {
     supabase?.auth.signOut()
-    // Optimistically clear state; the auth listener will also fire
+    // Optimistically clear state; the auth listener will also fire.
+    // Local storage is left alone deliberately — it's scoped to this
+    // account's key (accountKey(uid)) and will still be there, correctly,
+    // the next time this account signs in on this device.
     setDone(new Set())
     setUid(null)
     setEmail(null)
