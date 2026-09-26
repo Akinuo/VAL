@@ -16,7 +16,26 @@ export default async function LandingPage() {
   const signupHref = `/login?mode=signup&next=/lessons/${first.slug}`
 
   return (
-    <div className="min-h-screen bg-chalk">
+    <>
+      {/* ── Mobile splash — phone widths only. Logo, title, one line from the
+          hero, and a single way in. No app bar, no tiles, nothing to scroll. ── */}
+      <div
+        className="flex min-h-screen flex-col items-center justify-center bg-chalk px-8 text-center sm:hidden"
+        style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+        <Image src="/logo-mark.png" alt="" width={76} height={76} priority className="h-[76px] w-[76px]" />
+        <h1 className="mt-5 font-display text-[1.7rem] font-extrabold tracking-tight text-denim">VAL Guide</h1>
+        <p className="mt-2 max-w-[24ch] text-base leading-snug text-muted">
+          Get to know your sewing machine.
+        </p>
+        <Link href={signupHref} className="btn mt-8 w-full max-w-xs">
+          Sign in to start lesson 1
+        </Link>
+        <p className="mt-3 text-xs text-muted">Free to sign up — takes less than a minute.</p>
+      </div>
+
+      {/* ── Full layout — tablet and up ── */}
+      <div className="hidden min-h-screen bg-chalk sm:block">
       {/* ── App bar ── */}
       <header
         className="sticky top-0 z-30 border-b border-border bg-paper/95 backdrop-blur"
@@ -130,6 +149,7 @@ export default async function LandingPage() {
           <p className="mt-1.5 text-center text-[11px] text-muted">Free to sign up — takes less than a minute.</p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
