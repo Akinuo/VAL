@@ -16,6 +16,17 @@ const MAX_ATTEMPTS = 3
 // learner has a moment to read it rather than being yanked away instantly.
 const LOCKOUT_REDIRECT_MS = 2500
 
+// Fisher–Yates — used to reshuffle quiz option order on retry so a wrong
+// guess can't just be "solved" by remembering a screen position.
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
 declare global {
   interface Window {
     YT: any
@@ -57,6 +68,13 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   const [pick, setPick] = useState<number | null>(null)
   const [wrongAttempts, setWrongAttempts] = useState(0)
   const [outOfAttempts, setOutOfAttempts] = useState(false)
+  // Display order of the current quiz's options, as a list of original
+  // indices — reshuffled on retry so a wrong guess can't be "solved" by
+  // remembering a position rather than the actual answer.
+  const [order, setOrder] = useState<number[]>(() => {
+    const q = lesson.steps[0]?.quiz_questions?.[0]
+    return q ? q.options.map((_, i) => i) : []
+  })
   const [vid, setVid] = useState(false)
   const [vidLoaded, setVidLoaded] = useState(false)
   const [playing, setPlaying] = useState(false)
@@ -147,10 +165,6 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   // there's nothing to get wrong.
   const canAdvance = !quiz || isCorrect || alreadyPassed
   const nextLesson = lessonIndex === -1 ? null : lessons[lessonIndex + 1] ?? null
-  // Either toast occupies the same fixed bottom-4 slot on small screens —
-  // reserve matching space in the page's own scroll flow so it never
-  // visually covers the option buttons or the step-navigation buttons below.
-  const toastOpen = outOfAttempts || (pick !== null && quiz != null && !isCorrect)
 
   // A step is reachable via the navigator once every step before it has
   // been cleared (answered correctly, already passed, or has no quiz) — or
@@ -174,6 +188,18 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
     setPick(null)
     setWrongAttempts(0)
     setOutOfAttempts(false)
+    const targetQuiz = lesson.steps[n].quiz_questions?.[0]
+    setOrder(targetQuiz ? targetQuiz.options.map((_, i) => i) : [])
+  }
+
+  // Clears the current pick (re-enabling the options) and reshuffles them,
+  // so retrying after a wrong answer never shows the same layout twice in a
+  // row. Used by both the toast's "Try again" action and its close button —
+  // dismissing without resetting would otherwise leave every option
+  // permanently disabled with no way back in.
+  function retry() {
+    setPick(null)
+    if (quiz) setOrder(shuffle(quiz.options.map((_, i) => i)))
   }
 
   function choose(n: number) {
@@ -199,7 +225,7 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   const embedInfo = lesson.video_url ? getEmbedInfo(lesson.video_url) : null
 
   return (
-    <article className={`grid gap-6 fade-in transition-[padding] duration-200 ${toastOpen ? 'pb-24 sm:pb-0' : ''}`}>
+    <article className="grid gap-6 fade-in">
 
       {/* Floating "out of attempts" notice. See the wrong-answer FloatingToast
           further down for the sibling notice — the two are mutually
@@ -405,9 +431,10 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
             <fieldset className="mt-5 border-t border-border pt-4">
               <legend className="font-semibold text-ink">{quiz.question}</legend>
               <div className="mt-3 grid gap-2">
-                {quiz.options.map((option, n) => {
-                  const chosen = pick === n
-                  const correct = n === quiz.answer
+                {order.map((optIdx) => {
+                  const option = quiz.options[optIdx]
+                  const chosen = pick === optIdx
+                  const correct = optIdx === quiz.answer
                   let cls = 'opt'
                   if (pick !== null) {
                     if (chosen && correct)
@@ -419,12 +446,12 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
                   }
                   return (
                     <button
-                      key={option}
+                      key={optIdx}
                       className={cls}
                       style={{ minHeight: '44px' }}
                       aria-pressed={chosen}
                       disabled={pick !== null || outOfAttempts}
-                      onClick={() => choose(n)}
+                      onClick={() => choose(optIdx)}
                     >
                       {option}
                     </button>
@@ -456,8 +483,8 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
                 </span>
               </>
             }
-            action={{ label: 'Try again', onClick: () => setPick(null) }}
-            onClose={() => setPick(null)}
+            action={{ label: 'Try again', onClick: retry }}
+            onClose={retry}
             ariaLive="polite"
           />
         </div>

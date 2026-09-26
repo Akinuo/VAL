@@ -61,47 +61,58 @@ export default function FloatingToast({
   const isLock = variant === 'lock'
 
   return createPortal(
-    <div
-      role="alert"
-      aria-live={ariaLive}
-      className={`fixed inset-x-4 z-[100] mx-auto flex max-w-sm items-start gap-3 rounded-lg border bg-white px-4 py-3 shadow-xl transition-all duration-200 ease-out sm:right-4 sm:left-auto sm:mx-0 ${
-        isLock ? 'border-red-border' : 'border-amber-border'
-      } ${visible ? 'bottom-4 opacity-100' : '-bottom-6 opacity-0'}`}
-    >
-      <span
-        className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full ${
-          isLock ? 'bg-red-soft text-red' : 'bg-amber-soft text-amber'
+    <>
+      {/* Light backdrop — purely visual, not a click-blocking scrim, so the
+          rest of the page (e.g. the Previous button) stays usable. */}
+      <div
+        aria-hidden="true"
+        className={`fixed inset-0 z-[99] bg-ink/20 transition-opacity duration-200 ease-out pointer-events-none ${
+          visible ? 'opacity-100' : 'opacity-0'
         }`}
+      />
+      <div
+        role="alert"
+        aria-live={ariaLive}
+        className={`fixed left-1/2 top-1/2 z-[100] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-lg border bg-white px-4 py-3 shadow-xl transition-all duration-200 ease-out ${
+          isLock ? 'border-red-border' : 'border-amber-border'
+        } ${visible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}
+        style={{ transform: 'translate(-50%, -50%)' }}
       >
-        <IconLock className="h-4 w-4" />
-      </span>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-ink">{title}</p>
-        <div className="mt-0.5 text-sm text-muted">{message}</div>
-        {action && (
-          action.href ? (
-            <Link href={action.href} className="mt-2 inline-block text-sm font-medium text-denim underline underline-offset-2">
-              {action.label}
-            </Link>
-          ) : (
-            <button onClick={action.onClick} className="mt-2 inline-block text-sm font-medium text-denim underline underline-offset-2">
-              {action.label}
-            </button>
-          )
+        <span
+          className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full ${
+            isLock ? 'bg-red-soft text-red' : 'bg-amber-soft text-amber'
+          }`}
+        >
+          <IconLock className="h-4 w-4" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-ink">{title}</p>
+          <div className="mt-0.5 text-sm text-muted">{message}</div>
+          {action && (
+            action.href ? (
+              <Link href={action.href} className="mt-2 inline-block text-sm font-medium text-denim underline underline-offset-2">
+                {action.label}
+              </Link>
+            ) : (
+              <button onClick={action.onClick} className="mt-2 inline-block text-sm font-medium text-denim underline underline-offset-2">
+                {action.label}
+              </button>
+            )
+          )}
+        </div>
+        {onClose && (
+          <button
+            onClick={onClose}
+            aria-label="Dismiss"
+            className="shrink-0 rounded p-1 text-muted transition-colors hover:bg-chalk hover:text-ink"
+          >
+            <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
+              <path d="M6 6l8 8M14 6l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+            </svg>
+          </button>
         )}
       </div>
-      {onClose && (
-        <button
-          onClick={onClose}
-          aria-label="Dismiss"
-          className="shrink-0 rounded p-1 text-muted transition-colors hover:bg-chalk hover:text-ink"
-        >
-          <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
-            <path d="M6 6l8 8M14 6l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-          </svg>
-        </button>
-      )}
-    </div>,
+    </>,
     document.body
   )
 }
