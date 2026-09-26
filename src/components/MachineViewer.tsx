@@ -9,7 +9,7 @@ import { PART_NODES } from '@/lib/partNodes'
 type P = { slug: string; name: string }
 type Props = { parts: P[]; selected: string; onSelect: (slug: string) => void; xray: boolean; resetKey: number }
 
-const MODEL = '/models/shunfa-sf5550.gltf'
+const MODEL = '/models/shunfa-sf5550.glb'
 const HOME_TARGET = new THREE.Vector3(0.0, 0.99, 0)
 const HOME_DIR = new THREE.Vector3(0.28, 0.22, 1).normalize()
 const HOME_DIST = 1.25
