@@ -8,13 +8,12 @@ export async function middleware(req: NextRequest) {
   // No Supabase configured (e.g. local dev on content.json) — nothing to gate.
   if (!url || !key) return NextResponse.next()
 
-  // /parts requires an account (only the homepage preview is open to everyone).
-  // /lessons is intentionally NOT gated here — lesson progress works for
-  // guests via localStorage (see lib/progress.tsx), and the app's own copy
-  // (Hero, LoginForm, QR codes) promises lessons are free to browse without
-  // an account. Locking /lessons here would silently break that promise.
+  // /parts and /lessons both require an account (only the homepage preview
+  // is open to everyone). Guest localStorage progress (see lib/progress.tsx)
+  // is still used as a local cache once signed in, but it's no longer a
+  // substitute for auth — signing in is required to reach either route.
   const { pathname } = req.nextUrl
-  const needsAuth = pathname === '/parts'
+  const needsAuth = pathname === '/parts' || pathname === '/lessons' || pathname.startsWith('/lessons/')
   if (!needsAuth) return NextResponse.next()
 
   const res = NextResponse.next()
@@ -36,5 +35,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/parts'],
+  matcher: ['/parts', '/lessons', '/lessons/:path*'],
 }
