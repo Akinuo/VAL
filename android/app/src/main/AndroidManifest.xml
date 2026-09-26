@@ -22,6 +22,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Google sign-in has to finish in a real browser tab (Chrome Custom
+                 Tabs), not the app's own WebView — Google blocks embedded WebViews.
+                 This custom scheme is how Android hands control back to this app
+                 once that browser tab reaches the OAuth redirect, instead of just
+                 leaving the site open in Chrome. Matches the redirectTo used in
+                 src/app/login/LoginForm.tsx and the allow-list in the Supabase
+                 dashboard (Authentication → URL Configuration → Redirect URLs). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="ph.akinuo.valguide" />
+            </intent-filter>
+
         </activity>
 
         <provider

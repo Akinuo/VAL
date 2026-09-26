@@ -3,7 +3,11 @@ import {
   createContext, useCallback, useContext,
   useEffect, useMemo, useState, ReactNode,
 } from 'react'
+import { useRouter } from 'next/navigation'
 import type { Session } from '@supabase/supabase-js'
+import { Capacitor } from '@capacitor/core'
+import { App as CapApp } from '@capacitor/app'
+import { Browser } from '@capacitor/browser'
 import { supabase } from './supabase'
 
 const LEGACY_STORAGE_KEY = 'val-progress'
@@ -41,6 +45,7 @@ const C = createContext<Ctx>({
 export const useProgress = () => useContext(C)
 
 export function Providers({ children }: { children: ReactNode }) {
+  const router = useRouter()
   const [done, setDone] = useState<Set<string>>(new Set())
   const [uid, setUid] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
@@ -122,6 +127,34 @@ export function Providers({ children }: { children: ReactNode }) {
 
     return () => subscription.unsubscribe()
   }, [pushProgress])
+
+  // On native (Capacitor/Android), Google sign-in has to finish in a system
+  // browser tab rather than the app's own WebView — see signInWithGoogle in
+  // src/app/login/LoginForm.tsx. This is the other half: it catches that tab
+  // handing control back to the app via the ph.akinuo.valguide:// custom
+  // scheme (registered in AndroidManifest.xml), exchanges the code for a
+  // session, and closes the tab. Without it, people were left stranded on
+  // the web app in the browser after a successful Google sign-in.
+  useEffect(() => {
+    if (!supabase || !Capacitor.isNativePlatform()) return
+
+    const finishNativeSignIn = async (url: string) => {
+      let parsed: URL
+      try { parsed = new URL(url) } catch { return }
+      const code = parsed.searchParams.get('code')
+      if (!code) return
+      const next = parsed.searchParams.get('next') || '/home'
+      await Browser.close().catch(() => {})
+      const { error } = await supabase!.auth.exchangeCodeForSession(code)
+      if (!error) router.replace(next)
+    }
+
+    const listenerPromise = CapApp.addListener('appUrlOpen', ({ url }) => { finishNativeSignIn(url) })
+    // Covers the app having been fully closed and cold-started by the redirect.
+    CapApp.getLaunchUrl().then(res => { if (res?.url) finishNativeSignIn(res.url) })
+
+    return () => { listenerPromise.then(handle => handle.remove()) }
+  }, [router])
 
   // Retry any progress that didn't make it to Supabase — e.g. the tab was
   // offline, or a single upsert in `mark` failed. Local storage already has

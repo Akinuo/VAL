@@ -3,9 +3,16 @@ import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Capacitor } from '@capacitor/core'
+import { Browser } from '@capacitor/browser'
 import { supabase } from '@/lib/supabase'
 import { useProgress } from '@/lib/progress'
 import { IconCheck, IconRibbon, IconPlay, IconChevron } from '@/components/icons'
+
+// Custom URL scheme registered in android/app/src/main/AndroidManifest.xml.
+// Must also be added to the Supabase project's allow-listed Redirect URLs
+// (Authentication → URL Configuration) or Supabase will reject it.
+const NATIVE_REDIRECT_SCHEME = 'ph.akinuo.valguide://auth/callback'
 
 // Google "G" logo — inline so there's no extra dependency
 function GoogleLogo() {
@@ -95,18 +102,34 @@ export default function LoginForm() {
     setGoogleLoading(true)
     setMsg('')
     const next = params.get('next') ?? '/home'
-    const { error } = await supabase.auth.signInWithOAuth({
+    const isNative = Capacitor.isNativePlatform()
+
+    // On native, skipBrowserRedirect stops the Supabase client from navigating
+    // the app's own WebView to Google — Google refuses to sign in from an
+    // embedded WebView, which is what was silently bouncing this out to Chrome
+    // and leaving people stranded on the web app. Opening data.url ourselves in
+    // Browser (Chrome Custom Tabs) is what Google allows, and the appUrlOpen
+    // listener in lib/progress.tsx catches the redirect back into the app.
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        redirectTo: isNative
+          ? `${NATIVE_REDIRECT_SCHEME}?next=${encodeURIComponent(next)}`
+          : `${location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        skipBrowserRedirect: isNative,
       },
     })
     if (error) {
       setMsg(friendlyError(error.message))
       setMsgType('err')
       setGoogleLoading(false)
+      return
     }
-    // On success the browser navigates away — no need to reset loading
+    if (isNative && data?.url) {
+      await Browser.open({ url: data.url })
+      setGoogleLoading(false)
+    }
+    // On web, the browser navigates away on its own — no need to reset loading.
   }
 
   // While the session check resolves, or right after a successful login/signup,
