@@ -10,7 +10,7 @@ const config: CapacitorConfig = {
   appName: 'VAL Guide',
   webDir: 'public', // unused while server.url is set, but required by the schema
   server: {
-    url: 'https://val-akinuo.vercel.app',
+    url: 'val-ashen-theta.vercel.app',
     androidScheme: 'https',
     cleartext: false,
   },
