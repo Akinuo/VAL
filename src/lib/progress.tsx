@@ -136,7 +136,7 @@ export function Providers({ children }: { children: ReactNode }) {
   // session, and closes the tab. Without it, people were left stranded on
   // the web app in the browser after a successful Google sign-in.
   useEffect(() => {
-    if (!supabase || !Capacitor.isNativePlatform()) return
+    if (!supabase || !Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('App')) return
 
     const finishNativeSignIn = async (url: string) => {
       let parsed: URL
