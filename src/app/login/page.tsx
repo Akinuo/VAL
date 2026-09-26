@@ -1,5 +1,12 @@
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
 import LoginForm from './LoginForm'
+
+export const metadata: Metadata = {
+  title: 'Log in',
+  description: 'Sign in or create a free account to save your lesson progress.',
+  robots: { index: false, follow: true },
+}
 
 export default function LoginPage() {
   return (

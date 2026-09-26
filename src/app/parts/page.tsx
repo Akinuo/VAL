@@ -1,7 +1,15 @@
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
 import PartsDiagram from '@/components/PartsDiagram'
 import { getContent } from '@/lib/content'
 export const revalidate = 3600
+
+export const metadata: Metadata = {
+  title: 'Machine parts',
+  description: 'Explore the 14 parts of the sewing machine in an interactive 3D view.',
+  // Gated behind login (see middleware.ts) — a crawler can't reach the real content anyway.
+  robots: { index: false, follow: true },
+}
 
 export default async function Parts() {
   const { parts } = await getContent()

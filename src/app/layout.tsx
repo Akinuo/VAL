@@ -6,13 +6,22 @@ import type { Metadata, Viewport } from 'next'
 import { Providers } from '@/lib/progress'
 import AppShell from '@/components/AppShell'
 
+const SITE_DESCRIPTION =
+  'Guided lessons, quizzes, and checklists for BTLED Home Economics students learning basic sewing machine operation.'
+
 export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
-  title: 'VAL Guide — Basic Sewing Machine Operation',
-  description: 'Guided lessons, quizzes, and checklists for BTLED Home Economics students learning basic sewing machine operation.',
+  title: {
+    default: 'VAL Guide — Basic Sewing Machine Operation',
+    // Every page below sets its own title (e.g. "Checklists") and inherits
+    // "— VAL Guide" from here, so tabs/bookmarks/search results stop being
+    // identical across pages without repeating the suffix everywhere.
+    template: '%s — VAL Guide',
+  },
+  description: SITE_DESCRIPTION,
   openGraph: {
     title: 'VAL Guide — Basic Sewing Machine Operation',
-    description: 'Guided lessons, quizzes, and checklists for BTLED Home Economics students learning basic sewing machine operation.',
+    description: SITE_DESCRIPTION,
     images: ['/logo-full.png'],
   },
 }

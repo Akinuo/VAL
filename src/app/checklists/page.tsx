@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import Checklists from '@/components/Checklists'
 import { getContent } from '@/lib/content'
 export const revalidate = 3600
+
+export const metadata: Metadata = {
+  title: 'Checklists',
+  description: 'Printable, tickable checklists for basic sewing machine operation and care.',
+}
 
 export default async function Page() {
   return (
