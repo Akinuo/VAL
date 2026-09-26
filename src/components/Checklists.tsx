@@ -61,12 +61,19 @@ export default function Checklists({ lists }: { lists: Content['checklists'] }) 
                 return (
                   <li key={k}>
                     <label className="flex min-h-[48px] cursor-pointer items-center gap-3 py-1">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 shrink-0 rounded border-border accent-[#22336B]"
-                        checked={isOn}
-                        onChange={() => put(isOn ? on.filter(x => x !== k) : [...on, k])}
-                      />
+                      <span className="relative grid shrink-0 place-items-center">
+                        <input
+                          type="checkbox"
+                          className="peer sr-only"
+                          checked={isOn}
+                          onChange={() => put(isOn ? on.filter(x => x !== k) : [...on, k])}
+                        />
+                        <span className="checkbox-box" aria-hidden="true">
+                          <svg viewBox="0 0 16 16" className="checkbox-tick" fill="none">
+                            <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                      </span>
                       <span className={`text-sm transition-colors ${isOn ? 'text-muted line-through' : 'text-ink'}`}>
                         {item}
                       </span>

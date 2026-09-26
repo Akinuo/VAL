@@ -115,7 +115,7 @@ export default function Settings({ faqs }: { faqs: { q: string; a: string }[] })
           aria-modal="true"
           aria-labelledby="logout-confirm-title"
         >
-          <div className="card w-full max-w-sm p-6">
+          <div className="card w-full max-w-sm p-6 !shadow-xl">
             <h3 id="logout-confirm-title" className="font-display text-lg font-bold text-denim">Log out?</h3>
             <p className="mt-2 text-sm text-muted">You can log back in anytime with your email and password.</p>
             <div className="mt-5 flex justify-end gap-3">

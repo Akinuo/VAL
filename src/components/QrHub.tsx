@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import QRCode from 'qrcode'
 import type { Content } from '@/lib/content'
+import { IconChevron } from './icons'
 
 export default function QrHub({ c }: { c: Content }) {
   const groups: Record<string, [string, string][]> = {
@@ -36,30 +37,36 @@ export default function QrHub({ c }: { c: Content }) {
       <div className="card p-4">
         <label className="text-sm font-medium text-ink">
           Page type
-          <select
-            className="field"
-            value={g}
-            onChange={e => { setG(e.target.value); setIdx(0) }}
-          >
-            {Object.keys(groups).map(k => <option key={k}>{k}</option>)}
-          </select>
+          <div className="relative">
+            <select
+              className="field select"
+              value={g}
+              onChange={e => { setG(e.target.value); setIdx(0) }}
+            >
+              {Object.keys(groups).map(k => <option key={k}>{k}</option>)}
+            </select>
+            <IconChevron className="select-chevron" />
+          </div>
         </label>
         <label className="mt-3 block text-sm font-medium text-ink">
           Page
-          <select
-            className="field"
-            value={idx}
-            onChange={e => setIdx(Number(e.target.value))}
-          >
-            {groups[g].map(([t], n) => (
-              <option key={t} value={n}>{t}</option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              className="field select"
+              value={idx}
+              onChange={e => setIdx(Number(e.target.value))}
+            >
+              {groups[g].map(([t], n) => (
+                <option key={t} value={n}>{t}</option>
+              ))}
+            </select>
+            <IconChevron className="select-chevron" />
+          </div>
         </label>
       </div>
 
-      {img && (
-        <figure className="card p-4">
+      {img ? (
+        <figure key={path} className="card fade-in p-4">
           <img
             src={img}
             width={320}
@@ -69,6 +76,10 @@ export default function QrHub({ c }: { c: Content }) {
           />
           <figcaption className="mt-2 break-all text-xs text-ink/55">{url}</figcaption>
         </figure>
+      ) : (
+        <div className="card grid aspect-square place-items-center p-4" aria-hidden="true">
+          <span className="h-8 w-8 animate-spin rounded-full border-2 border-denim-light border-t-denim" />
+        </div>
       )}
 
       {img && (

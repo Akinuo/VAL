@@ -97,6 +97,32 @@
     @apply rounded-lg border border-border bg-paper shadow-sm;
   }
 
+  /* ── Custom checkbox ──
+     The native control renders inconsistently across desktop browsers and
+     the Android WebView this app ships in, so we hide it (still present for
+     keyboard/a11y/forms) and drive a styled box off its checked/focus state
+     with the peer-* variants. */
+  .checkbox-box {
+    @apply grid h-5 w-5 shrink-0 place-items-center rounded-sm border border-border bg-paper
+           text-white transition-colors duration-150
+           peer-checked:border-denim peer-checked:bg-denim
+           peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-denim;
+  }
+  .checkbox-tick {
+    @apply h-3 w-3 scale-0 transition-transform duration-150 peer-checked:scale-100;
+  }
+
+  /* ── Custom select ──
+     Wrap a <select className="field select"> in a `relative` container with
+     a .select-chevron sibling; appearance-none drops the OS-drawn arrow
+     (which looks different per platform) in favour of one consistent icon. */
+  .select {
+    @apply appearance-none pr-9;
+  }
+  .select-chevron {
+    @apply pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted;
+  }
+
   /* ── Status chips ── */
   .chip {
     @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;

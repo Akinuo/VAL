@@ -38,10 +38,19 @@ export default function PartsDiagram({ parts }: { parts: Content['parts'] }) {
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs text-muted">Drag to turn the machine, pinch or scroll to zoom, tap a dot to pick a part.</p>
           <div className="flex gap-1.5">
-            <button className="rounded border border-border bg-paper px-3 py-1.5 text-xs font-medium hover:bg-denim-light" onClick={() => setXray(v => !v)} aria-pressed={xray}>
+            <button
+              className={`rounded border px-3 py-1.5 text-xs font-medium transition-colors active:scale-[0.98] ${
+                xray ? 'border-denim/30 bg-denim-light text-denim' : 'border-border bg-paper text-ink hover:border-denim/40 hover:bg-denim-light'
+              }`}
+              onClick={() => setXray(v => !v)}
+              aria-pressed={xray}
+            >
               {xray ? 'See-through: on' : 'See-through: off'}
             </button>
-            <button className="rounded border border-border bg-paper px-3 py-1.5 text-xs font-medium hover:bg-denim-light" onClick={() => setResetKey(k => k + 1)}>
+            <button
+              className="rounded border border-border bg-paper px-3 py-1.5 text-xs font-medium text-ink transition-colors hover:border-denim/40 hover:bg-denim-light active:scale-[0.98]"
+              onClick={() => setResetKey(k => k + 1)}
+            >
               Reset view
             </button>
           </div>

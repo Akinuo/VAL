@@ -4,7 +4,7 @@ import { useProgress } from '@/lib/progress'
 import { earned } from '@/lib/badges'
 import type { Content } from '@/lib/content'
 import { isLessonFull, unlockedFlags } from '@/lib/lessons'
-import { IconRibbon, IconLock } from './icons'
+import { IconRibbon, IconLock, IconChevron } from './icons'
 
 export default function Dashboard({ c }: { c: Content }) {
   const { done, email, displayName, loading } = useProgress()
@@ -54,7 +54,7 @@ export default function Dashboard({ c }: { c: Content }) {
       </div>
 
       {/* ── Where you are ── */}
-      <section className="rounded-lg bg-denim p-5 text-white sm:p-6">
+      <section className="rounded-lg bg-denim p-5 text-white shadow-md sm:p-6">
         <p className="text-sm text-white/70">
           {promptLesson ? (continueLesson ? 'Pick up where you left off' : 'Your first lesson') : 'Every lesson is done'}
         </p>
@@ -165,8 +165,11 @@ export default function Dashboard({ c }: { c: Content }) {
 
       {/* ── Badges ── */}
       <details className="group rounded-lg border border-border bg-paper">
-        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 font-display text-lg font-semibold text-denim">
-          Badges
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-display text-lg font-semibold text-denim">
+          <span className="flex items-center gap-2">
+            Badges
+            <IconChevron className="h-4 w-4 text-muted transition-transform duration-200 group-open:rotate-180" />
+          </span>
           <span className="text-sm font-normal text-muted">{earnedBadges.size} of {c.achievements.length} earned</span>
         </summary>
         <ul className="grid gap-2 border-t border-border p-4 sm:grid-cols-2">

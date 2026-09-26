@@ -52,6 +52,15 @@ export function IconCheck({ className }: P) {
   )
 }
 
+// Chevron down — used as the custom dropdown indicator on <select> fields
+export function IconChevron({ className }: P) {
+  return (
+    <svg {...S} className={className} aria-hidden="true">
+      <polyline points="5.5,9 12,15.5 18.5,9" />
+    </svg>
+  )
+}
+
 // Question mark in circle — clean, legible at small sizes
 export function IconQuestion({ className }: P) {
   return (
