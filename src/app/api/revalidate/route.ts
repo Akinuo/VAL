@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
+import { timingSafeEqual } from 'crypto'
 
 // Needs the Node.js runtime — revalidatePath isn't available on Edge.
 export const runtime = 'nodejs'
@@ -9,6 +10,15 @@ export const runtime = 'nodejs'
 // since it's a dynamic segment.
 const STATIC_PATHS = ['/', '/home', '/checklists', '/qr', '/parts', '/settings']
 
+function safeEqual(a: string, b: string): boolean {
+  const bufA = Buffer.from(a)
+  const bufB = Buffer.from(b)
+  // Lengths are public info either way; timingSafeEqual requires equal-length
+  // buffers, so a length mismatch is just an immediate, safe "no".
+  if (bufA.length !== bufB.length) return false
+  return timingSafeEqual(bufA, bufB)
+}
+
 async function handle(req: Request) {
   const url = new URL(req.url)
   const secret = req.headers.get('x-revalidate-secret') ?? url.searchParams.get('secret')
@@ -16,7 +26,7 @@ async function handle(req: Request) {
   if (!process.env.REVALIDATE_SECRET) {
     return NextResponse.json({ ok: false, error: 'REVALIDATE_SECRET is not set on the server.' }, { status: 503 })
   }
-  if (secret !== process.env.REVALIDATE_SECRET) {
+  if (!secret || !safeEqual(secret, process.env.REVALIDATE_SECRET)) {
     return NextResponse.json({ ok: false, error: 'Invalid or missing secret.' }, { status: 401 })
   }
 

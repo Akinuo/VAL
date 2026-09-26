@@ -1,7 +1,7 @@
 'use client'
 import {
   createContext, useCallback, useContext,
-  useEffect, useState, ReactNode,
+  useEffect, useMemo, useState, ReactNode,
 } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from './supabase'
@@ -134,17 +134,25 @@ export function Providers({ children }: { children: ReactNode }) {
     }
   }, [done, uid])
 
-  const signOut = () => {
+  const signOut = useCallback(() => {
     supabase?.auth.signOut()
     // Optimistically clear state; the auth listener will also fire
     setDone(new Set())
     setUid(null)
     setEmail(null)
     setDisplayName(null)
-  }
+  }, [])
+
+  // Without this, every Providers render creates a brand-new object here,
+  // so every component calling useProgress() re-renders on any change —
+  // even ones only reading, say, `email`.
+  const value = useMemo(
+    () => ({ done, mark, email, uid, displayName, loading, signOut }),
+    [done, mark, email, uid, displayName, loading, signOut]
+  )
 
   return (
-    <C.Provider value={{ done, mark, email, uid, displayName, loading, signOut }}>
+    <C.Provider value={value}>
       {children}
     </C.Provider>
   )

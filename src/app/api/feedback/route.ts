@@ -7,7 +7,38 @@ export const runtime = 'nodejs'
 
 const TO_EMAIL = process.env.FEEDBACK_TO_EMAIL || 'bingmenoso@gmail.com'
 
+// Created once per server instance and reused across requests — building a
+// fresh SMTP transport on every submission adds needless connection setup.
+let transporter: ReturnType<typeof nodemailer.createTransport> | null = null
+function getTransporter(user: string, pass: string) {
+  if (!transporter) {
+    transporter = nodemailer.createTransport({ service: 'gmail', auth: { user, pass } })
+  }
+  return transporter
+}
+
+// Lightweight per-IP rate limit. In-memory, so it resets on cold start/redeploy
+// and isn't shared across serverless instances — not a substitute for a real
+// rate limiter (e.g. Upstash) under heavy traffic, but enough to stop casual
+// spam of an endpoint that sends an email and renders a PDF per request.
+const RATE_LIMIT = 5
+const RATE_WINDOW_MS = 10 * 60 * 1000
+const hits = new Map<string, number[]>()
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now()
+  const recent = (hits.get(ip) ?? []).filter(t => now - t < RATE_WINDOW_MS)
+  recent.push(now)
+  hits.set(ip, recent)
+  return recent.length > RATE_LIMIT
+}
+
 export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown'
+  if (rateLimited(ip)) {
+    return NextResponse.json({ ok: false, error: 'Too many submissions — please try again later.' }, { status: 429 })
+  }
+
   let body: unknown
   try {
     body = await req.json()
@@ -38,10 +69,7 @@ export async function POST(req: Request) {
   try {
     const pdfBytes = await buildFeedbackPdf({ name: name || null, email, rating, message, date })
 
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user, pass },
-    })
+    const transporter = getTransporter(user, pass)
 
     await transporter.sendMail({
       from: `"VAL Guide" <${user}>`,
