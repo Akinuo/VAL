@@ -35,11 +35,13 @@ export default async function LandingPage() {
             question, then move on.
           </p>
           <div>
-            <div className="flex flex-wrap gap-3">
-              <Link href={`/lessons/${first.slug}`} className="btn">Start lesson 1</Link>
-              <Link href="/login?mode=signup" className="btn-outline">Sign in to save progress</Link>
-            </div>
-            <p className="mt-3 text-sm text-muted">Free to sign up — takes less than a minute.</p>
+            <Link href={`/lessons/${first.slug}`} className="btn">Start lesson 1</Link>
+            <p className="mt-3 text-sm text-muted">
+              Free to sign up — takes less than a minute.{' '}
+              <Link href="/login?mode=signup" className="font-semibold text-denim underline underline-offset-2 hover:no-underline">
+                Sign in to save progress
+              </Link>
+            </p>
           </div>
         </div>
       </section>
