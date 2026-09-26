@@ -35,12 +35,11 @@ export default async function LandingPage() {
             question, then move on.
           </p>
           <div>
-            <Link href={`/lessons/${first.slug}`} className="btn">Start lesson 1</Link>
+            <Link href={`/login?mode=signup&next=/lessons/${first.slug}`} className="btn">
+              Sign in to start lesson 1
+            </Link>
             <p className="mt-3 text-sm text-muted">
-              Free to sign up — takes less than a minute.{' '}
-              <Link href="/login?mode=signup" className="font-semibold text-denim underline underline-offset-2 hover:no-underline">
-                Sign in to save progress
-              </Link>
+              Free to sign up — takes less than a minute.
             </p>
           </div>
         </div>
@@ -96,8 +95,8 @@ export default async function LandingPage() {
           <h2 className="max-w-md font-display text-3xl font-bold leading-tight tracking-tight">
             Start with the parts of the machine.
           </h2>
-          <Link href={`/lessons/${first.slug}`} className="btn !bg-thread !text-ink hover:!bg-amber-border">
-            Start lesson 1
+          <Link href={`/login?mode=signup&next=/lessons/${first.slug}`} className="btn !bg-thread !text-ink hover:!bg-amber-border">
+            Sign in to start lesson 1
           </Link>
         </div>
       </section>
