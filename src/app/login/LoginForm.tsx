@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { useProgress } from '@/lib/progress'
-import { IconCheck, IconRibbon, IconPlay } from '@/components/icons'
+import { IconCheck, IconRibbon, IconPlay, IconChevron } from '@/components/icons'
 
 // Google "G" logo — inline so there's no extra dependency
 function GoogleLogo() {
@@ -124,8 +124,19 @@ export default function LoginForm() {
     <div className="min-h-screen bg-chalk">
 
       {/* Header */}
-      <header className="border-b border-border bg-paper">
-        <div className="mx-auto flex max-w-app items-center justify-between px-5 py-3">
+      <header
+        className="border-b border-border bg-paper"
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      >
+        <div className="mx-auto flex max-w-app items-center gap-2 px-3 py-3 sm:px-5">
+          <button
+            type="button"
+            onClick={() => (window.history.length > 1 ? router.back() : router.push('/'))}
+            aria-label="Back"
+            className="btn-ghost !px-2 shrink-0"
+          >
+            <IconChevron className="h-5 w-5 rotate-90" />
+          </button>
           <Link href="/" className="flex items-center gap-2 font-display text-base font-bold text-denim">
             <Image src="/logo-mark.png" alt="" width={22} height={22} className="h-[22px] w-[22px]" />
             VAL Guide
@@ -133,7 +144,10 @@ export default function LoginForm() {
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-app gap-0 lg:grid-cols-[1fr_1.1fr]" style={{ minHeight: 'calc(100vh - 49px)' }}>
+      <div
+        className="mx-auto grid max-w-app gap-0 lg:grid-cols-[1fr_1.1fr]"
+        style={{ minHeight: 'calc(100vh - 49px - env(safe-area-inset-top))' }}
+      >
 
         {/* Left — brand panel */}
         <div className="hidden flex-col justify-between border-r border-border bg-denim px-8 py-12 text-white lg:flex">

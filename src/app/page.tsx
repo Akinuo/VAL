@@ -11,7 +11,10 @@ export default async function LandingPage() {
 
   return (
     <div className="min-h-screen bg-chalk text-ink">
-      <header className="mx-auto flex max-w-5xl items-center px-5 py-4">
+      <header
+        className="mx-auto flex max-w-5xl items-center px-5 py-4"
+        style={{ paddingTop: 'calc(env(safe-area-inset-top) + 1rem)' }}
+      >
         <Link href="/" className="flex items-center gap-2 font-display text-xl font-extrabold tracking-tight text-denim">
           <Image src="/logo-mark.png" alt="" width={28} height={28} priority className="h-7 w-7" />
           VAL Guide
