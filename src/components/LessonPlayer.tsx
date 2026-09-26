@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useId, useRef, useState } from 'react'
-import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useProgress } from '@/lib/progress'
 import type { Lesson } from '@/lib/content'
 import { isLessonFull, unlockedFlags } from '@/lib/lessons'
 import { IconCheck, IconLock } from './icons'
+import FloatingToast from './FloatingToast'
 
 // A learner gets this many tries at a given question before we bounce them
 // back to the lesson list — after that, re-reading the material (rather than
@@ -147,6 +147,10 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   // there's nothing to get wrong.
   const canAdvance = !quiz || isCorrect || alreadyPassed
   const nextLesson = lessonIndex === -1 ? null : lessons[lessonIndex + 1] ?? null
+  // Either toast occupies the same fixed bottom-4 slot on small screens —
+  // reserve matching space in the page's own scroll flow so it never
+  // visually covers the option buttons or the step-navigation buttons below.
+  const toastOpen = outOfAttempts || (pick !== null && quiz != null && !isCorrect)
 
   // A step is reachable via the navigator once every step before it has
   // been cleared (answered correctly, already passed, or has no quiz) — or
@@ -195,33 +199,21 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
   const embedInfo = lesson.video_url ? getEmbedInfo(lesson.video_url) : null
 
   return (
-    <article className="grid gap-6 fade-in">
+    <article className={`grid gap-6 fade-in transition-[padding] duration-200 ${toastOpen ? 'pb-24 sm:pb-0' : ''}`}>
 
-      {/* Floating "out of attempts" notice. Portaled straight to <body> so it
-          truly floats above everything — rendering it inside this article
-          would trap it behind the article's own fade-in transform, which
-          breaks `position: fixed` for anything nested inside it. */}
-      {outOfAttempts && typeof document !== 'undefined' && createPortal(
-        <div
-          role="alert"
-          aria-live="assertive"
-          className="fixed inset-x-4 bottom-4 z-[100] mx-auto flex max-w-sm items-start gap-3 rounded-lg border border-red-border bg-white px-4 py-3 shadow-xl sm:right-4 sm:left-auto sm:mx-0"
-        >
-          <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-red-soft text-red">
-            <IconLock className="h-4 w-4" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-ink">Try again</p>
-            <p className="mt-0.5 text-sm text-muted">
-              Out of attempts for this question — taking you back to the lesson list.
-            </p>
-            <Link href="/home" className="mt-2 inline-block text-sm font-medium text-denim underline underline-offset-2">
-              Go now
-            </Link>
-          </div>
-        </div>,
-        document.body
-      )}
+      {/* Floating "out of attempts" notice. See the wrong-answer FloatingToast
+          further down for the sibling notice — the two are mutually
+          exclusive (this only shows once outOfAttempts flips true, at which
+          point the wrong-answer toast's own condition goes false), so they
+          can never be on screen at the same time. */}
+      <FloatingToast
+        show={outOfAttempts}
+        variant="lock"
+        title="Out of attempts"
+        message="Taking you back to the lesson list."
+        action={{ label: 'Go now', href: '/home' }}
+        ariaLive="assertive"
+      />
 
       {/* Breadcrumb */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-muted">
@@ -443,27 +435,31 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
           )}
 
           {/* Feedback */}
-          <div aria-live="polite" className="mt-3 min-h-[2.5rem]">
-            {pick !== null && quiz && !outOfAttempts && (
-              isCorrect ? (
-                <p className="alert-ok flex items-center gap-2">
-                  <IconCheck className="h-4 w-4 shrink-0" />
-                  Correct!{quiz.explanation ? ` ${quiz.explanation}` : ''}
-                </p>
-              ) : (
-                <p className="alert-err">
-                  Not quite — re-read the step, then{' '}
-                  <button className="underline underline-offset-2" onClick={() => setPick(null)}>
-                    try again
-                  </button>, or move on and come back to it later.
-                  {' '}
-                  <span className="block text-xs text-muted mt-1">
-                    {MAX_ATTEMPTS - wrongAttempts} attempt{MAX_ATTEMPTS - wrongAttempts === 1 ? '' : 's'} left.
-                  </span>
-                </p>
-              )
+          <div className="mt-3 min-h-[2.5rem]">
+            {pick !== null && quiz && !outOfAttempts && isCorrect && (
+              <p className="alert-ok flex items-center gap-2" aria-live="polite">
+                <IconCheck className="h-4 w-4 shrink-0" />
+                Correct!{quiz.explanation ? ` ${quiz.explanation}` : ''}
+              </p>
             )}
           </div>
+
+          <FloatingToast
+            show={pick !== null && quiz != null && !isCorrect && !outOfAttempts}
+            variant="warn"
+            title="Not quite"
+            message={
+              <>
+                Re-read the step, then try again — or move on and come back to it later.
+                <span className="mt-1 block text-xs text-muted">
+                  {MAX_ATTEMPTS - wrongAttempts} attempt{MAX_ATTEMPTS - wrongAttempts === 1 ? '' : 's'} left.
+                </span>
+              </>
+            }
+            action={{ label: 'Try again', onClick: () => setPick(null) }}
+            onClose={() => setPick(null)}
+            ariaLive="polite"
+          />
         </div>
 
         {/* Navigation */}
