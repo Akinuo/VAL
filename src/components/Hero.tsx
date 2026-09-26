@@ -57,7 +57,7 @@ export default function Hero({ c }: { c: Content }) {
    <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
     {stats(c).map(({ icon: Icon, n, label }) => (
      <div key={label} className="card flex flex-col items-start gap-1.5 px-4 py-3">
-      <Icon className="h-5 w-5 text-terracotta" />
+      <Icon className="h-5 w-5 text-thread" />
       <dt className="sr-only">{label}</dt>
       <dd className="font-display text-2xl font-semibold text-denim">{n}</dd>
       <span className="text-sm leading-snug text-ink/75">{label}</span>
