@@ -14,6 +14,21 @@ const config: CapacitorConfig = {
     androidScheme: 'https',
     cleartext: false,
   },
+  plugins: {
+    // launchAutoHide is off because the OS's own SplashScreen theme
+    // (android/app/.../styles.xml, AppTheme.NoActionBarLaunch) dismisses
+    // almost immediately on its own — well before the remote page (server.url
+    // above) has actually loaded over the network, leaving a blank/white gap.
+    // Hiding it explicitly once the app shell has mounted (see lib/progress.tsx)
+    // closes that gap instead.
+    SplashScreen: {
+      launchAutoHide: false,
+      backgroundColor: '#22336B', // brand navy (denim), matches tailwind.config.ts
+      androidScaleType: 'CENTER_CROP',
+      showSpinner: true,
+      spinnerColor: '#FFFFFFFF',
+    },
+  },
 }
 
 export default config

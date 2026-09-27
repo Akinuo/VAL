@@ -8,6 +8,8 @@ import type { Session } from '@supabase/supabase-js'
 import { Capacitor } from '@capacitor/core'
 import { App as CapApp } from '@capacitor/app'
 import { Browser } from '@capacitor/browser'
+import { SplashScreen } from '@capacitor/splash-screen'
+import { StatusBar, Style } from '@capacitor/status-bar'
 import { supabase } from './supabase'
 
 const LEGACY_STORAGE_KEY = 'val-progress'
@@ -162,6 +164,35 @@ export function Providers({ children }: { children: ReactNode }) {
 
     return () => { listenerPromise.then(handle => handle.remove()) }
   }, [router])
+
+  // Android's hardware/gesture back button has no default handling here, so
+  // without this it either does nothing or exits the app outright instead of
+  // stepping back through the app's own navigation the way people expect.
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('App')) return
+    const listenerPromise = CapApp.addListener('backButton', ({ canGoBack }) => {
+      if (canGoBack) window.history.back()
+      else CapApp.minimizeApp() // matches normal Android behavior: back at the root minimizes rather than kills the app
+    })
+    return () => { listenerPromise.then(handle => handle.remove()) }
+  }, [])
+
+  // The OS's own splash theme (see capacitor.config.ts) dismisses on its own
+  // almost immediately — well before this remotely-loaded page has actually
+  // finished loading over the network. Hiding it here, once this component has
+  // mounted, means it stays up for the real loading gap instead of a fixed guess.
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('SplashScreen')) return
+    SplashScreen.hide().catch(() => {})
+  }, [])
+
+  // The app's header/nav are light-background (see tailwind.config.ts: chalk/paper),
+  // so status bar text needs to be dark to stay legible — Style.Light means "dark
+  // text for light backgrounds" (the naming is backwards from what it sounds like).
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('StatusBar')) return
+    StatusBar.setStyle({ style: Style.Light }).catch(() => {})
+  }, [])
 
   // Retry any progress that didn't make it to Supabase — e.g. the tab was
   // offline, or a single upsert in `mark` failed. Local storage already has
