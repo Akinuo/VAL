@@ -31,7 +31,19 @@ first.
 
 ## Building the signed APK
 
-From the `android/` directory:
+Whenever `capacitor.config.ts` or anything in `public/` changes, sync it into
+the native project first:
+
+```bash
+npm run cap:sync
+```
+
+(This is what copies `capacitor.config.ts` and `public/` into
+`android/app/src/main/assets/` — the native project won't pick up config or
+asset changes without it. It's git-ignored output, so it's regenerated on
+every sync rather than committed.)
+
+Then, from the `android/` directory:
 
 ```bash
 ./gradlew assembleRelease

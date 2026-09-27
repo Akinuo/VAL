@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VAL Guide</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: #22336B;
+    color: #ffffff;
+    font-family: system-ui, -apple-system, Roboto, Arial, sans-serif;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    padding-top: calc(env(safe-area-inset-top) + 24px);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 24px);
+    box-sizing: border-box;
+  }
+  img { width: 72px; height: auto; margin-bottom: 24px; }
+  h1 { font-size: 1.25rem; margin: 0 0 8px; }
+  p { font-size: 0.95rem; line-height: 1.5; color: rgba(255,255,255,0.75); max-width: 320px; margin: 0 0 28px; }
+  button {
+    background: #E59B1C;
+    color: #16224A;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  button:active { opacity: 0.85; }
+</style>
+</head>
+<body>
+  <img src="logo-mark.png" alt="">
+  <h1>Can't connect right now</h1>
+  <p>VAL Guide needs an internet connection to load your lessons. Check your signal or Wi-Fi, then try again.</p>
+  <!-- Capacitor's WebViewAssetLoader serves this file from the app's local
+       domain (see server.errorPath in capacitor.config.ts), so an absolute
+       URL is needed here to send the retry back to the real remote app
+       instead of reloading this same local error page. -->
+  <button onclick="location.href = 'https://val-ashen-theta.vercel.app'">Try again</button>
+</body>
+</html>

@@ -13,6 +13,10 @@ const config: CapacitorConfig = {
     url: 'https://val-ashen-theta.vercel.app',
     androidScheme: 'https',
     cleartext: false,
+    // Shown from the app's local bundle (see public/error.html) instead of
+    // the WebView's raw browser error page when the remote site above can't
+    // be reached — no signal, DNS failure, the deploy being down, etc.
+    errorPath: 'error.html',
   },
   plugins: {
     // launchAutoHide is off because the OS's own SplashScreen theme
@@ -25,8 +29,11 @@ const config: CapacitorConfig = {
       launchAutoHide: false,
       backgroundColor: '#22336B', // brand navy (denim), matches tailwind.config.ts
       androidScaleType: 'CENTER_CROP',
-      showSpinner: true,
-      spinnerColor: '#FFFFFFFF',
+      // The spinner is hard-coded to render screen-center on Android (a
+      // long-standing Capacitor limitation, not something configurable here),
+      // which put it right on top of the centered badge artwork. The badge
+      // + navy background already reads as "loading" on its own.
+      showSpinner: false,
     },
   },
 }
