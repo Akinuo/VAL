@@ -52,10 +52,15 @@ captures/
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 
-# Keystore files
-# Uncomment the following lines if you do not want to check your keystore files in.
-#*.jks
-#*.keystore
+# Keystore files and signing credentials — never commit these.
+# Back up valguide-release.jks and keystore.properties somewhere safe outside
+# git (password manager, private drive). Losing the .jks means every future
+# release has to be signed with a *different* key, and Android won't let an
+# update install over the old app unless it's signed with the same key —
+# everyone would have to uninstall the old VAL Guide first.
+*.jks
+*.keystore
+keystore.properties
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild

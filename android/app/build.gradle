@@ -1,8 +1,30 @@
 apply plugin: 'com.android.application'
 
+// Release signing credentials live in android/keystore.properties (kept out of
+// git — see android/.gitignore) rather than hardcoded here, so the keystore
+// password isn't sitting in source control. Falls back to null values if the
+// file is missing, so a fresh checkout without it still configures (though
+// assembleRelease will then fail signing until the file/keystore are added —
+// see android/README-signing.md for how to generate one).
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "ph.akinuo.valguide"
     compileSdk = rootProject.ext.compileSdkVersion
+    signingConfigs {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
+    }
     defaultConfig {
         applicationId "ph.akinuo.valguide"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -20,6 +42,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }

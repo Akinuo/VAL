@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand navy (denim), matches tailwind.config.ts / capacitor.config.ts splash backgroundColor -->
+    <color name="colorPrimary">#22336B</color>
+    <color name="colorPrimaryDark">#16224A</color>
+    <color name="colorAccent">#E59B1C</color>
+</resources>
