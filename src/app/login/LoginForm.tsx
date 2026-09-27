@@ -89,6 +89,22 @@ export default function LoginForm() {
     }
   }, [authedEmail, router, params])
 
+  // Belt-and-suspenders cap: the prefetch above and /home's loading.tsx cover
+  // the normal case, but neither can promise a specific number against a
+  // genuinely bad connection — router.replace has no timeout of its own and
+  // will happily leave this screen up indefinitely if the soft navigation
+  // stalls. Falling back to a full browser navigation guarantees this screen
+  // never outlives it by more than 3s: a hard load shows the WebView's own
+  // progress/loading affordance instead of our frozen spinner, and picks up
+  // fresh if the stall was caused by something client-side (a wedged router
+  // state) rather than the network itself.
+  useEffect(() => {
+    if (!redirecting) return
+    const next = params.get('next') ?? '/home'
+    const t = setTimeout(() => { window.location.href = next }, 3000)
+    return () => clearTimeout(t)
+  }, [redirecting, params])
+
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!supabase) {
