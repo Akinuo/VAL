@@ -68,6 +68,20 @@ export default function LoginForm() {
   const [showPw, setShowPw] = useState(false)
   const [redirecting, setRedirecting] = useState(false)
 
+  // The Android app loads this site live from Vercel (see capacitor.config.ts)
+  // rather than bundling it, so every navigation is a real network round trip —
+  // there's no local copy of /home to fall back on. Left alone, that round trip
+  // only starts after the user submits the form, which is exactly the multi-
+  // second stall on "Taking you to your lessons…" that going back and logging
+  // in again "fixes" (it doesn't fix anything — it just reuses the now-warm
+  // connection/route cache from the first attempt). Prefetching here instead
+  // starts that fetch the moment the login screen mounts, so it happens in the
+  // background while the person is typing and is already warm by the time they
+  // submit.
+  useEffect(() => {
+    router.prefetch(params.get('next') ?? '/home')
+  }, [router, params])
+
   useEffect(() => {
     if (authedEmail) {
       setRedirecting(true)
