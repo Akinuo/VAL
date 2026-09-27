@@ -24,11 +24,31 @@ const LEGACY_STORAGE_KEY = 'val-progress'
 const DEV_ONLY_KEY = 'val-progress:dev'
 const accountKey = (uid: string) => `val-progress:${uid}`
 
+// Same per-account scoping as lesson progress, so one device's cached
+// assessment result never leaks between accounts signed in on it.
+const ASSESSMENT_DEV_KEY = 'val-assessment:dev'
+const assessmentKey = (uid: string) => `val-assessment:${uid}`
+
 function readLocal(key: string): string[] {
   try { return JSON.parse(localStorage.getItem(key) || '[]') } catch { return [] }
 }
 function saveLocal(key: string, s: Set<string>) {
   try { localStorage.setItem(key, JSON.stringify([...s])) } catch {}
+}
+
+export type AssessmentRecord = { score: number; total: number; passed: boolean; completedAt: string }
+
+function readLocalAssessment(key: string): AssessmentRecord | null {
+  try {
+    const raw = localStorage.getItem(key)
+    return raw ? (JSON.parse(raw) as AssessmentRecord) : null
+  } catch { return null }
+}
+function saveLocalAssessment(key: string, r: AssessmentRecord | null) {
+  try {
+    if (r) localStorage.setItem(key, JSON.stringify(r))
+    else localStorage.removeItem(key)
+  } catch {}
 }
 
 type Ctx = {
@@ -39,10 +59,13 @@ type Ctx = {
   displayName: string | null
   loading: boolean
   signOut: () => void
+  assessment: AssessmentRecord | null
+  submitAssessment: (record: { score: number; total: number; passed: boolean }) => void
 }
 
 const C = createContext<Ctx>({
   done: new Set(), mark() {}, email: null, uid: null, displayName: null, loading: true, signOut() {},
+  assessment: null, submitAssessment() {},
 })
 export const useProgress = () => useContext(C)
 
@@ -53,6 +76,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState<string | null>(null)
   const [displayName, setDisplayName] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [assessment, setAssessment] = useState<AssessmentRecord | null>(null)
 
   // Idempotent: safe to call with the full known-done set any time, since the
   // (user_id, step_id) primary key + ignoreDuplicates means anything already
@@ -67,6 +91,20 @@ export function Providers({ children }: { children: ReactNode }) {
     if (error) console.error('[progress] failed to sync to Supabase', error)
   }, [])
 
+  // Same idempotent-upsert shape as pushProgress, one row per user
+  // (assessment_attempts.user_id is its primary key) holding their best
+  // attempt so far.
+  const pushAssessment = useCallback(async (uidVal: string, record: AssessmentRecord) => {
+    if (!supabase) return
+    const { error } = await supabase
+      .from('assessment_attempts')
+      .upsert(
+        { user_id: uidVal, score: record.score, total: record.total, passed: record.passed, completed_at: record.completedAt },
+        { onConflict: 'user_id' }
+      )
+    if (error) console.error('[assessment] failed to sync to Supabase', error)
+  }, [])
+
   useEffect(() => {
     // One-time cleanup: purge the old unscoped key so it can't leak into
     // whichever account (or dev session) reads local storage next.
@@ -76,6 +114,7 @@ export function Providers({ children }: { children: ReactNode }) {
       // Local dev without Supabase configured — there are no accounts at
       // all in this mode, so a single shared key is fine.
       setDone(new Set(readLocal(DEV_ONLY_KEY)))
+      setAssessment(readLocalAssessment(ASSESSMENT_DEV_KEY))
       setLoading(false)
       return
     }
@@ -88,6 +127,7 @@ export function Providers({ children }: { children: ReactNode }) {
       if (!session || !supabase) {
         // Signed out — clear in-memory state so the next user starts fresh
         setDone(new Set())
+        setAssessment(null)
         setLoading(false)
         return
       }
@@ -96,18 +136,38 @@ export function Providers({ children }: { children: ReactNode }) {
       // reconcile with the database.
       const local = readLocal(accountKey(session.user.id))
       setDone(new Set(local))
+      const localAssessment = readLocalAssessment(assessmentKey(session.user.id))
+      setAssessment(localAssessment)
 
-      const { data, error } = await supabase
-        .from('progress')
-        .select('step_id')
-        .eq('user_id', session.user.id)
+      const [{ data, error }, { data: aRow, error: aError }] = await Promise.all([
+        supabase.from('progress').select('step_id').eq('user_id', session.user.id),
+        supabase.from('assessment_attempts').select('score,total,passed,completed_at').eq('user_id', session.user.id).maybeSingle(),
+      ])
       if (error) console.error('[progress] failed to load saved progress', error)
+      if (aError) console.error('[assessment] failed to load saved attempt', aError)
 
       const remote = (data ?? []).map(r => r.step_id as string)
       const merged = new Set([...local, ...remote])
 
       setDone(merged)
       saveLocal(accountKey(session.user.id), merged)
+
+      // Keep whichever attempt scored higher — a retake should only ever
+      // improve a learner's record, never erase an earlier passing one.
+      const remoteAssessment: AssessmentRecord | null = aRow
+        ? { score: aRow.score, total: aRow.total, passed: aRow.passed, completedAt: aRow.completed_at }
+        : null
+      const bestAssessment = !remoteAssessment ? localAssessment
+        : !localAssessment ? remoteAssessment
+        : localAssessment.score > remoteAssessment.score ? localAssessment : remoteAssessment
+      setAssessment(bestAssessment)
+      if (bestAssessment) {
+        saveLocalAssessment(assessmentKey(session.user.id), bestAssessment)
+        if (bestAssessment === localAssessment && localAssessment !== remoteAssessment) {
+          pushAssessment(session.user.id, bestAssessment)
+        }
+      }
+
       setLoading(false)
 
       // Push anything this device has that the database doesn't yet —
@@ -128,7 +188,7 @@ export function Providers({ children }: { children: ReactNode }) {
     })
 
     return () => subscription.unsubscribe()
-  }, [pushProgress])
+  }, [pushProgress, pushAssessment])
 
   // On native (Capacitor/Android), Google sign-in has to finish in a system
   // browser tab rather than the app's own WebView — see signInWithGoogle in
@@ -229,6 +289,23 @@ export function Providers({ children }: { children: ReactNode }) {
     // /lessons requires auth, so this shouldn't be reachable signed out.
   }, [done, uid])
 
+  // Records a final-assessment attempt. A retake only overwrites the stored
+  // record when it scores at least as well, so an already-earned
+  // certificate can never be lost to a worse later attempt.
+  const submitAssessment = useCallback((record: { score: number; total: number; passed: boolean }) => {
+    const completedAt = new Date().toISOString()
+    setAssessment(prev => {
+      const next: AssessmentRecord = (!prev || record.score >= prev.score) ? { ...record, completedAt } : prev
+      if (!supabase) {
+        saveLocalAssessment(ASSESSMENT_DEV_KEY, next)
+      } else if (uid) {
+        saveLocalAssessment(assessmentKey(uid), next)
+        pushAssessment(uid, next)
+      }
+      return next
+    })
+  }, [uid, pushAssessment])
+
   const signOut = useCallback(() => {
     supabase?.auth.signOut()
     // Optimistically clear state; the auth listener will also fire.
@@ -239,14 +316,15 @@ export function Providers({ children }: { children: ReactNode }) {
     setUid(null)
     setEmail(null)
     setDisplayName(null)
+    setAssessment(null)
   }, [])
 
   // Without this, every Providers render creates a brand-new object here,
   // so every component calling useProgress() re-renders on any change —
   // even ones only reading, say, `email`.
   const value = useMemo(
-    () => ({ done, mark, email, uid, displayName, loading, signOut }),
-    [done, mark, email, uid, displayName, loading, signOut]
+    () => ({ done, mark, email, uid, displayName, loading, signOut, assessment, submitAssessment }),
+    [done, mark, email, uid, displayName, loading, signOut, assessment, submitAssessment]
   )
 
   return (

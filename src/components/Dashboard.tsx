@@ -4,10 +4,11 @@ import { useProgress } from '@/lib/progress'
 import { earned } from '@/lib/badges'
 import type { Content } from '@/lib/content'
 import { isLessonFull, unlockedFlags } from '@/lib/lessons'
-import { IconRibbon, IconLock, IconChevron } from './icons'
+import { isAssessmentUnlocked } from '@/lib/assessment'
+import { IconRibbon, IconLock, IconChevron, IconCertificate } from './icons'
 
 export default function Dashboard({ c }: { c: Content }) {
-  const { done, email, displayName, loading } = useProgress()
+  const { done, email, displayName, loading, assessment } = useProgress()
 
   const allStepIds = c.lessons.flatMap(l => l.steps.map(s => s.id))
   const completedSteps = allStepIds.filter(id => done.has(id)).length
@@ -159,6 +160,67 @@ export default function Dashboard({ c }: { c: Content }) {
                 </li>
               )
             })
+          })()}
+
+          {/* Final assessment — the last "stop" in the same list, unlocked
+              once every lesson above is fully complete. */}
+          {(() => {
+            const finalUnlocked = isAssessmentUnlocked(c, done)
+            const finalPassed = !!assessment?.passed
+            const locked = !finalUnlocked
+
+            const badge = (
+              <span
+                aria-hidden="true"
+                className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold transition-colors ${
+                  finalPassed
+                    ? 'border-green bg-green text-white'
+                    : locked
+                    ? 'border-denim/15 bg-chalk text-muted/60'
+                    : 'border-denim/30 text-denim group-hover:border-denim'
+                }`}
+              >
+                {finalPassed ? '✓' : locked ? <IconLock className="h-4 w-4" /> : <IconCertificate className="h-4 w-4" />}
+              </span>
+            )
+
+            const body = (
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={`font-medium ${locked ? 'text-muted' : 'text-ink group-hover:text-denim'}`}>
+                    Final assessment
+                  </span>
+                  {finalPassed && <span className="chip-green">Complete</span>}
+                  {locked && <span className="chip-muted">Locked</span>}
+                </div>
+                <p className="mt-0.5 text-sm text-muted">
+                  {finalPassed
+                    ? `Passed with ${assessment!.score}/${assessment!.total} — certificate earned.`
+                    : 'Comprehensive test covering every lesson. Pass it to earn your certificate.'}
+                </p>
+              </div>
+            )
+
+            return (
+              <li>
+                {locked ? (
+                  <div className="flex cursor-not-allowed items-center gap-4 px-5 py-4 opacity-70" aria-disabled="true">
+                    {badge}
+                    {body}
+                    <IconLock className="h-4 w-4 shrink-0 text-muted/50" aria-hidden />
+                  </div>
+                ) : (
+                  <Link
+                    href="/assessment"
+                    className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-denim-light"
+                  >
+                    {badge}
+                    {body}
+                    <span className="shrink-0 text-lg text-muted group-hover:text-denim" aria-hidden>›</span>
+                  </Link>
+                )}
+              </li>
+            )
           })()}
         </ol>
       </section>

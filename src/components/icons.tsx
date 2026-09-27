@@ -194,6 +194,30 @@ export function IconAlert({ className }: P) {
   )
 }
 
+// Download — arrow into a tray, used for the certificate download button
+export function IconDownload({ className }: P) {
+  return (
+    <svg {...S} className={className} aria-hidden="true">
+      <path d="M12 3v12.5" />
+      <polyline points="7,11 12,15.5 17,11" />
+      <path d="M4.5 16.5V19a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-2.5" />
+    </svg>
+  )
+}
+
+// Diploma / scroll — used for the final assessment and its certificate
+export function IconCertificate({ className }: P) {
+  return (
+    <svg {...S} className={className} aria-hidden="true">
+      <rect x="4" y="3.5" width="16" height="12" rx="1.5" />
+      <line x1="7" y1="7.5" x2="17" y2="7.5" />
+      <line x1="7" y1="10.5" x2="14" y2="10.5" />
+      <circle cx="12" cy="18.5" r="2.3" />
+      <path d="M10.3 20.4 L9.3 22.5 L12 21.3 L14.7 22.5 L13.7 20.4" />
+    </svg>
+  )
+}
+
 // Sparkle / clean — used for cleaning lesson
 export function IconSparkle({ className }: P) {
   return (

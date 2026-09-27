@@ -8,12 +8,13 @@ export async function middleware(req: NextRequest) {
   // No Supabase configured (e.g. local dev on content.json) — nothing to gate.
   if (!url || !key) return NextResponse.next()
 
-  // /parts and /lessons both require an account (only the homepage preview
-  // is open to everyone). Guest localStorage progress (see lib/progress.tsx)
-  // is still used as a local cache once signed in, but it's no longer a
-  // substitute for auth — signing in is required to reach either route.
+  // /parts, /lessons, and /assessment all require an account (only the
+  // homepage preview is open to everyone). Guest localStorage progress (see
+  // lib/progress.tsx) is still used as a local cache once signed in, but
+  // it's no longer a substitute for auth — signing in is required to reach
+  // any of these routes.
   const { pathname } = req.nextUrl
-  const needsAuth = pathname === '/parts' || pathname === '/lessons' || pathname.startsWith('/lessons/')
+  const needsAuth = pathname === '/parts' || pathname === '/lessons' || pathname.startsWith('/lessons/') || pathname === '/assessment'
   if (!needsAuth) return NextResponse.next()
 
   const res = NextResponse.next()
@@ -35,5 +36,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/parts', '/lessons', '/lessons/:path*'],
+  matcher: ['/parts', '/lessons', '/lessons/:path*', '/assessment'],
 }

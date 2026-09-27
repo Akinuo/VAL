@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useProgress } from '@/lib/progress'
 import type { Lesson } from '@/lib/content'
 import { isLessonFull, unlockedFlags } from '@/lib/lessons'
+import { shuffle } from '@/lib/shuffle'
 import { IconCheck, IconLock } from './icons'
 import FloatingToast from './FloatingToast'
 
@@ -15,17 +16,6 @@ const MAX_ATTEMPTS = 3
 // How long the "out of tries" toast stays up before it redirects, so the
 // learner has a moment to read it rather than being yanked away instantly.
 const LOCKOUT_REDIRECT_MS = 2500
-
-// Fisher–Yates — used to reshuffle quiz option order on retry so a wrong
-// guess can't just be "solved" by remembering a screen position.
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr]
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j], a[i]]
-  }
-  return a
-}
 
 declare global {
   interface Window {
