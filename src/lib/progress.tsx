@@ -138,12 +138,19 @@ export function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase || !Capacitor.isNativePlatform() || !Capacitor.isPluginAvailable('App')) return
 
+    // Must match NATIVE_NEXT_KEY in src/app/login/LoginForm.tsx. `next` travels
+    // via localStorage rather than a query string on the redirect URL, because
+    // Supabase requires an exact string match (no wildcards) for non-http(s)
+    // redirectTo values — any query string on it would fail that check.
+    const NATIVE_NEXT_KEY = 'valguide_oauth_next'
+
     const finishNativeSignIn = async (url: string) => {
       let parsed: URL
       try { parsed = new URL(url) } catch { return }
       const code = parsed.searchParams.get('code')
       if (!code) return
-      const next = parsed.searchParams.get('next') || '/home'
+      let next = '/home'
+      try { next = localStorage.getItem(NATIVE_NEXT_KEY) || '/home'; localStorage.removeItem(NATIVE_NEXT_KEY) } catch {}
       await Browser.close().catch(() => {})
       const { error } = await supabase!.auth.exchangeCodeForSession(code)
       if (!error) router.replace(next)

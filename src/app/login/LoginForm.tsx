@@ -12,7 +12,16 @@ import { IconCheck, IconRibbon, IconPlay, IconChevron } from '@/components/icons
 // Custom URL scheme registered in android/app/src/main/AndroidManifest.xml.
 // Must also be added to the Supabase project's allow-listed Redirect URLs
 // (Authentication → URL Configuration) or Supabase will reject it.
+//
+// IMPORTANT: Supabase only does wildcard/pattern matching against redirectTo
+// for http(s) URLs. For any other scheme (like this one) it requires an
+// EXACT string match against the allow-list entry — no query string, no
+// trailing slash difference, nothing. Appending ?next=... here makes the
+// match fail silently and Supabase falls back to the Site URL instead,
+// which is why this constant must stay a bare, static string. `next` is
+// carried separately via localStorage (see NATIVE_NEXT_KEY below).
 const NATIVE_REDIRECT_SCHEME = 'ph.akinuo.valguide://auth/callback'
+const NATIVE_NEXT_KEY = 'valguide_oauth_next'
 
 // Google "G" logo — inline so there's no extra dependency
 function GoogleLogo() {
@@ -117,11 +126,14 @@ export default function LoginForm() {
       // and leaving people stranded on the web app. Opening data.url ourselves in
       // Browser (Chrome Custom Tabs) is what Google allows, and the appUrlOpen
       // listener in lib/progress.tsx catches the redirect back into the app.
+      if (canUseNativeBrowser) {
+        try { localStorage.setItem(NATIVE_NEXT_KEY, next) } catch {}
+      }
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: canUseNativeBrowser
-            ? `${NATIVE_REDIRECT_SCHEME}?next=${encodeURIComponent(next)}`
+            ? NATIVE_REDIRECT_SCHEME
             : `${location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
           skipBrowserRedirect: canUseNativeBrowser,
         },
