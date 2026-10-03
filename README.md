@@ -38,3 +38,8 @@ Lessons, steps and quiz questions come from `QUIZ.docx` (8 videos x 5 questions)
 
 ## Not included yet
 In-app admin screens (use the Supabase dashboard), PWA/offline caching, and syncing checklist ticks to Supabase (they stay on the device).
+
+## Load balancing
+
+- **Vercel (current production):** requests are already load-balanced across Vercel's edge/serverless instances; nothing to configure.
+- **Self-hosted:** `docker compose up -d --build --scale app=3` runs an nginx load balancer (`deploy/nginx/`) in front of N app replicas — least-connections routing, passive health checks with retry on a failed replica, and per-IP rate limits (stricter on `/api/feedback`) enforced at the balancer so they hold across replicas. Needs a `.env` with the values from `.env.example`. Terminate TLS in front of it (cloud LB, Cloudflare, or certbot); `/api/health` is the liveness endpoint.
