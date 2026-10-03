@@ -45,7 +45,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Providers>
-          <AppShell>{children}</AppShell>
+          <div id="app-root">
+            <AppShell>{children}</AppShell>
+          </div>
           <CookieConsent />
         </Providers>
       </body>
