@@ -5,7 +5,7 @@ import { useSyncExternalStore } from 'react'
 // Nothing here is sent to a server: the record only says what they agreed to.
 const KEY = 'bmo-consent-v1'
 
-export type Consent = { v: 1; thirdParty: boolean; at: string }
+type Consent = { v: 1; thirdParty: boolean; at: string }
 
 let memory: string | null = null // fallback when localStorage is blocked
 let panelOpen = false

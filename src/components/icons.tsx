@@ -61,19 +61,6 @@ export function IconChevron({ className }: P) {
   )
 }
 
-// Question mark in circle — clean, legible at small sizes
-export function IconQuestion({ className }: P) {
-  return (
-    <svg {...S} className={className} aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      {/* Question curve */}
-      <path d="M9.5 9.5a2.5 2.5 0 0 1 4.9.8c0 1.6-2.4 2-2.4 3.7" />
-      {/* Dot */}
-      <circle cx="12" cy="17" r="0.8" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
 // QR code — three corner squares + data dots, recognisable at 16px
 export function IconQr({ className }: P) {
   return (
@@ -135,35 +122,11 @@ export function IconRibbon({ className }: P) {
   )
 }
 
-// Needle — used in lesson player video placeholder
-export function IconNeedle({ className }: P) {
-  return (
-    <svg {...S} className={className} aria-hidden="true">
-      {/* Needle shaft */}
-      <line x1="12" y1="3" x2="12" y2="19" />
-      {/* Eye */}
-      <ellipse cx="12" cy="6" rx="1.8" ry="1.2" />
-      {/* Point */}
-      <path d="M11 19 Q12 22 13 19" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
 // Wrench / settings — used for machine preparation
 export function IconWrench({ className }: P) {
   return (
     <svg {...S} className={className} aria-hidden="true">
       <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l2.3-2.3a6 6 0 0 1-7.8 7.8l-5.1 5.1a2.12 2.12 0 0 1-3-3l5.1-5.1a6 6 0 0 1 7.8-7.8l-2.3 2.3z" />
-    </svg>
-  )
-}
-
-// Shield — used for safety lesson
-export function IconShield({ className }: P) {
-  return (
-    <svg {...S} className={className} aria-hidden="true">
-      <path d="M12 2.5 L20 6 V12c0 5-8 9.5-8 9.5S4 17 4 12V6L12 2.5z" />
-      <polyline points="9,12 11,14 15,10" />
     </svg>
   )
 }
@@ -218,12 +181,3 @@ export function IconCertificate({ className }: P) {
   )
 }
 
-// Sparkle / clean — used for cleaning lesson
-export function IconSparkle({ className }: P) {
-  return (
-    <svg {...S} className={className} aria-hidden="true">
-      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  )
-}

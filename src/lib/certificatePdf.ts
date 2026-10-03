@@ -1,6 +1,6 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from 'pdf-lib'
 
-export type CertificatePdfInput = {
+type CertificatePdfInput = {
   name: string
   score: number
   total: number

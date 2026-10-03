@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { IconLock, IconAlert } from './icons'
 
-export type ToastVariant = 'warn' | 'lock'
+type ToastVariant = 'warn' | 'lock'
 
 type ToastAction = { label: string; href?: string; onClick?: () => void }
 

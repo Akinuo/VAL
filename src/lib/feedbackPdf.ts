@@ -1,6 +1,6 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont } from 'pdf-lib'
 
-export type FeedbackPdfInput = {
+type FeedbackPdfInput = {
   name: string | null
   email: string | null
   rating: number
