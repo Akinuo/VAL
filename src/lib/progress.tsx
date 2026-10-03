@@ -10,6 +10,7 @@ import { App as CapApp } from '@capacitor/app'
 import { Browser } from '@capacitor/browser'
 import { SplashScreen } from '@capacitor/splash-screen'
 import { StatusBar, Style } from '@capacitor/status-bar'
+import { safeNext } from '@/lib/safeNext'
 import { supabase } from './supabase'
 
 const LEGACY_STORAGE_KEY = 'val-progress'
@@ -212,7 +213,7 @@ export function Providers({ children }: { children: ReactNode }) {
       const code = parsed.searchParams.get('code')
       if (!code) return
       let next = '/home'
-      try { next = localStorage.getItem(NATIVE_NEXT_KEY) || '/home'; localStorage.removeItem(NATIVE_NEXT_KEY) } catch {}
+      try { next = safeNext(localStorage.getItem(NATIVE_NEXT_KEY)); localStorage.removeItem(NATIVE_NEXT_KEY) } catch {}
       await Browser.close().catch(() => {})
       const { error } = await supabase!.auth.exchangeCodeForSession(code)
       if (!error) router.replace(next)

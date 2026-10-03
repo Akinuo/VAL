@@ -21,8 +21,8 @@ Without step 3 the app still runs on the bundled content in `src/data/content.js
 - `npm run seed` regenerates `supabase/seed.sql` from `src/data/content.json`.
 - Content pages are ISR (`revalidate = 3600`), so edits made straight in the Supabase Table Editor can take up to an hour to appear — or never, if the deploy that last built the page predates your edit. To see changes immediately:
   1. Add `REVALIDATE_SECRET` (any random string) in Vercel > Project Settings > Environment Variables, and redeploy once so it's live.
-  2. In Supabase > Database > Webhooks, add a webhook per content table (`lessons`, `steps`, `quiz_questions`, `checklists`, `parts`, `faqs`, `achievements`) for INSERT/UPDATE/DELETE, type "HTTP Request", method POST, URL `https://<your-domain>/api/revalidate?secret=<REVALIDATE_SECRET>`.
-  3. Or trigger it by hand after an edit: `curl -X POST "https://<your-domain>/api/revalidate?secret=<REVALIDATE_SECRET>"`.
+  2. In Supabase > Database > Webhooks, add a webhook per content table (`lessons`, `steps`, `quiz_questions`, `checklists`, `parts`, `faqs`, `achievements`) for INSERT/UPDATE/DELETE, type "HTTP Request", method POST, URL `https://<your-domain>/api/revalidate`, with an HTTP header `x-revalidate-secret: <REVALIDATE_SECRET>`.
+  3. Or trigger it by hand after an edit: `curl -X POST -H "x-revalidate-secret: <REVALIDATE_SECRET>" "https://<your-domain>/api/revalidate"`.
 
 ## Quiz content
 Lessons, steps and quiz questions come from `QUIZ.docx` (8 videos x 5 questions). Each lesson has five steps, and each step ends with one quiz question. Step text summarises what the answer key tests; check it against your videos. Quiz explanations are empty, so a correct answer just shows "Correct." Fill `quiz_questions.explanation` to add more.

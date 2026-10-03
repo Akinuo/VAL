@@ -21,7 +21,8 @@ function safeEqual(a: string, b: string): boolean {
 
 async function handle(req: Request) {
   const url = new URL(req.url)
-  const secret = req.headers.get('x-revalidate-secret') ?? url.searchParams.get('secret')
+  // Header only: secrets in query strings end up in access logs and proxies.
+  const secret = req.headers.get('x-revalidate-secret')
 
   if (!process.env.REVALIDATE_SECRET) {
     return NextResponse.json({ ok: false, error: 'REVALIDATE_SECRET is not set on the server.' }, { status: 503 })
@@ -40,6 +41,8 @@ async function handle(req: Request) {
     // no/invalid JSON body — ignore, slug from the query string still applies
   }
 
+  if (slug && !/^[a-z0-9-]{1,80}$/i.test(slug)) slug = null
+
   const revalidated = [...STATIC_PATHS]
   for (const p of STATIC_PATHS) revalidatePath(p)
 
@@ -56,4 +59,3 @@ async function handle(req: Request) {
 }
 
 export const POST = handle
-export const GET = handle

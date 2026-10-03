@@ -1,12 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
+import { safeNext } from '@/lib/safeNext'
 
 export async function GET(req: NextRequest) {
   const { searchParams, origin } = req.nextUrl
   const code = searchParams.get('code')
-  const raw = searchParams.get('next') ?? '/home'
-  // Only allow same-site paths
-  const next = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/home'
+  const next = safeNext(searchParams.get('next'))
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY

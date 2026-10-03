@@ -23,18 +23,45 @@ function getTransporter(user: string, pass: string) {
 // spam of an endpoint that sends an email and renders a PDF per request.
 const RATE_LIMIT = 5
 const RATE_WINDOW_MS = 10 * 60 * 1000
+const MAX_TRACKED_IPS = 5000
+const MAX_BODY_BYTES = 8 * 1024
+const EMAIL_RE = /^[^\s@<>",;:]+@[^\s@<>",;:]+\.[^\s@<>",;:]+$/
 const hits = new Map<string, number[]>()
 
 function rateLimited(ip: string): boolean {
   const now = Date.now()
+  // Bound memory: drop expired entries once the table grows large.
+  if (hits.size > MAX_TRACKED_IPS) {
+    for (const [k, v] of hits) if (!v.some(t => now - t < RATE_WINDOW_MS)) hits.delete(k)
+    if (hits.size > MAX_TRACKED_IPS) hits.clear()
+  }
   const recent = (hits.get(ip) ?? []).filter(t => now - t < RATE_WINDOW_MS)
   recent.push(now)
   hits.set(ip, recent)
   return recent.length > RATE_LIMIT
 }
 
+// Reject cross-site browser POSTs. Non-browser clients send no Origin and are
+// still covered by the rate limit.
+function crossSite(req: Request): boolean {
+  const origin = req.headers.get('origin')
+  if (!origin) return false
+  const host = req.headers.get('x-forwarded-host') ?? req.headers.get('host')
+  try { return new URL(origin).host !== host } catch { return true }
+}
+
+// Strip control characters so user text can't smuggle headers into the email.
+const clean = (v: string) => v.replace(/[\u0000-\u001f\u007f]+/g, ' ').trim()
+
 export async function POST(req: Request) {
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown'
+  if (crossSite(req)) {
+    return NextResponse.json({ ok: false, error: 'Forbidden.' }, { status: 403 })
+  }
+  if (Number(req.headers.get('content-length') ?? 0) > MAX_BODY_BYTES) {
+    return NextResponse.json({ ok: false, error: 'Request too large.' }, { status: 413 })
+  }
+
+  const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown'
   if (rateLimited(ip)) {
     return NextResponse.json({ ok: false, error: 'Too many submissions — please try again later.' }, { status: 429 })
   }
@@ -47,9 +74,10 @@ export async function POST(req: Request) {
   }
 
   const b = (body ?? {}) as Record<string, unknown>
-  const name = String(b.name ?? '').slice(0, 80).trim()
+  const name = clean(String(b.name ?? '').slice(0, 80))
   const message = String(b.message ?? '').slice(0, 1000).trim()
-  const email = b.email ? String(b.email).slice(0, 254).trim() : null
+  const rawEmail = b.email ? clean(String(b.email).slice(0, 254)) : ''
+  const email = EMAIL_RE.test(rawEmail) ? rawEmail : null
   const rating = Math.min(5, Math.max(1, Number(b.rating) || 5))
 
   if (message.length < 5) {

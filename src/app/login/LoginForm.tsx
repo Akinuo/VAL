@@ -4,6 +4,7 @@ import { SpoolMark } from '@/components/Motifs'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { safeNext } from '@/lib/safeNext'
 import { Capacitor } from '@capacitor/core'
 import { Browser } from '@capacitor/browser'
 import { supabase } from '@/lib/supabase'
@@ -80,13 +81,13 @@ export default function LoginForm() {
   // background while the person is typing and is already warm by the time they
   // submit.
   useEffect(() => {
-    router.prefetch(params.get('next') ?? '/home')
+    router.prefetch(safeNext(params.get('next')))
   }, [router, params])
 
   useEffect(() => {
     if (authedEmail) {
       setRedirecting(true)
-      router.replace(params.get('next') ?? '/home')
+      router.replace(safeNext(params.get('next')))
     }
   }, [authedEmail, router, params])
 
@@ -101,7 +102,7 @@ export default function LoginForm() {
   // state) rather than the network itself.
   useEffect(() => {
     if (!redirecting) return
-    const next = params.get('next') ?? '/home'
+    const next = safeNext(params.get('next'))
     const t = setTimeout(() => { window.location.href = next }, 3000)
     return () => clearTimeout(t)
   }, [redirecting, params])
@@ -126,7 +127,7 @@ export default function LoginForm() {
       setMsgType('err')
     } else if (data.session) {
       setRedirecting(true)
-      router.replace(params.get('next') ?? '/home')
+      router.replace(safeNext(params.get('next')))
     } else {
       setMsg('Check your email to confirm your account, then log in.')
       setMsgType('ok')
@@ -141,7 +142,7 @@ export default function LoginForm() {
     }
     setGoogleLoading(true)
     setMsg('')
-    const next = params.get('next') ?? '/home'
+    const next = safeNext(params.get('next'))
     // isPluginAvailable matters here specifically because this app loads its
     // JS live from Vercel into an Android shell that only gets rebuilt
     // manually: a phone can be running an older build that was compiled
