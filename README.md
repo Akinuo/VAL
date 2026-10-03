@@ -1,4 +1,4 @@
-# VAL Guide: Basic Sewing Machine Operation
+# B.M.O — Basic Machine Operation (also known as B.M.O)
 
 Mobile-first self-learning app for BTLED Home Economics students. Next.js 14 (App Router) + TypeScript + Tailwind, Supabase Free (Postgres + Auth), Vercel Free.
 

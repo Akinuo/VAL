@@ -8,6 +8,7 @@ import { isLessonFull, unlockedFlags } from '@/lib/lessons'
 import { shuffle } from '@/lib/shuffle'
 import { IconCheck, IconLock } from './icons'
 import FloatingToast from './FloatingToast'
+import { saveConsent, useConsent } from '@/lib/consent'
 
 // A learner gets this many tries at a given question before we bounce them
 // back to the lesson list — after that, re-reading the material (rather than
@@ -65,6 +66,7 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
     const q = lesson.steps[0]?.quiz_questions?.[0]
     return q ? q.options.map((_, i) => i) : []
   })
+  const { thirdParty } = useConsent()
   const [vid, setVid] = useState(false)
   const [vidLoaded, setVidLoaded] = useState(false)
   const [playing, setPlaying] = useState(false)
@@ -339,6 +341,23 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
               )}
             </div>
           ) : (
+            !thirdParty ? (
+              <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-6 text-center">
+                <p className="max-w-sm text-sm text-white">
+                  This video is served by YouTube / Google Drive, which may set cookies and see your IP address.
+                  Allow it to watch the lesson video.
+                </p>
+                <button
+                  className="btn !bg-thread !text-ink hover:!bg-amber-border"
+                  onClick={() => { saveConsent(true); setVidLoaded(false); setVid(true) }}
+                >
+                  Allow and play video
+                </button>
+                <Link href="/privacy" className="text-xs text-white/60 underline underline-offset-2">
+                  Privacy Statement
+                </Link>
+              </div>
+            ) : (
             <button
               className="flex h-full w-full flex-col items-center justify-center gap-3 text-center px-6 active:bg-white/5"
               onClick={() => { setVidLoaded(false); setVid(true) }}
@@ -352,6 +371,7 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
               <span className="text-sm font-medium text-white">Play video</span>
               <span className="text-xs text-white/40">Tap once to load, then tap play</span>
             </button>
+            )
           )
         ) : (
           <div className="px-4 py-3">

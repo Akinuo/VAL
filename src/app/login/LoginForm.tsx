@@ -217,7 +217,7 @@ export default function LoginForm() {
           </button>
           <Link href="/" className="flex items-center gap-2 font-display text-base font-bold text-denim">
             <Image src="/logo-mark.png" alt="" width={22} height={22} className="h-[22px] w-[22px]" />
-            VAL Guide
+            B.M.O
           </Link>
         </div>
       </header>
@@ -234,7 +234,7 @@ export default function LoginForm() {
               {isSignup ? 'Start learning today.' : 'Welcome back.'}
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-white/65">
-              VAL Guide walks you through basic sewing machine operation — parts, threading, bobbin
+              B.M.O (Basic Machine Operation) walks you through basic sewing machine operation — parts, threading, bobbin
               winding, stitch settings, safety, and care.
             </p>
             <ul className="mt-8 grid gap-3">
@@ -340,6 +340,17 @@ export default function LoginForm() {
                   </span>
                 ) : isSignup ? 'Create account' : 'Log in'}
               </button>
+
+              {isSignup && (
+                <p className="text-xs leading-relaxed text-muted">
+                  By creating an account you agree that we may process your email and learning progress as
+                  described in our{' '}
+                  <Link href="/privacy" className="font-medium text-denim underline underline-offset-2">
+                    Privacy Statement
+                  </Link>
+                  , under the Data Privacy Act of 2012.
+                </p>
+              )}
 
               {msg && (
                 <p aria-live="polite" className={msgType === 'ok' ? 'alert-ok' : 'alert-err'}>

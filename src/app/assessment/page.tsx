@@ -5,7 +5,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Final assessment',
-  description: 'Comprehensive final assessment covering every VAL Guide lesson — pass it to earn your certificate of completion.',
+  description: 'Comprehensive final assessment covering every B.M.O lesson — pass it to earn your certificate of completion.',
   robots: { index: false, follow: true },
 }
 

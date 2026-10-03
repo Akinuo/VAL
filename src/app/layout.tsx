@@ -5,6 +5,7 @@ import '@fontsource/atkinson-hyperlegible/700.css'
 import type { Metadata, Viewport } from 'next'
 import { Providers } from '@/lib/progress'
 import AppShell from '@/components/AppShell'
+import CookieConsent from '@/components/CookieConsent'
 
 const SITE_DESCRIPTION =
   'Guided lessons, quizzes, and checklists for BTLED Home Economics students learning basic sewing machine operation.'
@@ -12,15 +13,15 @@ const SITE_DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   title: {
-    default: 'VAL Guide — Basic Sewing Machine Operation',
+    default: 'Basic Machine Operation (B.M.O)',
     // Every page below sets its own title (e.g. "Checklists") and inherits
-    // "— VAL Guide" from here, so tabs/bookmarks/search results stop being
+    // "— B.M.O" from here, so tabs/bookmarks/search results stop being
     // identical across pages without repeating the suffix everywhere.
-    template: '%s — VAL Guide',
+    template: '%s — B.M.O',
   },
   description: SITE_DESCRIPTION,
   openGraph: {
-    title: 'VAL Guide — Basic Sewing Machine Operation',
+    title: 'Basic Machine Operation (B.M.O)',
     description: SITE_DESCRIPTION,
     images: ['/logo-full.png'],
   },
@@ -36,12 +37,6 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://www.youtube-nocookie.com" />
-        <link rel="preconnect" href="https://drive.google.com" />
-        <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
-        <link rel="dns-prefetch" href="https://drive.google.com" />
-      </head>
       <body className="bg-chalk font-sans text-ink">
         <a
           href="#main"
@@ -51,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Providers>
           <AppShell>{children}</AppShell>
+          <CookieConsent />
         </Providers>
       </body>
     </html>

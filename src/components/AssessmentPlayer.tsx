@@ -71,12 +71,12 @@ export default function AssessmentPlayer({ c }: { c: Content }) {
       // to this page.
       const { buildCertificatePdf } = await import('@/lib/certificatePdf')
       const date = new Date().toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' })
-      const bytes = await buildCertificatePdf({ name: certName.trim() || 'VAL Guide Student', score, total, date })
+      const bytes = await buildCertificatePdf({ name: certName.trim() || 'B.M.O Student', score, total, date })
       const blob = new Blob([new Uint8Array(bytes)], { type: 'application/pdf' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `VAL-Guide-Certificate-${(certName.trim() || 'certificate').replace(/\s+/g, '-')}.pdf`
+      a.download = `BMO-Certificate-${(certName.trim() || 'certificate').replace(/\s+/g, '-')}.pdf`
       document.body.appendChild(a)
       a.click()
       a.remove()

@@ -1,6 +1,8 @@
 'use client'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import Nav, { TabBar } from './Nav'
+import ConsentLink from './ConsentLink'
 
 // These pages draw their own full-page layout
 const OWN_LAYOUT = new Set(['/', '/login'])
@@ -17,8 +19,12 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <footer className="hidden border-t border-border bg-paper sm:block">
-        <div className="mx-auto max-w-5xl px-6 py-4 text-sm text-muted">
-          VAL Guide for BTLED Home Economics
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-6 py-4 text-sm text-muted">
+          <span>B.M.O (Basic Machine Operation) for BTLED Home Economics</span>
+          <span className="flex gap-4">
+            <Link href="/privacy" className="underline underline-offset-2">Privacy Statement</Link>
+            <ConsentLink />
+          </span>
         </div>
       </footer>
       <TabBar />

@@ -34,7 +34,7 @@ export default function Nav() {
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/home" className="flex items-center gap-2 font-display text-xl font-extrabold tracking-tight text-denim">
           <Image src="/logo-mark.png" alt="" width={28} height={28} priority className="h-7 w-7" />
-          VAL Guide
+          B.M.O
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-1 sm:flex">

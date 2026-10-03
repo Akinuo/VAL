@@ -86,7 +86,7 @@ export default function QrHub({ c }: { c: Content }) {
         <a
           className="btn"
           href={img}
-          download={`val-guide-${path.replace(/[^a-z0-9]+/gi, '-')}.png`}
+          download={`bmo-${path.replace(/[^a-z0-9]+/gi, '-')}.png`}
         >
           Download PNG
         </a>

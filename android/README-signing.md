@@ -66,7 +66,7 @@ won't need to re-enter them each time).
 
 ## If your friend still can't install it
 
-- Make sure they uninstall any previous copy of VAL Guide first — a
+- Make sure they uninstall any previous copy of B.M.O first — a
   differently-signed APK (e.g. a debug build vs. this release build) can't
   install over an existing install with a different signature.
 - Confirm the APK actually finished transferring (a partial download/copy

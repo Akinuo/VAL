@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 // metadata itself — this server-component layout carries it instead.
 export const metadata: Metadata = {
   title: 'Feedback',
-  description: 'Share feedback on VAL Guide — what worked, what didn\u2019t, and what to add next.',
+  description: 'Share feedback on B.M.O — what worked, what didn\u2019t, and what to add next.',
 }
 
 export default function FeedbackLayout({ children }: { children: React.ReactNode }) {

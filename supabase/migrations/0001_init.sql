@@ -1,4 +1,4 @@
--- VAL Guide schema + RLS. Run in the Supabase SQL editor (or `supabase db push`), then run supabase/seed.sql.
+-- B.M.O schema + RLS. Run in the Supabase SQL editor (or `supabase db push`), then run supabase/seed.sql.
 create table public.profiles (id uuid primary key references auth.users(id) on delete cascade, role text not null default 'student' check (role in ('student','admin')), created_at timestamptz not null default now());
 create function public.is_admin() returns boolean language sql stable security definer set search_path = public as $$ select exists (select 1 from public.profiles where id = auth.uid() and role = 'admin') $$;
 create function public.handle_new_user() returns trigger language plpgsql security definer set search_path = public as $$ begin insert into public.profiles (id) values (new.id) on conflict do nothing; return new; end $$;

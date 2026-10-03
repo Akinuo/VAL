@@ -45,7 +45,7 @@ export async function buildFeedbackPdf({ name, email, rating, message, date }: F
 
   let y = PAGE_H - 64
 
-  page.drawText('VAL Guide', { x: MARGIN, y, size: 12, font: bold, color: muted })
+  page.drawText('B.M.O', { x: MARGIN, y, size: 12, font: bold, color: muted })
   y -= 22
   page.drawText('Feedback submission', { x: MARGIN, y, size: 20, font: bold, color: denim })
   y -= 12

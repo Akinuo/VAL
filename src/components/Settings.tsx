@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase'
 import { useProgress } from '@/lib/progress'
 import { IconCheck } from './icons'
 import FaqList from './FaqList'
+import ConsentLink from './ConsentLink'
 
 export default function Settings({ faqs }: { faqs: { q: string; a: string }[] }) {
   const router = useRouter()
@@ -92,6 +93,17 @@ export default function Settings({ faqs }: { faqs: { q: string; a: string }[] })
         <h2 className="font-display text-lg font-semibold text-denim">Frequently asked questions</h2>
         <div className="mt-4">
           <FaqList faqs={faqs} />
+        </div>
+      </section>
+
+      <section className="card p-5 sm:p-6">
+        <h2 className="font-display text-lg font-semibold text-denim">Privacy &amp; cookies</h2>
+        <p className="mt-1 text-sm text-muted">
+          See how your personal data is handled under the Data Privacy Act of 2012, or change what you allowed.
+        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-denim">
+          <Link href="/privacy" className="font-medium underline underline-offset-2">Privacy Statement</Link>
+          <ConsentLink className="font-medium" />
         </div>
       </section>
 

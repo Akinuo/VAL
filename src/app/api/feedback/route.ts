@@ -72,12 +72,12 @@ export async function POST(req: Request) {
     const transporter = getTransporter(user, pass)
 
     await transporter.sendMail({
-      from: `"VAL Guide" <${user}>`,
+      from: `"B.M.O" <${user}>`,
       to: TO_EMAIL,
       replyTo: email || undefined,
-      subject: `VAL Guide feedback — ${rating}/5 from ${name || 'Anonymous'}`,
+      subject: `B.M.O feedback — ${rating}/5 from ${name || 'Anonymous'}`,
       text: [
-        'New feedback was submitted on VAL Guide.',
+        'New feedback was submitted on B.M.O.',
         '',
         `Name: ${name || 'Anonymous'}`,
         `Email: ${email || 'Not signed in'}`,
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
       ].join('\n'),
       attachments: [
         {
-          filename: `val-guide-feedback-${Date.now()}.pdf`,
+          filename: `bmo-feedback-${Date.now()}.pdf`,
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },

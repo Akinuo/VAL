@@ -5,7 +5,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Settings',
-  description: 'Account settings and frequently asked questions for VAL Guide.',
+  description: 'Account settings and frequently asked questions for B.M.O.',
   robots: { index: false, follow: true },
 }
 

@@ -57,7 +57,7 @@ captures/
 # git (password manager, private drive). Losing the .jks means every future
 # release has to be signed with a *different* key, and Android won't let an
 # update install over the old app unless it's signed with the same key —
-# everyone would have to uninstall the old VAL Guide first.
+# everyone would have to uninstall the old B.M.O first.
 *.jks
 *.keystore
 keystore.properties
