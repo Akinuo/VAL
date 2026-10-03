@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { SpoolMark } from '@/components/Motifs'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -228,7 +229,8 @@ export default function LoginForm() {
       >
 
         {/* Left — brand panel */}
-        <div className="hidden flex-col justify-between border-r border-border bg-denim px-8 py-12 text-white lg:flex">
+        <div className="relative hidden flex-col justify-between overflow-hidden border-r border-border bg-denim px-8 py-12 text-white lg:flex">
+          <SpoolMark className="absolute -bottom-6 -right-4 h-56 w-56 -rotate-12 text-white/[0.07]" />
           <div>
             <h1 className="font-display text-2xl font-bold leading-snug">
               {isSignup ? 'Start learning today.' : 'Welcome back.'}

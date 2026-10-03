@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { SpoolMark } from '@/components/Motifs'
 import Link from 'next/link'
 import { getContent } from '@/lib/content'
 import MachinePreview from '@/components/MachinePreview'
@@ -22,7 +23,8 @@ export default async function LandingPage() {
         </Link>
       </header>
 
-      <section className="mx-auto max-w-5xl px-5 pb-16 pt-10 sm:pt-20">
+      <section className="relative mx-auto max-w-5xl px-5 pb-16 pt-10 sm:pt-20">
+        <SpoolMark className="absolute right-4 top-12 hidden h-44 w-44 rotate-12 text-denim/[0.09] md:block" />
         <h1 className="max-w-3xl font-display text-[clamp(2.6rem,9vw,5.5rem)] font-extrabold leading-[0.96] tracking-tight text-denim">
           Get to know your sewing machine.
         </h1>
@@ -50,7 +52,7 @@ export default async function LandingPage() {
       </section>
 
       <section className="mx-auto max-w-5xl px-5 pb-16">
-        <div className="grid overflow-hidden rounded-lg bg-denim-light md:grid-cols-[1.5fr_1fr]">
+        <div className="patch patch-gold grid overflow-hidden rounded-lg bg-denim-light md:grid-cols-[1.5fr_1fr]">
           <MachinePreview />
           <div className="flex flex-col justify-center gap-3 p-6 md:p-8">
             <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-denim">Turn the machine around</h2>
@@ -63,10 +65,11 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      <div className="tape" aria-hidden="true" />
       <section className="bg-paper">
         <div className="mx-auto grid max-w-5xl gap-10 px-5 py-16 md:grid-cols-[1fr_1.6fr]">
           <div>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-denim">The lessons, in order</h2>
+            <h2 className="thread-under font-display text-3xl font-bold tracking-tight text-denim">The lessons, in order</h2>
             <p className="mt-3 max-w-sm text-muted">
               Each one takes about five minutes. Finish a lesson to earn its badge.
             </p>
@@ -79,7 +82,7 @@ export default async function LandingPage() {
                   href={`/lessons/${l.slug}`}
                   className="group relative flex items-baseline justify-between gap-4 py-4 pl-8 pr-2 transition-colors hover:bg-denim-light"
                 >
-                  <span className="absolute -left-[15px] top-4 flex h-7 w-7 items-center justify-center rounded-full bg-denim text-sm font-bold text-white ring-4 ring-paper group-hover:ring-denim-light">
+                  <span className="sew-button absolute -left-[15px] top-4 flex h-7 w-7 items-center justify-center rounded-full bg-denim text-sm font-bold text-white ring-4 ring-paper group-hover:ring-denim-light">
                     {i + 1}
                   </span>
                   <span>
@@ -94,7 +97,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-denim text-white">
+      <section className="pinked pinked-denim bg-denim text-white">
         <div className="mx-auto flex max-w-5xl flex-col gap-6 px-5 py-14 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="max-w-md font-display text-3xl font-bold leading-tight tracking-tight">
             Start with the parts of the machine.
@@ -105,7 +108,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <footer className="bg-denim-deep text-sm text-white/70">
+      <footer className="pinked pinked-deep bg-denim-deep text-sm text-white/70">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-5 py-5">
           <span>B.M.O (Basic Machine Operation) for BTLED Home Economics</span>
           <span className="flex gap-4">

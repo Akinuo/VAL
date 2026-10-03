@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { SpoolMark } from './Motifs'
 import { useProgress } from '@/lib/progress'
 import { earned } from '@/lib/badges'
 import type { Content } from '@/lib/content'
@@ -36,7 +37,7 @@ export default function Dashboard({ c }: { c: Content }) {
       {/* ── Welcome ── */}
       <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-denim sm:text-3xl">
+          <h1 className="thread-under font-display text-2xl font-bold text-denim sm:text-3xl">
             {firstName ? `Welcome back, ${firstName}` : 'Your learning dashboard'}
           </h1>
           <p className="mt-1 text-sm text-muted">
@@ -55,7 +56,8 @@ export default function Dashboard({ c }: { c: Content }) {
       </div>
 
       {/* ── Where you are ── */}
-      <section className="rounded-lg bg-denim p-5 text-white shadow-md sm:p-6">
+      <section className="patch relative overflow-hidden rounded-lg bg-denim p-5 text-white shadow-md sm:p-6">
+        <SpoolMark className="absolute -right-3 -top-4 h-36 w-36 rotate-12 text-white/[0.08]" />
         <p className="text-sm text-white/70">
           {promptLesson ? (continueLesson ? 'Pick up where you left off' : 'Your first lesson') : 'Every lesson is done'}
         </p>
@@ -103,7 +105,7 @@ export default function Dashboard({ c }: { c: Content }) {
               const badge = (
                 <span
                   aria-hidden="true"
-                  className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold transition-colors ${
+                  className={`sew-button grid h-8 w-8 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold transition-colors ${
                     full
                       ? 'border-green bg-green text-white'
                       : locked
@@ -172,7 +174,7 @@ export default function Dashboard({ c }: { c: Content }) {
             const badge = (
               <span
                 aria-hidden="true"
-                className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold transition-colors ${
+                className={`sew-button grid h-8 w-8 shrink-0 place-items-center rounded-full border font-display text-sm font-semibold transition-colors ${
                   finalPassed
                     ? 'border-green bg-green text-white'
                     : locked

@@ -101,7 +101,7 @@ export function TabBar() {
           return (
             <li key={href}>
               <Link href={href} aria-current={on ? 'page' : undefined} className={`relative flex h-16 flex-col items-center justify-center gap-1 text-xs font-medium ${on ? 'text-denim' : 'text-muted'}`}>
-                {on && <span className="absolute inset-x-5 top-0 h-[3px] rounded-b bg-thread" aria-hidden="true" />}
+                {on && <span className="absolute inset-x-4 top-0 h-[3px]" style={{ backgroundImage: 'repeating-linear-gradient(90deg,#E59B1C 0 7px,transparent 7px 11px)' }} aria-hidden="true" />}
                 <Icon className="h-5 w-5" />
                 {label}
               </Link>

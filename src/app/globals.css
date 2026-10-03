@@ -173,3 +173,56 @@
 /* Landing hero: the thread is stitched in once on load */
 @keyframes stitchin { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 .stitch-in { animation: stitchin 1.8s cubic-bezier(.6,.1,.2,1) .2s both; }
+
+/* ── Sewing details: quiet, palette-only ─────────────────────────────── */
+@layer components {
+  /* Woven twill: barely-there diagonal weave on the two fabric colours */
+  .bg-chalk { background-image: repeating-linear-gradient(135deg, rgba(34,51,107,.035) 0 1px, transparent 1px 4px); }
+  .bg-denim { background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 1px, transparent 1px 4px); }
+
+  /* Stitched patch: dashed seam sewn just inside the edge */
+  .patch { position: relative; }
+  .patch::after {
+    content: ''; position: absolute; inset: 6px; border-radius: 9px; pointer-events: none;
+    border: 1.5px dashed rgba(255,255,255,.28);
+  }
+  .patch-gold::after { border-color: rgba(229,155,28,.6); }
+
+  /* Primary buttons get a stitched inner seam */
+  .btn { position: relative; }
+  .btn::after {
+    content: ''; position: absolute; inset: 3px; border-radius: 5px; pointer-events: none;
+    border: 1.5px dashed currentColor; opacity: .3;
+  }
+
+  /* Numbered markers read as sewing buttons: a rim ring inside the edge */
+  .sew-button { position: relative; }
+  .sew-button::after {
+    content: ''; position: absolute; inset: 3px; border-radius: 9999px; pointer-events: none;
+    border: 1.5px solid currentColor; opacity: .28;
+  }
+
+  /* Headings: a short run of stitches ending in a needle */
+  .thread-under::after, .page-title::after {
+    content: ''; display: block; width: 96px; height: 12px; margin-top: .55rem;
+    background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 12'%3E%3Cline x1='2' y1='6' x2='62' y2='6' stroke='%23E59B1C' stroke-width='2.5' stroke-dasharray='8 6' stroke-linecap='round'/%3E%3Cg stroke='%2322336B' stroke-width='1.6' stroke-linecap='round' fill='none'%3E%3Cline x1='68' y1='10' x2='94' y2='2.5'/%3E%3Cellipse cx='70.4' cy='9.3' rx='1' ry='2' transform='rotate(-16 70.4 9.3)'/%3E%3C/g%3E%3C/svg%3E") no-repeat left center;
+  }
+
+  /* Measuring tape: a thin ruler band used as a section divider */
+  .tape {
+    height: 18px; background-color: #FCF1DA; border-block: 1px solid #F0C56E;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(143,86,0,.55) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, rgba(143,86,0,.4) 0 1px, transparent 1px 8px);
+    background-size: 100% 11px, 100% 6px; background-position: 0 100%, 0 100%; background-repeat: no-repeat;
+  }
+
+  /* Pinked edge: zig-zag cut along the top of a section */
+  .pinked { position: relative; }
+  .pinked::before {
+    content: ''; position: absolute; left: 0; right: 0; top: -7px; height: 8px; pointer-events: none;
+    background-repeat: repeat-x; background-size: 18px 8px; background-position: left bottom;
+  }
+  .pinked-denim::before { background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='8' viewBox='0 0 18 8'%3E%3Cpolygon points='0,8 9,0 18,8' fill='%2322336B'/%3E%3C/svg%3E"); }
+  .pinked-deep::before { background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='8' viewBox='0 0 18 8'%3E%3Cpolygon points='0,8 9,0 18,8' fill='%23141F47'/%3E%3C/svg%3E"); }
+}
