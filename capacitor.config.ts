@@ -7,7 +7,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
 // email, on-demand revalidate) that a static export can't serve.
 const config: CapacitorConfig = {
   appId: 'ph.akinuo.valguide',
-  appName: 'B.M.O',
+  appName: 'Basic Machine Operation (B.M.O)',
   webDir: 'public', // unused while server.url is set, but required by the schema
   server: {
     url: 'https://val-ashen-theta.vercel.app',
