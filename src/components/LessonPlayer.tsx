@@ -6,6 +6,7 @@ import { useProgress } from '@/lib/progress'
 import type { Lesson } from '@/lib/content'
 import { isLessonFull, unlockedFlags } from '@/lib/lessons'
 import { shuffle } from '@/lib/shuffle'
+import { LESSON_OBJECTIVES } from '@/lib/objectives'
 import { IconCheck, IconLock } from './icons'
 import FloatingToast from './FloatingToast'
 import { saveConsent, useConsent } from '@/lib/consent'
@@ -261,6 +262,16 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
           <span className="shrink-0 text-xs text-muted">{passedCount}/{lesson.steps.length} steps</span>
         </div>
       </div>
+
+      {/* Learning objectives */}
+      {LESSON_OBJECTIVES[lesson.slug] && (
+        <section aria-label="Learning objectives" className="rounded-lg border border-border bg-paper px-5 py-4">
+          <p className="font-semibold text-ink">At the end of the lesson, the student should be able to:</p>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-ink">
+            {LESSON_OBJECTIVES[lesson.slug].map(o => <li key={o}>{o}</li>)}
+          </ul>
+        </section>
+      )}
 
       {/* Video */}
       <div
