@@ -5,7 +5,22 @@ import { buildFeedbackPdf } from '@/lib/feedbackPdf'
 // Needs the Node.js runtime (not Edge) for nodemailer's SMTP connection.
 export const runtime = 'nodejs'
 
-const TO_EMAIL = process.env.FEEDBACK_TO_EMAIL || 'bingmenoso@gmail.com'
+// FEEDBACK_TO_EMAIL may hold one address or a comma-separated list. The course
+// administrators below always receive feedback too, so a value set in the
+// hosting dashboard can't drop them.
+const ADMIN_RECIPIENTS = [
+  'maryfaylogna@gmail.com',
+  'jamaicagracemarquez@gmail.com',
+  'maricrismedillo9@gmail.com',
+  'pascuajohnrafael1@gmail.com',
+]
+const TO_EMAIL = [
+  ...new Set(
+    [...(process.env.FEEDBACK_TO_EMAIL || 'bingmenoso@gmail.com').split(','), ...ADMIN_RECIPIENTS]
+      .map(e => e.trim().toLowerCase())
+      .filter(Boolean),
+  ),
+]
 
 // Created once per server instance and reused across requests — building a
 // fresh SMTP transport on every submission adds needless connection setup.
