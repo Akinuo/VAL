@@ -265,11 +265,19 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
 
       {/* Learning objectives */}
       {LESSON_OBJECTIVES[lesson.slug] && (
-        <section aria-label="Learning objectives" className="rounded-lg border border-border bg-paper px-5 py-4">
-          <p className="font-semibold text-ink">At the end of the lesson, the student should be able to:</p>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-ink">
-            {LESSON_OBJECTIVES[lesson.slug].map(o => <li key={o}>{o}</li>)}
-          </ul>
+        <section aria-label="Learning objectives" className="card overflow-hidden">
+          <div className="bg-chalk border-b border-border px-5 py-3">
+            <h2 className="font-display text-base font-semibold text-denim">Learning objectives</h2>
+            <p className="mt-0.5 text-sm text-muted">At the end of the lesson, the student should be able to:</p>
+          </div>
+          <ol className="grid gap-3 px-5 py-4">
+            {LESSON_OBJECTIVES[lesson.slug].map((o, n) => (
+              <li key={o} className="flex items-start gap-3 text-sm leading-relaxed text-ink">
+                <span className="sew-button grid h-6 w-6 shrink-0 place-items-center rounded-full border border-denim/20 bg-denim-light font-display text-xs font-semibold text-denim" aria-hidden="true">{n + 1}</span>
+                <span className="pt-0.5">{o}</span>
+              </li>
+            ))}
+          </ol>
         </section>
       )}
 
