@@ -19,8 +19,17 @@ export const metadata: Metadata = {
     // identical across pages without repeating the suffix everywhere.
     template: '%s — B.M.O',
   },
+  applicationName: 'B.M.O',
   description: SITE_DESCRIPTION,
   openGraph: {
+    type: 'website',
+    siteName: 'B.M.O',
+    title: 'Basic Machine Operation (B.M.O)',
+    description: SITE_DESCRIPTION,
+    images: [{ url: '/logo-full.png', width: 1200, height: 630, alt: 'B.M.O — Basic Machine Operation' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
     title: 'Basic Machine Operation (B.M.O)',
     description: SITE_DESCRIPTION,
     images: ['/logo-full.png'],
