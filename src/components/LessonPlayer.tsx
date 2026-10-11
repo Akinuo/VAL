@@ -7,6 +7,7 @@ import type { Lesson } from '@/lib/content'
 import { isLessonFull, unlockedFlags } from '@/lib/lessons'
 import { shuffle } from '@/lib/shuffle'
 import { LESSON_OBJECTIVES } from '@/lib/objectives'
+import { getDownloadUrl } from '@/lib/downloads'
 import { IconCheck, IconLock } from './icons'
 import FloatingToast from './FloatingToast'
 import { saveConsent, useConsent } from '@/lib/consent'
@@ -398,6 +399,19 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
           </div>
         )}
       </div>
+
+      {/* Download */}
+      {getDownloadUrl(lesson.slug, lesson.video_url) && (
+        <a
+          href={getDownloadUrl(lesson.slug, lesson.video_url)!}
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+          className="btn-outline -mt-2 w-fit"
+        >
+          Download video
+        </a>
+      )}
 
       {/* Step navigator */}
       <div>
