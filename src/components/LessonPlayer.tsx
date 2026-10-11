@@ -419,10 +419,9 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
       </div>
 
       {/* Step content */}
-      <section aria-labelledby="step-title" className="rounded-lg border border-border bg-paper">
+      <section aria-labelledby="step-count" className="rounded-lg border border-border bg-paper">
         <div className="border-b border-border px-5 py-4">
-          <p className="eyebrow mb-1">Step {stepIndex + 1} of {lesson.steps.length}</p>
-          <h2 id="step-title" className="font-display text-xl font-semibold text-denim">{step.title}</h2>
+          <p id="step-count" className="eyebrow">Step {stepIndex + 1} of {lesson.steps.length}</p>
         </div>
 
         <div className="px-5 py-4">
