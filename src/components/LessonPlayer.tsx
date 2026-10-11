@@ -419,25 +419,11 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
       </div>
 
       {/* Step content */}
-      <section aria-labelledby="step-count" className="rounded-lg border border-border bg-paper">
-        <div className="border-b border-border px-5 py-4">
-          <p id="step-count" className="eyebrow">Step {stepIndex + 1} of {lesson.steps.length}</p>
-        </div>
-
+      <section aria-label={`Step ${stepIndex + 1} of ${lesson.steps.length}`} className="rounded-lg border border-border bg-paper">
         <div className="px-5 py-4">
-          <p className="max-w-prose leading-relaxed text-ink">{step.body}</p>
-
-          {/* Already passed notice */}
-          {alreadyPassed && !pick && (
-            <p className="mt-4 flex items-center gap-2 text-sm text-green">
-              <IconCheck className="h-4 w-4 shrink-0" />
-              You already passed this step.
-            </p>
-          )}
-
           {/* Quiz */}
           {quiz && (
-            <fieldset className="mt-5 border-t border-border pt-4">
+            <fieldset>
               <legend className="font-semibold text-ink">{quiz.question}</legend>
               <div className="mt-3 grid gap-2">
                 {order.map((optIdx) => {
@@ -486,7 +472,7 @@ export default function LessonPlayer({ lesson, lessons }: { lesson: Lesson; less
             title="Not quite"
             message={
               <>
-                Re-read the step, then try again — or move on and come back to it later.
+                Try again — or move on and come back to it later.
                 <span className="mt-1 block text-xs text-muted">
                   {MAX_ATTEMPTS - wrongAttempts} attempt{MAX_ATTEMPTS - wrongAttempts === 1 ? '' : 's'} left.
                 </span>
