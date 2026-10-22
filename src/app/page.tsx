@@ -19,7 +19,7 @@ export default async function LandingPage() {
       >
         <Link href="/" className="flex items-center gap-2 font-display text-xl font-extrabold tracking-tight text-denim">
           <Image src="/logo-mark.png" alt="" width={28} height={28} priority className="h-7 w-7" />
-          B.M.O
+          SewTech Learn
         </Link>
       </header>
 
@@ -110,7 +110,7 @@ export default async function LandingPage() {
 
       <footer className="pinked pinked-deep bg-denim-deep text-sm text-white/70">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-5 py-5">
-          <span>B.M.O (Basic Machine Operation) for BTLED Home Economics</span>
+          <span>SewTech Learn for BTLED Home Economics</span>
           <span className="flex gap-4">
             <Link href="/privacy" className="underline underline-offset-2">Privacy Statement</Link>
             <ConsentLink />

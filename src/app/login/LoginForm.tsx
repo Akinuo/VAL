@@ -219,7 +219,7 @@ export default function LoginForm() {
           </button>
           <Link href="/" className="flex items-center gap-2 font-display text-base font-bold text-denim">
             <Image src="/logo-mark.png" alt="" width={22} height={22} className="h-[22px] w-[22px]" />
-            B.M.O
+            SewTech Learn
           </Link>
         </div>
       </header>
@@ -237,7 +237,7 @@ export default function LoginForm() {
               {isSignup ? 'Start learning today.' : 'Welcome back.'}
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-white/65">
-              B.M.O (Basic Machine Operation) walks you through basic sewing machine operation — parts, threading, bobbin
+              SewTech Learn walks you through basic sewing machine operation — parts, threading, bobbin
               winding, stitch settings, safety, and care.
             </p>
             <ul className="mt-8 grid gap-3">

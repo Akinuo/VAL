@@ -62,9 +62,9 @@ export async function buildCertificatePdf({ name, score, total, date }: Certific
   })
 
   y -= 44
-  centerText(page, 'has successfully completed the B.M.O: Basic Machine', y, font, 13, ink)
+  centerText(page, 'has successfully completed the SewTech Learn', y, font, 13, ink)
   y -= 20
-  centerText(page, 'Operation training program, including its final assessment.', y, font, 13, ink)
+  centerText(page, 'training program, including its final assessment.', y, font, 13, ink)
 
   y -= 38
   centerText(page, `Final assessment score: ${score} / ${total} (${pct}%)`, y, bold, 14, green)
@@ -82,7 +82,7 @@ export async function buildCertificatePdf({ name, score, total, date }: Certific
   page.drawText(date, { x: PAGE_W / 2 - 220, y: footerY - 16, size: 12, font, color: ink })
 
   const issuedLabel = 'ISSUED BY'
-  const issuedValue = 'B.M.O — Basic Machine Operation'
+  const issuedValue = 'SewTech Learn'
   const labelWidth = bold.widthOfTextAtSize(issuedLabel, 9)
   const valueWidth = font.widthOfTextAtSize(issuedValue, 12)
   page.drawText(issuedLabel, { x: PAGE_W / 2 + 220 - labelWidth, y: footerY, size: 9, font: bold, color: muted })

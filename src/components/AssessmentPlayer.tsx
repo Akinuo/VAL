@@ -71,7 +71,7 @@ export default function AssessmentPlayer({ c }: { c: Content }) {
       // to this page.
       const { buildCertificatePdf } = await import('@/lib/certificatePdf')
       const date = new Date().toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' })
-      const bytes = await buildCertificatePdf({ name: certName.trim() || 'B.M.O Student', score, total, date })
+      const bytes = await buildCertificatePdf({ name: certName.trim() || 'SewTech Learn Student', score, total, date })
       const blob = new Blob([new Uint8Array(bytes)], { type: 'application/pdf' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')

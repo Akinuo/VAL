@@ -13,26 +13,26 @@ const SITE_DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   title: {
-    default: 'Basic Machine Operation (B.M.O)',
+    default: 'SewTech Learn',
     // Every page below sets its own title (e.g. "Checklists") and inherits
-    // "— B.M.O" from here, so tabs/bookmarks/search results stop being
+    // "— SewTech Learn" from here, so tabs/bookmarks/search results stop being
     // identical across pages without repeating the suffix everywhere.
-    template: '%s — B.M.O',
+    template: '%s — SewTech Learn',
   },
-  applicationName: 'B.M.O',
+  applicationName: 'SewTech Learn',
   description: SITE_DESCRIPTION,
   openGraph: {
     type: 'website',
-    siteName: 'B.M.O',
-    title: 'Basic Machine Operation (B.M.O)',
+    siteName: 'SewTech Learn',
+    title: 'SewTech Learn',
     description: SITE_DESCRIPTION,
-    images: [{ url: '/og-bmo.png', width: 1200, height: 630, alt: 'B.M.O — Basic Machine Operation' }],
+    images: [{ url: '/og-sewtech.png', width: 1200, height: 630, alt: 'SewTech Learn' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Basic Machine Operation (B.M.O)',
+    title: 'SewTech Learn',
     description: SITE_DESCRIPTION,
-    images: ['/og-bmo.png'],
+    images: ['/og-sewtech.png'],
   },
 }
 

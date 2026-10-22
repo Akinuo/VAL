@@ -1,4 +1,4 @@
-# B.M.O — Basic Machine Operation (also known as B.M.O)
+# SewTech Learn
 
 Mobile-first self-learning app for BTLED Home Economics students. Next.js 14 (App Router) + TypeScript + Tailwind, Supabase Free (Postgres + Auth), Vercel Free.
 

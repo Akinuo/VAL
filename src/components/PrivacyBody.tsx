@@ -12,7 +12,7 @@ export default function PrivacyBody({ modal = false }: { modal?: boolean }) {
   return (
     <>
       <p className="mt-5">
-        This statement explains how B.M.O collects, uses, stores and protects your personal data. It is written to
+        This statement explains how SewTech Learn collects, uses, stores and protects your personal data. It is written to
         comply with the <strong>Data Privacy Act of 2012 (Republic Act No. 10173)</strong>, its Implementing Rules
         and Regulations, and the issuances of the National Privacy Commission (NPC) of the Philippines.
       </p>
@@ -133,7 +133,7 @@ export default function PrivacyBody({ modal = false }: { modal?: boolean }) {
 
       <H>8. Minors</H>
       <p className="mt-2">
-        B.M.O is meant for students of legal age. If you are under 18, please use it only with the permission of a
+        SewTech Learn is meant for students of legal age. If you are under 18, please use it only with the permission of a
         parent or guardian.
       </p>
 

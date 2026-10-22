@@ -128,7 +128,7 @@ export default function CookieConsent() {
               {reading ? 'Privacy Statement' : 'Your data, your choice'}
             </h2>
             <p className="text-xs text-muted">
-              {reading ? 'Data Privacy Act of 2012 (RA 10173) · Updated October 2026' : 'B.M.O · Basic Machine Operation'}
+              {reading ? 'Data Privacy Act of 2012 (RA 10173) · Updated October 2026' : 'SewTech Learn'}
             </p>
           </div>
           {dismissible && !reading && (
@@ -147,7 +147,7 @@ export default function CookieConsent() {
           ) : (
             <div className="grid gap-4">
               <p className="text-sm leading-relaxed text-ink">
-                B.M.O saves your sign-in and lesson progress so you can pick up where you left off. Under the{' '}
+                SewTech Learn saves your sign-in and lesson progress so you can pick up where you left off. Under the{' '}
                 <strong>Data Privacy Act of 2012 (Republic Act No. 10173)</strong> we collect and use your personal
                 data only with your knowledge and consent, for stated purposes, and only as much as we need.
               </p>

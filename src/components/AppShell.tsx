@@ -20,7 +20,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       </main>
       <footer className="hidden border-t border-border bg-paper sm:block">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-6 py-4 text-sm text-muted">
-          <span>B.M.O (Basic Machine Operation) for BTLED Home Economics</span>
+          <span>SewTech Learn for BTLED Home Economics</span>
           <span className="flex gap-4">
             <Link href="/privacy" className="underline underline-offset-2">Privacy Statement</Link>
             <ConsentLink />

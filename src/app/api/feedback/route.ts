@@ -115,12 +115,12 @@ export async function POST(req: Request) {
     const transporter = getTransporter(user, pass)
 
     await transporter.sendMail({
-      from: `"B.M.O" <${user}>`,
+      from: `"SewTech Learn" <${user}>`,
       to: TO_EMAIL,
       replyTo: email || undefined,
-      subject: `B.M.O feedback — ${rating}/5 from ${name || 'Anonymous'}`,
+      subject: `SewTech Learn feedback — ${rating}/5 from ${name || 'Anonymous'}`,
       text: [
-        'New feedback was submitted on B.M.O.',
+        'New feedback was submitted on SewTech Learn.',
         '',
         `Name: ${name || 'Anonymous'}`,
         `Email: ${email || 'Not signed in'}`,
